@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Réseau & Cybersécurité</title>
+  <meta name="description" content="Portfolio d'un étudiant en Réseaux & Cybersécurité : projets, compétences, expériences et contact." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0f17; --bg-alt:#0f1524; --panel:#0d1322; --text:#e6eefc; --muted:#a5b1cd;
+      --primary:#00ffa6; --accent:#4dd2ff; --danger:#ff4d6d;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
+      --glow-primary:0 0 12px rgba(0,255,166,.55), 0 0 32px rgba(0,255,166,.35);
+      --glow-accent:0 0 12px rgba(77,210,255,.55), 0 0 32px rgba(77,210,255,.35);
+      --radius:20px;
+      --mark-bg: rgba(255, 241, 118, .28);
+      --mark-ring: 0 0 0 6px rgba(255,241,118,.15), 0 0 16px rgba(255,241,118,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: radial-gradient(1200px 800px at 10% -5%, #12203a 0%, transparent 60%),
+                          radial-gradient(900px 600px at 90% 10%, #0c2030 0%, transparent 55%),
+                          var(--bg);
+      color:var(--text); font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;
+      overflow-x:hidden; 
+    }
+    a{color:inherit; text-decoration:none}
+    .container{width:min(1140px, 90vw); margin:0 auto}
+
+    /* ===== PARTICLES ===== */
+    #particles{position:fixed; inset:0; z-index:-2; display:block; background:transparent}
+    .scanlines{position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:.12;
+      background: repeating-linear-gradient( to bottom, rgba(255,255,255,.04) 0, rgba(255,255,255,.04) 1px, transparent 2px, transparent 4px );
+      mix-blend-mode:soft-light;
+    }
+
+    /* ===== HEADER ===== */
+    header{
+      position:sticky; top:0; z-index:10; backdrop-filter:saturate(140%) blur(8px);
+      background:linear-gradient(to right, rgba(13,19,34,.85), rgba(15,21,36,.65));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.5px}
+    .brand .logo{
+      width:38px; height:38px; border-radius:12px; display:grid; place-items:center;
+      background:linear-gradient(145deg, rgba(0,255,166,.15), rgba(77,210,255,.15));
+      box-shadow: var(--glow-primary);
+    }
+    .brand svg{filter:drop-shadow(0 0 6px rgba(0,255,166,.5))}
+    nav ul{list-style:none; display:flex; gap:24px; padding:0; margin:0}
+    nav a{color:var(--muted); font-weight:500}
+    nav a:hover{color:var(--text)}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow);
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .btn.primary{border-color:rgba(0,255,166,.35); box-shadow:var(--glow-primary)}
+    .btn:hover{transform:translateY(-2px)}
+
+    /* Topbar: search + switch */
+    .topbar{display:flex; align-items:center; gap:10px}
+    .search-box{display:flex; align-items:center; gap:8px}
+    .search-box input{
+      width:220px; padding:10px 12px; border-radius:12px; outline:none;
+      border:1px solid rgba(255,255,255,.14); background:#0b1220; color:var(--text);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+    .search-box input::placeholder{color:#8ea0c7}
+
+    /* Switch glissant cyber */
+    .lang-switch{
+      --w: 78px; --h: 36px;
+      position:relative; width:var(--w); height:var(--h);
+      border-radius:999px; border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(145deg, rgba(0,255,166,.12), rgba(77,210,255,.12));
+      box-shadow:var(--glow-accent); cursor:pointer; display:flex; align-items:center; padding:4px;
+    }
+    .lang-switch input{display:none}
+    .lang-switch .thumb{
+      position:absolute; top:4px; left:4px; width:calc(var(--h) - 8px); height:calc(var(--h) - 8px);
+      border-radius:999px; background:#0d1322; box-shadow:0 6px 18px rgba(0,0,0,.35), var(--glow-primary);
+      transition:left .25s ease;
+    }
+    .lang-switch .labels{
+      width:100%; display:flex; justify-content:space-between; padding:0 10px; font-weight:700; font-size:13px; letter-spacing:.5px;
+      text-shadow:0 0 6px rgba(0,255,166,.4);
+    }
+    .lang-switch .labels span{opacity:.65}
+    .lang-switch input:checked + .thumb{ left:calc(var(--w) - var(--h) + 4px) }
+    .lang-switch input:checked ~ .labels .fr{opacity:.5}
+    .lang-switch input:not(:checked) ~ .labels .en{opacity:.5}
+
+    /* ===== HERO ===== */
+    .hero{position:relative; padding:80px 0 60px}
+    .hero-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:48px; align-items:center}
+    .eyebrow{display:inline-block; padding:6px 12px; border-radius:999px; font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent);
+      background:linear-gradient(90deg, rgba(0,255,166,.08), rgba(77,210,255,.08)); border:1px solid rgba(77,210,255,.25)
+    }
+    h1{font-size:44px; line-height:1.1; margin:18px 0 14px}
+    .glitch{position:relative; display:inline-block}
+    .glitch::before, .glitch::after{content:attr(data-text); position:absolute; left:0; top:0; overflow:hidden}
+    .glitch::before{left:1px; text-shadow:-1px 0 var(--accent); animation:glitchTop 3s infinite}
+    .glitch::after{left:-1px; text-shadow:1px 0 var(--primary); animation:glitchBot 2.7s infinite}
+    @keyframes glitchTop{0%{clip-path:inset(0 0 85% 0)} 50%{clip-path:inset(0 0 10% 0)} 100%{clip-path:inset(0 0 85% 0)}}
+    @keyframes glitchBot{0%{clip-path:inset(85% 0 0 0)} 50%{clip-path:inset(10% 0 0 0)} 100%{clip-path:inset(85% 0 0 0)}}
+    .hero p{color:var(--muted); font-size:16px}
+    .cta{display:flex; gap:14px; margin-top:22px; flex-wrap:wrap}
+    .hero-card{
+      position:relative; border-radius:var(--radius); padding:24px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow);
+    }
+    .grid-kpis{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:12px}
+    .kpi{padding:14px; border-radius:16px; background:linear-gradient(180deg, rgba(0,255,166,.05), rgba(255,255,255,.02)); border:1px solid rgba(0,255,166,.25)}
+    .kpi h3{margin:0; font-size:22px}
+    .kpi span{font-size:12px; color:var(--muted)}
+
+    /* ===== SECTIONS ===== */
+    section{padding:70px 0}
+    .sec-title{display:flex; align-items:center; gap:12px; margin-bottom:26px}
+    .sec-title h2{margin:0; font-size:28px}
+    .sec-title .bar{height:1px; flex:1; background:linear-gradient(90deg, var(--accent), transparent)}
+    .panel{border-radius:var(--radius); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow)}
+
+    /* About */
+    .about{display:grid; grid-template-columns: 1fr 1fr; gap:24px}
+    .about .bio{padding:22px}
+    .about .bio p{color:var(--muted); margin:0}
+    .about .meta{display:grid; grid-template-columns: repeat(2,1fr); gap:16px; padding:22px}
+    .chip{ padding:10px 12px; border-radius:14px; font-size:13px; color:#091120;
+      background:linear-gradient(180deg, rgba(0,255,166,.9), rgba(77,210,255,.9)); box-shadow:var(--glow-primary); font-weight:600; text-align:center }
+
+    /* Skills */
+    .skills-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+    .skill{padding:16px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:var(--panel)}
+    .skill h4{margin:0 0 6px 0}
+    .tags{display:flex; flex-wrap:wrap; gap:8px}
+    .tag{font-family:"JetBrains Mono",monospace; font-size:12px; padding:6px 10px; border-radius:10px; background:rgba(255,255,255,.06); color:var(--muted); border:1px dashed rgba(255,255,255,.14)}
+
+    /* Projects */
+    .filter{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap}
+    .filter button{padding:10px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.04); color:var(--text); cursor:pointer}
+    .filter button.active{border-color:rgba(0,255,166,.45); box-shadow:var(--glow-primary)}
+    .projects{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .card{position:relative; overflow:hidden; border-radius:18px; border:1px solid rgba(255,255,255,.12); background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); transition:transform .2s ease, box-shadow .2s ease}
+    .card:hover{transform:translateY(-4px); box-shadow:var(--glow-accent)}
+    .thumb{aspect-ratio:16/9; background:linear-gradient(145deg, rgba(0,255,166,.12), rgba(77,210,255,.12)); display:grid; place-items:center}
+    .thumb svg{opacity:.9}
+    .card .content{padding:16px}
+    .badge{font-size:11px; padding:6px 10px; border-radius:999px; background:rgba(0,255,166,.12); border:1px solid rgba(0,255,166,.35); color:var(--primary)}
+
+    /* Timeline */
+    .timeline{position:relative; margin-left:8px}
+    .timeline::before{content:""; position:absolute; left:10px; top:0; bottom:0; width:2px; background:linear-gradient(180deg, var(--accent), transparent)}
+    .tl-item{position:relative; padding-left:34px; margin-bottom:18px}
+    .dot{position:absolute; left:2px; top:.4em; width:16px; height:16px; border-radius:50%; background:var(--bg); border:2px solid var(--accent); box-shadow:var(--glow-accent)}
+    .tl-item h4{margin:.2em 0}
+    .tl-item p{margin:0; color:var(--muted)}
+
+    /* Contact */
+    form{display:grid; gap:12px}
+    input, textarea{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.14); background:#0b1220; color:var(--text)}
+    textarea{min-height:140px; resize:vertical}
+
+    /* Footer */
+    footer{padding:30px 0; color:var(--muted); font-size:14px}
+    .socials{display:flex; gap:12px}
+    .icon-btn{display:inline-grid; place-items:center; width:42px; height:42px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04)}
+    .icon-btn:hover{box-shadow:var(--glow-accent)}
+
+    /* Reveal */
+    .reveal{opacity:0; transform:translateY(20px); transition:600ms ease}
+    .reveal.visible{opacity:1; transform:none}
+
+    /* Search highlight */
+    mark.hl{
+      background:var(--mark-bg);
+      padding:0 .2em; border-radius:.25em; outline:1px solid rgba(255,241,118,.35);
+      box-shadow:var(--mark-ring);
+      animation: blink 1.2s ease-in-out 1;
+    }
+    @keyframes blink{ 0%{background:transparent} 20%{background:var(--mark-bg)} 100%{background:var(--mark-bg)} }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .about{grid-template-columns:1fr}
+      .skills-grid{grid-template-columns:repeat(2,1fr)}
+      .projects{grid-template-columns:1fr 1fr}
+      .search-box input{width:160px}
+    }
+    @media (max-width: 640px){
+      h1{font-size:34px}
+      .skills-grid{grid-template-columns:1fr}
+      .projects{grid-template-columns:1fr}
+      .search-box input{width:130px}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- Shield lock icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 5-3.5 9-7 9s-7-4-7-9V6l7-3z" stroke="#00FFA6" stroke-width="1.6"/>
+            <path d="M9.5 12.5v-1.5a2.5 2.5 0 115 0v1.5" stroke="#4DD2FF" stroke-width="1.6"/>
+            <rect x="8" y="12" width="8" height="6" rx="2" stroke="#00FFA6" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <span id="brand" data-i18n="brand">KYLIAN • PORTFOLIO</span>
+      </div>
+
+      <!-- Topbar: search + language switch -->
+      <div class="topbar">
+        <div class="search-box">
+          <input id="siteSearch" type="text" placeholder="Rechercher..." data-i18n-placeholder="search.placeholder">
+        </div>
+
+        <label class="lang-switch" title="FR / EN">
+          <input id="langSwitch" type="checkbox" aria-label="Language switch">
+          <span class="thumb"></span>
+          <div class="labels">
+            <span class="fr">FR</span>
+            <span class="en">EN</span>
+          </div>
+        </label>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#about" id="navAbout" data-i18n="nav.about">À propos</a></li>
+          <li><a href="#skills" id="navSkills" data-i18n="nav.skills">Compétences</a></li>
+          <li><a href="#projects" id="navProjects" data-i18n="nav.projects">Projets</a></li>
+          <li><a href="#xp" id="navXp" data-i18n="nav.xp">Expériences</a></li>
+          <li><a href="#contact" id="navContact" class="btn" data-i18n="nav.contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contentRoot">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow" data-i18n="hero.eyebrow">Réseaux • Cybersécurité • FTTH • Devops</span>
+          <h1>
+            <span class="glitch" id="heroTitle" data-text="Étudiant Réseau & Cybersécurité" data-i18n="hero.title">Étudiant Réseau & Cybersécurité</span>
+          </h1>
+          <p data-i18n="hero.text">
+            Je conçois, sécurise et supervise des infrastructures modernes : <strong>segmentation VLAN</strong>,
+            <strong>firewalls</strong>, <strong>SIEM</strong> (Wazuh/Loki), Supervision <strong>Prometheus/Grafana</strong>,
+            durcissement Linux et <strong>CI/CD</strong> pour déployer des services fiables.
+          </p>
+          <div class="cta">
+            <a class="btn primary" href="#projects" data-i18n="hero.cta.projects">Voir mes projets</a>
+            <a class="btn" href="CV_BUT_Cyber.pdf" data-i18n="hero.cta.cv">Télécharger le CV (PDF)</a>
+          </div>
+        </div>
+        <div class="hero-card panel">
+  <h3 style="margin:0 0 8px 0" data-i18n="dashboard.title">Tableau de bord</h3>
+  <p style="margin:0; color:var(--muted)" data-i18n="dashboard.subtitle">Console Metasploit (fake)</p>
+  <div id="console" style="font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.5em; background:#0b1220; padding:16px; border-radius:12px; height:180px; overflow:hidden; color:#00ffa6; text-shadow:0 0 6px rgba(0,255,166,.5)">
+    <pre id="consoleOutput">msf6 > use exploit/multi/handler
+msf6 exploit(handler) > set PAYLOAD linux/x64/meterpreter/reverse_tcp
+msf6 exploit(handler) > set LHOST 192.168.50.10
+msf6 exploit(handler) > set LPORT 4444
+msf6 exploit(handler) > exploit
+[*] Started reverse TCP handler on 192.168.50.10:4444
+[*] Waiting for connection...</pre>
+  </div>
+</div>
+
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="container">
+      <div class="sec-title"><h2 data-i18n="about.title">À propos</h2><div class="bar"></div></div>
+      <div class="about">
+        <div class="bio panel reveal">
+          <p data-i18n="about.text">
+            Étudiant passionné par la <strong>défense des systèmes</strong> et la <strong>résilience réseau</strong>,
+            j'aime transformer des environnements hétérogènes en plateformes <em>observables</em> et <em>sécurisées</em>.
+            De la cartographie d'architecture à la réponse à incident, je documente, j'automatise et je mesure.
+          </p>
+        </div>
+        <div class="meta reveal panel">
+        <div class="chip" data-i18n="about.chips.0">Réseaux IPv4/IPv6</div>
+<div class="chip" data-i18n="about.chips.1">Segmentation & ACL</div>
+<div class="chip" data-i18n="about.chips.2">Pentest</div>
+<div class="chip" data-i18n="about.chips.3">Windows / Linux</div>
+<div class="chip" data-i18n="about.chips.4">OPNsense / Stormshield</div>
+<div class="chip" data-i18n="about.chips.5">Falco</div>
+<div class="chip" data-i18n="about.chips.6">Docker Compose</div>
+<div class="chip" data-i18n="about.chips.7">FTTH</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="container">
+      <div class="sec-title"><h2 data-i18n="skills.title">Compétences</h2><div class="bar"></div></div>
+      <div class="skills-grid">
+        <div class="skill panel reveal">
+          <h4 data-i18n="skills.cards.network.title">Réseaux</h4>
+          <div class="tags">
+            <span class="tag" data-i18n="skills.cards.network.tags.0">VLAN • 802.1Q</span>
+            <span class="tag" data-i18n="skills.cards.network.tags.1">OSPF • BGP</span>
+            <span class="tag" data-i18n="skills.cards.network.tags.2">QoS</span>
+            <span class="tag" data-i18n="skills.cards.network.tags.3">VPN IPSec/WireGuard</span>
+          </div>
+        </div>
+        <div class="skill panel reveal">
+          <h4 data-i18n="skills.cards.security.title">Cybersécurité</h4>
+          <div class="tags">
+            <span class="tag" data-i18n="skills.cards.security.tags.0">Durcissement Linux</span>
+            <span class="tag" data-i18n="skills.cards.security.tags.1">MITM</span>
+            <span class="tag" data-i18n="skills.cards.security.tags.2">PENTEST</span>
+            <span class="tag" data-i18n="skills.cards.security.tags.3">Metasploit</span>
+          </div>
+        </div>
+        <div class="skill panel reveal">
+          <h4 data-i18n="skills.cards.observability.title">Supervision</h4>
+          <div class="tags">
+            <span class="tag" data-i18n="skills.cards.observability.tags.0">Prometheus</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.1">Grafana</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.2">Loki • Wazuh</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.3">Alerting</span>
+          </div>
+        </div>
+        <div class="skill panel reveal">
+          <h4 data-i18n="skills.cards.devops.title">Dev & Ops</h4>
+          <div class="tags">
+            <span class="tag" data-i18n="skills.cards.devops.tags.0">Docker & Compose</span>
+            <span class="tag" data-i18n="skills.cards.devops.tags.1">Bash • Python</span>
+            <span class="tag" data-i18n="skills.cards.devops.tags.2">Git • CVS</span>
+            <span class="tag" data-i18n="skills.cards.devops.tags.3">Python • Powershell • Bash </span>
+            <span class="tag" data-i18n="skills.cards.devops.tags.4">PHP • C • SQL • HTML/CSS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="container">
+      <div class="sec-title"><h2 data-i18n="projects.title">Projets</h2><div class="bar"></div></div>
+      <div class="filter">
+        <button class="active" data-filter="*" data-i18n="projects.filters.all">Tous</button>
+        <button data-filter="security" data-i18n="projects.filters.security">Sécurité</button>
+        <button data-filter="network" data-i18n="projects.filters.network">Réseaux</button>
+        <button data-filter="observability" data-i18n="projects.filters.observability">Supervision</button>
+        <button data-filter="devops" data-i18n="projects.filters.devops">DevOps</button>
+        <button data-filter="FTTH" data-i18n="projects.filters.FTTH">FTTH</button>
+      </div>
+      <div class="projects">
+        <!-- Card 1 -->
+        <article class="card reveal" data-type="observability devops" 
+         onclick="window.open('pdfs/Grafana.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3 3h18v4H3zM5 7v14h14V7" stroke="#4DD2FF"/>
+      <path d="M8 12h2v6H8zM12 10h2v8h-2zM16 14h2v4h-2z" fill="#00FFA6"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.0.badge">Prometheus • Grafana • Loki</div>
+    <h3 data-i18n="projects.cards.0.title">Stack d'observabilité Docker</h3>
+    <p class="muted" data-i18n="projects.cards.0.text">Monitoring de services, logs centralisés, dashboards et alertes.</p>
+  </div>
+</article>
+
+        <!-- Card 2 -->
+<article class="card reveal" data-type="security" 
+         onclick="window.open('pdfs/campus.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 2l8 4v6c0 6-4 10-8 10S4 18 4 12V6l8-4z" stroke="#00FFA6"/>
+      <path d="M9 12h6v4H9z" fill="#4DD2FF"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.1.badge">OPNsense • IDS • VLAN</div>
+    <h3 data-i18n="projects.cards.1.title">Sécurisation réseau campus</h3>
+    <p class="muted" data-i18n="projects.cards.1.text">Segmentation, règles firewall et détection d'intrusion pour lab.</p>
+  </div>
+</article>
+
+<!-- Card 3 -->
+<article class="card reveal" data-type="network" 
+         onclick="window.open('pdfs/routing.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 17h16M4 7h16M12 7v10" stroke="#4DD2FF"/>
+      <circle cx="12" cy="7" r="3" stroke="#00FFA6"/>
+      <circle cx="12" cy="17" r="3" stroke="#00FFA6"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.2.badge">OSPF • DHCP • NAT</div>
+    <h3 data-i18n="projects.cards.2.title">Lab routage multi-VLAN</h3>
+    <p class="muted" data-i18n="projects.cards.2.text">Topologie 3 switches, 1 routeur, inter-VLAN et accès Internet.</p>
+  </div>
+</article>
+
+<!-- Card 4 -->
+<article class="card reveal" data-type="security observability" 
+         onclick="window.open('pdfs/wazuh.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 12h18" stroke="#4DD2FF"/>
+      <circle cx="12" cy="12" r="7" stroke="#00FFA6"/>
+      <path d="M12 9v6M9 12h6" stroke="#00FFA6"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.3.badge">Wazuh • SIEM</div>
+    <h3 data-i18n="projects.cards.3.title">Détection & réponse</h3>
+    <p class="muted" data-i18n="projects.cards.3.text">Collecte d'événements, règles de corrélation et tableaux d'incidents.</p>
+  </div>
+</article>
+
+<!-- Card 5 -->
+<article class="card reveal" data-type="devops" 
+         onclick="window.open('pdfs/pipeline.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 12h6l2-3 2 6 2-3h4" stroke="#4DD2FF"/>
+      <circle cx="6" cy="18" r="2" stroke="#00FFA6"/>
+      <circle cx="18" cy="6" r="2" stroke="#00FFA6"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.4.badge">CI/CD • Docker</div>
+    <h3 data-i18n="projects.cards.4.title">Pipeline sécurisé</h3>
+    <p class="muted" data-i18n="projects.cards.4.text">Analyse SAST, images signées et déploiement automatisé.</p>
+  </div>
+</article>
+
+<!-- Card 6 -->
+<article class="card reveal" data-type="network security" 
+         onclick="window.open('pdfs/stormshield.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 5h14v6H5z" stroke="#4DD2FF"/>
+      <path d="M9 11v8M15 11v8" stroke="#00FFA6"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.5.badge">Stormshield • ACL</div>
+    <h3 data-i18n="projects.cards.5.title">Politiques de sécurité</h3>
+    <p class="muted" data-i18n="projects.cards.5.text">Jeu de règles, NAT, objets réseau et journalisation.</p>
+  </div>
+</article>
+
+<!-- Card 7 -->
+<article class="card reveal" data-type="FTTH" 
+         onclick="window.open('pdfs/ftth.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 12h16M4 6h16M4 18h16" stroke="#00FFA6" stroke-width="1.6"/>
+      <circle cx="6" cy="6" r="2" stroke="#4DD2FF"/>
+      <circle cx="18" cy="12" r="2" stroke="#4DD2FF"/>
+      <circle cx="6" cy="18" r="2" stroke="#4DD2FF"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge" data-i18n="projects.cards.6.badge">FTTH • Fibre</div>
+    <h3 data-i18n="projects.cards.6.title">Déploiement FTTH</h3>
+    <p class="muted" data-i18n="projects.cards.6.text">
+      Mise en place d'une infrastructure FTTH : raccordement, configuration OLT/ONT, et sécurisation des accès.
+    </p>
+  </div>
+</article>
+
+<!-- Card 8 -->
+<article class="card reveal" data-type="devops" 
+         onclick="window.open('pdfs/nodejs.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="4" width="16" height="16" rx="2" stroke="#4DD2FF"/>
+      <path d="M8 12h8M12 8v8" stroke="#00FFA6"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge">Node.js • App</div>
+    <h3>Application Node.js</h3>
+    <p class="muted">Développement et déploiement d’une application Node.js avec backend sécurisé.</p>
+  </div>
+</article>
+
+<!-- Card 9 -->
+<article class="card reveal" data-type="network" 
+         onclick="window.open('pdfs/parking.pdf', '_blank')" 
+         style="cursor:pointer;">
+  <div class="thumb">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" stroke="#00FFA6"/>
+      <path d="M12 8v8M8 12h8" stroke="#4DD2FF"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="badge">Projet Parking</div>
+    <h3>Parking payant (La Réunion)</h3>
+    <p class="muted">Gestion de parkings à La Réunion avec attribution et contrôle des places payantes.</p>
+  </div>
+</article>
+
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="xp" class="container">
+      <div class="sec-title"><h2 data-i18n="xp.title">Expériences Professionelles</h2><div class="bar"></div></div>
+      <div class="panel" style="padding:18px">
+        <div class="timeline">
+          <div class="tl-item reveal">
+            <div class="dot"></div>
+            <h4 data-i18n="xp.items.0.title">2025 — Stage • Assistant SécOps</h4>
+            <p data-i18n="xp.items.0.text">Mise en place d'un tableau de bord SOC (Loki/Grafana), règles d'alerting et runbooks.</p>
+          </div>
+          <div class="tl-item reveal">
+            <div class="dot"></div>
+            <h4 data-i18n="xp.items.1.title">2024 — Projets académiques</h4>
+            <p data-i18n="xp.items.1.text">Segmentation réseau, PKI interne, durcissement serveurs Debian, bastion SSH.</p>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="container">
+      <div class="sec-title"><h2 data-i18n="contact.title">Contact</h2><div class="bar"></div></div>
+      <div class="panel" style="padding:22px">
+        <form id="contactForm" novalidate>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+            <input type="text" name="name" placeholder="Votre nom" required data-i18n-placeholder="contact.form.name">
+            <input type="email" name="email" placeholder="Email" required data-i18n-placeholder="contact.form.email">
+          </div>
+          <input type="text" name="subject" placeholder="Sujet" required data-i18n-placeholder="contact.form.subject">
+          <textarea name="message" placeholder="Votre message" required data-i18n-placeholder="contact.form.message"></textarea>
+          <div style="display:flex; gap:12px; align-items:center">
+            <button type="submit" class="btn primary" data-i18n="contact.form.send">Envoyer</button>
+            <span id="formMsg" style="color:var(--muted)"></span>
+          </div>
+        </form>
+        <div style="margin-top:16px; display:flex; align-items:center; gap:12px">
+          <a class="icon-btn" href="#" aria-label="GitHub" title="GitHub">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.85 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05 .9 1.58 2.36 1.13 2.94.86.09-.67.35-1.13.63-1.39-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.73 0 0 .84-.27 2.75 1.05a9.15 9.15 0 015 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.03 10.03 0 0022 12.26C22 6.58 17.52 2 12 2z" fill="#e6eefc"/></svg>
+          </a>
+          <a class="icon-btn" href="#" aria-label="LinkedIn" title="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9h3v9H6zM7.5 6.5A1.5 1.5 0 107.5 3a1.5 1.5 0 000 3.5zM11 9h3v1.3c.42-.8 1.5-1.5 2.8-1.5 3 0 3.7 1.9 3.7 4.4V18h-3v-3.9c0-1-.02-2.3-1.4-2.3s-1.7 1.1-1.7 2.2V18h-3V9z" fill="#e6eefc"/></svg>
+          </a>
+          <a class="icon-btn" href="mailto:email@example.com" aria-label="Email" title="Email">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16v12H4z" stroke="#e6eefc"/><path d="M4 7l8 6 8-6" stroke="#4DD2FF"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container" style="display:flex; align-items:center; justify-content:space-between">
+    <span data-i18n="footer.copy">© 2025 — Étudiant Réseaux & Cybersécurité</span>
+    <div class="socials">
+      <a class="icon-btn" href="#" title="Politique de confidentialité" data-i18n="footer.pd">PD</a>
+      <a class="icon-btn" href="#" title="Mentions légales" data-i18n="footer.ml">ML</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ======= PARTICLES BACKGROUND ======= */
+    (function(){
+      const c = document.getElementById('particles');
+      const ctx = c.getContext('2d');
+      let dpr, points;
+      const COUNT = 80;
+      function resize(){
+        dpr = Math.max(1, window.devicePixelRatio || 1);
+        c.width = innerWidth * dpr; c.height = innerHeight * dpr;
+        c.style.width = innerWidth+'px'; c.style.height= innerHeight+'px';
+        ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr);
+      }
+      function init(){
+        points = Array.from({length: COUNT}, () => ({
+          x: Math.random() * innerWidth,
+          y: Math.random() * innerHeight,
+          vx: (Math.random()-.5) * .6,
+          vy: (Math.random()-.5) * .6,
+          r: Math.random()*2 + .5
+        }));
+      }
+      function draw(){
+        ctx.clearRect(0,0,innerWidth,innerHeight);
+        const grad = ctx.createLinearGradient(0,0,innerWidth,innerHeight);
+        grad.addColorStop(0,'rgba(0,255,166,0.06)');
+        grad.addColorStop(1,'rgba(77,210,255,0.06)');
+        ctx.fillStyle = grad; ctx.fillRect(0,0,innerWidth,innerHeight);
+
+        ctx.fillStyle = 'rgba(255,255,255,.7)';
+        points.forEach(p=>{
+          p.x += p.vx; p.y += p.vy;
+          if(p.x < 0 || p.x > innerWidth) p.vx*=-1;
+          if(p.y < 0 || p.y > innerHeight) p.vy*=-1;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        });
+        for(let i=0;i<points.length;i++){
+          for(let j=i+1;j<points.length;j++){
+            const dx = points[i].x - points[j].x;
+            const dy = points[i].y - points[j].y;
+            const dist = Math.hypot(dx,dy);
+            if(dist < 140){
+              ctx.strokeStyle = `rgba(77,210,255, ${1 - dist/140})`;
+              ctx.beginPath(); ctx.moveTo(points[i].x, points[i].y);
+              ctx.lineTo(points[j].x, points[j].y); ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      addEventListener('resize', resize);
+      resize(); init(); draw();
+    })();
+
+    /* ======= SMOOTH SCROLL ======= */
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      })
+    });
+
+    /* ======= REVEAL ON SCROLL ======= */
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=> e.isIntersecting && e.target.classList.add('visible'))
+    }, {threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+    /* ======= PROJECT FILTER ======= */
+    const filterBtns = document.querySelectorAll('.filter button');
+    const cards = document.querySelectorAll('.projects .card');
+    filterBtns.forEach(btn=> btn.addEventListener('click',()=>{
+      filterBtns.forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c=>{
+        const types = c.dataset.type.split(' ');
+        c.style.display = (f==='*' || types.includes(f)) ? 'block' : 'none';
+      })
+    }));
+
+    /* ======= CONTACT FORM (mailto) ======= */
+    const form = document.getElementById('contactForm');
+const msg = document.getElementById('formMsg');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  msg.textContent = currentLang === 'fr' ? 'Envoi en cours...' : 'Sending...';
+  msg.style.color = 'var(--muted)';
+
+  try {
+    const response = await fetch("https://formspree.io/f/xqaybwgn", { // 🔹 remplace par ton endpoint Formspree
+      method: "POST",
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (response.ok) {
+      msg.textContent = currentLang === 'fr'
+        ? '✅ Message envoyé avec succès !'
+        : '✅ Message sent successfully!';
+      msg.style.color = 'var(--primary)';
+      form.reset();
+    } else {
+      msg.textContent = currentLang === 'fr'
+        ? '⚠️ Une erreur est survenue lors de l’envoi.'
+        : '⚠️ An error occurred while sending.';
+      msg.style.color = 'var(--danger)';
+    }
+  } catch (error) {
+    msg.textContent = currentLang === 'fr'
+      ? '❌ Impossible de contacter le serveur.'
+      : '❌ Server unreachable.';
+    msg.style.color = 'var(--danger)';
+  }
+});
+
+    /* ======= SEARCH (highlight + scroll) ======= */
+    const searchInput = document.getElementById('siteSearch');
+    let lastHighlights = [];
+    function clearHighlights(){
+      lastHighlights.forEach(mark=>{
+        const parent = mark.parentNode;
+        if(!parent) return;
+        parent.replaceChild(document.createTextNode(mark.textContent), mark);
+        parent.normalize();
+      });
+      lastHighlights = [];
+    }
+    function* textNodesUnder(el){
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) => {
+          if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          if(n.parentElement.closest('script,style,svg')) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      let node;
+      while(node = walker.nextNode()) yield node;
+    }
+    function highlightQuery(q){
+      clearHighlights();
+      if(!q) return null;
+      const regex = new RegExp(q.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\$&'), 'gi');
+      const root = document.getElementById('contentRoot');
+      let firstMark = null;
+      for(const tn of textNodesUnder(root)){
+        const txt = tn.nodeValue;
+        let m, lastIndex = 0, frag = document.createDocumentFragment();
+        let matched = false;
+        while((m = regex.exec(txt))){
+          matched = true;
+          const before = txt.slice(lastIndex, m.index);
+          const hit = txt.slice(m.index, m.index + m[0].length);
+          if(before) frag.appendChild(document.createTextNode(before));
+          const mark = document.createElement('mark');
+          mark.className = 'hl'; mark.textContent = hit;
+          frag.appendChild(mark);
+          lastHighlights.push(mark);
+          if(!firstMark) firstMark = mark;
+          lastIndex = m.index + m[0].length;
+        }
+        if(matched){
+          const after = txt.slice(lastIndex);
+          if(after) frag.appendChild(document.createTextNode(after));
+          tn.parentNode.replaceChild(frag, tn);
+        }
+      }
+      if(firstMark){
+        firstMark.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+      return firstMark;
+    }
+    let searchTimer;
+    searchInput.addEventListener('input', ()=>{
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(()=> highlightQuery(searchInput.value.trim()), 250);
+    });
+
+    /* ======= TRANSLATIONS (full page) ======= */
+    let currentLang = 'fr';
+    const dict = {
+      fr: {
+        brand: "KYLIAN • PORTFOLIO",
+        "search.placeholder":"Rechercher...",
+        nav:{about:"À propos",skills:"Compétences",projects:"Projets",xp:"Expériences",contact:"Contact"},
+        hero:{eyebrow:"Réseaux • Cybersécurité • FTTH • Devops", title:" Réseau & Cybersécurité",
+          text:`  Je teste la sécurité des réseaux par des <strong>pentests</strong>, 
+  je <strong>maintiens et administre</strong> des infrastructures, 
+  et je développe mes compétences en <strong>architecture réseau</strong>.  
+  Mention spéciale à mon expérience sur les <strong>réseaux FTTH</strong>, 
+  alliant haut débit et sécurisation des accès.  `,
+          cta:{projects:"Voir mes projets", cv:"Télécharger le CV (PDF)"}},
+        dashboard:{title:"", subtitle:"", kpi1:"Projets sécurité", kpi2:"Certifications", kpi3:"Stacks Docker", kpi4:"Uptime lab"},
+        about:{title:"À propos", text:` Étudiant passionné par la <strong>défense des systèmes</strong> et la <strong>résilience réseau</strong>,  
+  j’ai appris à <strong>configurer du matériel réseau</strong> (Cisco, pare-feu, routeurs),  
+  à concevoir l’<strong>adressage IP</strong> et les bases de l’<strong>architecture réseau</strong>.  
+  Côté cybersécurité, j’explore à la fois l’<strong>attaque</strong> et la <strong>défense</strong> :  
+  <em>pentests</em>, <em>CTF</em>, mise en place de <strong>pare-feu</strong> et configuration de routeurs via <strong>ACL</strong> et autres.`,
+          chips:["Réseaux IPv4/IPv6", "Segmentation & ACLs", "Pentest", "Windows / Linux", "OPNsense / Stormshield", "Falco", "Docker Compose", "FTTH"]
+},
+      skills:{title:"Compétences",
+  cards:{
+    network:{title:"Réseaux", tags:["VLAN • 802.1Q","OSPF • BGP","QoS","Cisco","FTTH"]},
+    security:{title:"Cybersécurité", tags:["Durcissement Linux","Man in the middle","Pentest","Metasploit"]},
+    observability:{title:"Observabilité", tags:["Prometheus","Grafana","Wazuh","Alerting"]},
+    devops:{title:"Dev & Ops", tags:["Docker & Compose","Bash • Python","Git • CVS","Python • Powershell • Bash","PHP • C • SQL • HTML/CSS"]}
+  }
+},
+
+
+        projects:{title:"Projets", filters:{all:"Tous",security:"Sécurité",network:"Réseaux",observability:"Supervision",devops:"DevOps"},
+          cards:[
+    {badge:"Prometheus • Grafana • Wazuh", title:"Stack d'observabilité Docker", text:"Monitoring de services, logs centralisés, dashboards et alertes."},
+    {badge:"OPNsense • Stormshield • VLAN", title:"Sécurisation réseau campus", text:"Segmentation, règles firewall et détection d'intrusion pour lab."},
+    {badge:"OSPF • DHCP • NAT", title:"Lab routage multi-VLAN", text:"Topologie 3 switches, 1 routeur, inter-VLAN et accès Internet."},
+    {badge:"Pentest • Falco", title:"Détection & réponse", text:"Collecte d'événements, règles de corrélation et tableaux d'incidents."},
+    {badge:"Docker Compose", title:"Pipeline sécurisé", text:"Analyse SAST, images signées et déploiement automatisé."},
+    {badge:"Stormshield • ACL", title:"Politiques de sécurité", text:"Jeu de règles, NAT, objets réseau et journalisation."}
+  ]},
+        xp:{title:"Expériences Professionelles",
+          items:[
+            {title:"2025 — Stage • Technicien Informatique", text:"Missions : support technique N1/N2 (Fondation Père Favron, La Réunion). Gestion des utilisateurs Active Directory, suivi et résolution de tickets via GLPI, administration de l’inventaire matériel. Configuration et déploiement de postes de travail, gestion des comptes M365. Réalisation d’un audit cybersécurité. Diagnostic et résolution de problèmes réseau Cisco."},
+            {title:"2025 — Projets académiques", text:"Projets académiques : segmentation réseau (VLAN, routage inter-VLAN), résolution de problématiques réelles (projet Parking à La Réunion, gestion de places payantes), durcissement de serveurs Debian, développement et déploiement d’une application Node.js."},
+          ]},
+        contact:{title:"Contact", form:{name:"Votre nom", email:"Email", subject:"Sujet", message:"Votre message"}, send:"Envoyer"},
+        footer:{copy:"© 2025 — Étudiant Réseaux & Cybersécurité Kylian Honorine", pd:"PD", ml:"ML"}
+      },
+      en: {
+        brand: "KYLIAN • PORTFOLIO",
+        "search.placeholder":"Search...",
+        nav:{about:"About",skills:"Skills",projects:"Projects",xp:"Experience",contact:"Contact"},
+        hero:{eyebrow:"Networking • Cybersecurity • FTTH • Devops", title:"Network & Cybersecurity",
+          text:`I test network security through <strong>pentesting</strong>, 
+  I <strong>maintain and administer</strong> infrastructures, 
+  and I’m building expertise in <strong>network architecture</strong>.  
+  Special mention to my experience with <strong>FTTH networks</strong>, 
+  combining high-speed connectivity and secure access.  `,
+          cta:{projects:"View my projects", cv:"Download CV (PDF)"}},
+        dashboard:{title:"", subtitle:"", kpi1:"Security projects", kpi2:"Certifications", kpi3:"Docker stacks", kpi4:"Lab uptime"},
+        about:{title:"About", text:`  Student passionate about <strong>system defense</strong> and <strong>network resilience</strong>,  
+  I have learned to <strong>configure network equipment</strong> (Cisco, firewalls, routers),  
+  to design <strong>IP addressing</strong> and build the basics of <strong>network architecture</strong>.  
+  In cybersecurity, I explore both <strong>attack</strong> and <strong>defense</strong>:  
+  <em>pentesting</em>, <em>CTF</em>, deploying <strong>firewalls</strong> and configuring routers with <strong>ACLs</strong> and more.`,
+          chips:["IPv4/IPv6 Networking", "Segmentation & ACLs", "Pentest", "Windows / Linux", "OPNsense / Stormshield", "Falco", "Docker Compose", "FTTH"]},
+        skills:{title:"Skills",
+         cards:{
+  network:{title:"Networking", tags:["VLAN • 802.1Q","OSPF • BGP","QoS","IPSec/WireGuard VPN","FTTH"]},
+  security:{title:"Cybersecurity", tags:["Linux Hardening","Pentest","Falco","Zero Trust"]},
+  observability:{title:"Observability", tags:["Prometheus","Grafana","Wazuh","Alerting"]},
+  devops:{title:"Dev & Ops", tags:["Docker Compose","Bash • Python","Git","Ansible (basics)"]}
+}},
+
+        projects:{title:"Projects", filters:{all:"All",security:"Security",network:"Networking",observability:"Observability",devops:"DevOps"},
+          cards:[
+            {badge:"Prometheus • Grafana • Loki", title:"Observability stack (Docker)", text:"Service monitoring, centralized logs, dashboards and alerts."},
+            {badge:"OPNsense • IDS • VLAN", title:"Campus network hardening", text:"Segmentation, firewall rules and intrusion detection for a lab."},
+            {badge:"OSPF • DHCP • NAT", title:"Multi-VLAN routing lab", text:"Topology with 3 switches, 1 router, inter-VLAN and Internet access."},
+            {badge:"Wazuh • SIEM", title:"Detection & response", text:"Event collection, correlation rules and incident dashboards."},
+            {badge:"CI/CD • Docker", title:"Secure pipeline", text:"SAST analysis, signed images and automated deployment."},
+            {badge:"Stormshield • ACL", title:"Security policies", text:"Rule sets, NAT, network objects and logging."}
+          ]},
+        xp:{title:"Experience & Certifications",
+          items:[
+            {title:"2025 — Internship • SecOps Assistant", text:"Built a SOC dashboard (Loki/Grafana), alert rules and runbooks."},
+            {title:"2024 — Academic projects", text:"Network segmentation, internal PKI, Debian hardening, SSH bastion."},
+            {title:"2024 — Certs", text:"ANSSI MOOC SecNumacadémie, TryHackMe Jr Penetration Tester, Cisco IT Essentials."}
+          ]},
+        contact:{title:"Contact", form:{name:"Your name", email:"Email", subject:"Subject", message:"Your message"}, send:"Send"},
+        footer:{copy:"© 2025 — Network & Cybersecurity Kylian Honorine", pd:"PP", ml:"Legal"}
+      }
+    };
+
+    function setText(el, html){
+      if(el) el.innerHTML = html;
+    }
+    function applyPlaceholders(lang){
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(inp=>{
+        const key = inp.getAttribute('data-i18n-placeholder');
+        const val = key.split('.').reduce((o,k)=>o && o[k], dict[lang]);
+        if(typeof val === 'string') inp.placeholder = val;
+      });
+    }
+    function setLang(lang){
+      currentLang = lang;
+      // Clean highlights on language switch (pour éviter du HTML imbriqué)
+      clearHighlights();
+
+      // Simple keys
+      document.querySelectorAll('[data-i18n]').forEach(node=>{
+        const key = node.getAttribute('data-i18n');
+        const val = key.split('.').reduce((o,k)=>o && o[k], dict[lang]);
+        if(typeof val === 'string') setText(node, val);
+      });
+
+      // Hero title glitch (data-text + content)
+      const heroTitle = document.getElementById('heroTitle');
+      if(heroTitle){
+        heroTitle.setAttribute('data-text', dict[lang].hero.title);
+        heroTitle.textContent = dict[lang].hero.title;
+      }
+
+      // About chips (array)
+      dict[lang].about.chips.forEach((txt, i)=>{
+        const el = document.querySelector(`[data-i18n="about.chips.${i}"]`);
+        setText(el, txt);
+      });
+
+      // Skills tags
+      ['network','security','observability','devops'].forEach(section=>{
+        dict[lang].skills.cards[section].tags.forEach((txt, i)=>{
+          const el = document.querySelector(`[data-i18n="skills.cards.${section}.tags.${i}"]`);
+          setText(el, txt);
+        });
+      });
+
+      // Projects filters
+      Object.entries(dict[lang].projects.filters).forEach(([k,v])=>{
+        const el = document.querySelector(`[data-i18n="projects.filters.${k}"]`);
+        setText(el, v);
+      });
+
+      // Projects cards
+      dict[lang].projects.cards.forEach((c, i)=>{
+        setText(document.querySelector(`[data-i18n="projects.cards.${i}.badge"]`), c.badge);
+        setText(document.querySelector(`[data-i18n="projects.cards.${i}.title"]`), c.title);
+        setText(document.querySelector(`[data-i18n="projects.cards.${i}.text"]`), c.text);
+      });
+
+      // XP items
+      dict[lang].xp.items.forEach((it, i)=>{
+        setText(document.querySelector(`[data-i18n="xp.items.${i}.title"]`), it.title);
+        setText(document.querySelector(`[data-i18n="xp.items.${i}.text"]`), it.text);
+      });
+
+      // Contact placeholders + button
+      applyPlaceholders(lang);
+      const sendBtn = document.querySelector('[data-i18n="contact.form.send"]');
+      if(sendBtn) sendBtn.textContent = dict[lang].contact.send;
+
+      // Footer copy + PD/ML
+      setText(document.querySelector('[data-i18n="footer.copy"]'), dict[lang].footer.copy);
+      setText(document.querySelector('[data-i18n="footer.pd"]'), dict[lang].footer.pd);
+      setText(document.querySelector('[data-i18n="footer.ml"]'), dict[lang].footer.ml);
+
+      // Search placeholder
+      const s = document.getElementById('siteSearch');
+      if(s) s.placeholder = dict[lang]["search.placeholder"];
+    }
+
+    // Init switch
+    const langSwitch = document.getElementById('langSwitch');
+    langSwitch.addEventListener('change', ()=>{
+      setLang(langSwitch.checked ? 'en' : 'fr');
+    });
+    // Initial state
+    setLang('fr');
+
+
+  </script>
+</body>
+</html>
