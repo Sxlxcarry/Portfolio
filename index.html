@@ -386,7 +386,7 @@ msf6 exploit(handler) > exploit
 
         <!-- Card 2 -->
 <article class="card reveal" data-type="security" 
-         onclick="window.open('pdfs/campus.pdf', '_blank')" 
+         onclick="window.open('pdfs/pfsense.pdf', '_blank')" 
          style="cursor:pointer;">
   <div class="thumb">
     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -403,7 +403,7 @@ msf6 exploit(handler) > exploit
 
 <!-- Card 3 -->
 <article class="card reveal" data-type="network" 
-         onclick="window.open('pdfs/routing.pdf', '_blank')" 
+         onclick="window.open('pdfs/SAE_CYBER.pdf', '_blank')" 
          style="cursor:pointer;">
   <div class="thumb">
     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -421,7 +421,7 @@ msf6 exploit(handler) > exploit
 
 <!-- Card 4 -->
 <article class="card reveal" data-type="security observability" 
-         onclick="window.open('pdfs/wazuh.pdf', '_blank')" 
+         onclick="window.open('pdfs/ctf.pdf', '_blank')" 
          style="cursor:pointer;">
   <div class="thumb">
     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -432,8 +432,8 @@ msf6 exploit(handler) > exploit
   </div>
   <div class="content">
     <div class="badge" data-i18n="projects.cards.3.badge">Wazuh • SIEM</div>
-    <h3 data-i18n="projects.cards.3.title">Détection & réponse</h3>
-    <p class="muted" data-i18n="projects.cards.3.text">Collecte d'événements, règles de corrélation et tableaux d'incidents.</p>
+    <h3 data-i18n="projects.cards.3.title">Pentest</h3>
+    <p class="muted" data-i18n="projects.cards.3.text">Scanning, Vulnérabilité et exploitation</p>
   </div>
 </article>
 
@@ -457,7 +457,7 @@ msf6 exploit(handler) > exploit
 
 <!-- Card 6 -->
 <article class="card reveal" data-type="network security" 
-         onclick="window.open('pdfs/stormshield.pdf', '_blank')" 
+         onclick="window.open('pdfs/storm.pdf', '_blank')" 
          style="cursor:pointer;">
   <div class="thumb">
     <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -493,6 +493,7 @@ msf6 exploit(handler) > exploit
   </div>
 </article>
 
+
 <!-- Card 8 -->
 <article class="card reveal" data-type="devops" 
          onclick="window.open('pdfs/nodejs.pdf', '_blank')" 
@@ -504,11 +505,14 @@ msf6 exploit(handler) > exploit
     </svg>
   </div>
   <div class="content">
-    <div class="badge">Node.js • App</div>
-    <h3>Application Node.js</h3>
-    <p class="muted">Développement et déploiement d’une application Node.js avec backend sécurisé.</p>
+    <div class="badge" data-i18n="projects.cards.7.badge">Node.js • App</div>
+    <h3 data-i18n="projects.cards.7.title">Application Node.js</h3>
+    <p class="muted" data-i18n="projects.cards.7.text">
+      Développement et déploiement d’une application Node.js avec backend sécurisé.
+    </p>
   </div>
 </article>
+
 
 <!-- Card 9 -->
 <article class="card reveal" data-type="network" 
@@ -521,11 +525,14 @@ msf6 exploit(handler) > exploit
     </svg>
   </div>
   <div class="content">
-    <div class="badge">Projet Parking</div>
-    <h3>Parking payant (La Réunion)</h3>
-    <p class="muted">Gestion de parkings à La Réunion avec attribution et contrôle des places payantes.</p>
+    <div class="badge" data-i18n="projects.cards.8.badge">Projet Parking</div>
+    <h3 data-i18n="projects.cards.8.title">Parking payant (La Réunion)</h3>
+    <p class="muted" data-i18n="projects.cards.8.text">
+      Gestion de parkings à La Réunion avec attribution et contrôle des places payantes.
+    </p>
   </div>
 </article>
+
 
       </div>
     </section>
@@ -807,8 +814,8 @@ form.addEventListener('submit', async (e) => {
     {badge:"Prometheus • Grafana • Wazuh", title:"Stack d'observabilité Docker", text:"Monitoring de services, logs centralisés, dashboards et alertes."},
     {badge:"OPNsense • Stormshield • VLAN", title:"Sécurisation réseau campus", text:"Segmentation, règles firewall et détection d'intrusion pour lab."},
     {badge:"OSPF • DHCP • NAT", title:"Lab routage multi-VLAN", text:"Topologie 3 switches, 1 routeur, inter-VLAN et accès Internet."},
-    {badge:"Pentest • Falco", title:"Détection & réponse", text:"Collecte d'événements, règles de corrélation et tableaux d'incidents."},
-    {badge:"Docker Compose", title:"Pipeline sécurisé", text:"Analyse SAST, images signées et déploiement automatisé."},
+    {badge:"Pentest", title:"Pentest", text:"Tests d’intrusion encadrés (Nmap, Burp, Metasploit) pour identifier les vulnérabilités, démontrer les risques et proposer des contre-mesures adaptées."},
+    {badge:"Docker Compose", title:"IOT : Pycom", text:"Conception d’un projet IoT avec modules Pycom, intégrant la collecte de données (GPS, altitude, humidité) et le contrôle de capteurs/LED, avec supervision et analyse via Docker Compose et Grafana."},
     {badge:"Stormshield • ACL", title:"Politiques de sécurité", text:"Jeu de règles, NAT, objets réseau et journalisation."}
   ]},
         xp:{title:"Expériences Professionelles",

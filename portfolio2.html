@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Réseau & Cybersécurité (Cyberpunk Violet/Rose)</title>
+  <meta name="description" content="Portfolio d'un étudiant en Réseaux & Cybersécurité — thème cyberpunk violet/rose : projets, compétences, expériences, contact." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================
+       THEME CYBERPUNK VIOLET/ROSE
+       ========================= */
+    :root{
+      --bg:#090013;
+      --bg-alt:#120023;
+      --panel:#180a2e;
+      --panel-2:#1c0e36;
+      --text:#f7ebff;
+      --muted:#b39ccc;
+      --primary:#ff4de1;  /* rose néon */
+      --accent:#9f53ff;   /* violet néon */
+      --accent-2:#ff7bff; /* magenta doux */
+      --line:#3a1a64;
+      --danger:#ff4d6d;
+      --ok:#3CFFB0;
+      --shadow-1:0 8px 28px rgba(0,0,0,.45);
+      --glow-1:0 0 18px rgba(255,77,225,.5), 0 0 36px rgba(255,77,225,.25);
+      --glow-2:0 0 14px rgba(159,83,255,.55), 0 0 30px rgba(159,83,255,.25);
+      --radius:18px;
+      --radius-2:22px;
+      --ring:1px solid rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 800px at 80% -20%, #2a0051 0%, transparent 60%),
+        radial-gradient(900px 600px  at 10% 90%, #1b0036 0%, transparent 55%),
+        var(--bg);
+      color:var(--text);
+      font-family:'Inter',system-ui,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;
+      overflow-x:hidden;
+      line-height:1.6;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1140px,92vw);margin:0 auto}
+
+    /* ================ LAYERS FX ================ */
+    .scanlines{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.10;
+      background:repeating-linear-gradient(to bottom, rgba(255,255,255,.05) 0 1px, transparent 2px 4px);}
+    .grain{position:fixed;inset:-60px;z-index:0;pointer-events:none;opacity:.07;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)" opacity="0.25"/></svg>');}
+
+    /* ================ HEADER ================ */
+    header{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter:blur(14px) saturate(140%);
+      background:linear-gradient(90deg, rgba(24,10,46,.85), rgba(18,0,35,.55));
+      border-bottom:1px solid rgba(255,255,255,.08);
+      box-shadow:0 8px 26px rgba(0,0,0,.55);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px;font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.7px}
+    .brand .logo{
+      width:40px;height:40px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(145deg, rgba(255,77,225,.18), rgba(159,83,255,.18));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--glow-1);
+    }
+    .brand svg{filter:drop-shadow(0 0 8px rgba(255,77,225,.6))}
+    .brand span{color:var(--primary);text-shadow:var(--glow-1)}
+    nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    nav a{color:var(--muted);font-weight:600}
+    nav a:hover{color:var(--text);text-shadow:var(--glow-2)}
+    .topbar{display:flex;align-items:center;gap:10px}
+    .search{
+      display:flex;align-items:center;gap:8px;border-radius:12px;padding:8px 12px;
+      border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);
+    }
+    .search input{
+      border:0;outline:none;background:transparent;color:var(--text);width:220px;
+      font-family:'JetBrains Mono',monospace;font-size:13px;
+    }
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      transition:transform .2s ease, box-shadow .2s ease; cursor:pointer;
+    }
+    .btn.primary{border-color:rgba(255,77,225,.45);box-shadow:var(--glow-1)}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 0 18px rgba(159,83,255,.45)}
+
+    /* ================ HERO ================ */
+    .hero{position:relative;padding:90px 0 70px;z-index:1}
+    .grid-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:46px;align-items:center}
+    .eyebrow{
+      display:inline-block;padding:7px 12px;border-radius:999px;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);
+      background:linear-gradient(90deg, rgba(255,77,225,.10), rgba(159,83,255,.10)); border:1px solid rgba(159,83,255,.35)
+    }
+    h1{font-size:46px;line-height:1.06;margin:18px 0 14px;font-family:'Orbitron',sans-serif;text-shadow:var(--glow-1)}
+    .hero p{color:var(--muted);font-size:16px}
+    .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .hero-card{position:relative;border-radius:var(--radius-2);padding:22px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow-1)}
+    #console{
+      font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.55em;background:#100024;padding:16px;border-radius:14px;height:220px;overflow:hidden;color:#ff9bf0;
+      text-shadow:0 0 6px rgba(255,77,225,.7), 0 0 14px rgba(159,83,255,.35); border:1px solid rgba(255,255,255,.08)
+    }
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+    .kpi{padding:12px 14px;border-radius:14px;background:linear-gradient(180deg, rgba(255,77,225,.06), rgba(255,255,255,.02));border:1px solid rgba(255,77,225,.30)}
+    .kpi h3{margin:0;font-size:22px}
+    .kpi span{font-size:12px;color:var(--muted)}
+
+    /* ================ SECTIONS ================ */
+    section{padding:76px 0}
+    .sec-title{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+    .sec-title h2{margin:0;font-size:28px;font-family:'Orbitron',sans-serif;color:var(--accent);text-shadow:var(--glow-2)}
+    .sec-title .bar{height:1px;flex:1;background:linear-gradient(90deg, var(--accent), transparent)}
+    .panel{border-radius:var(--radius-2);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow-1)}
+
+    /* ================ ABOUT ================ */
+    .about-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px}
+    .bio{padding:22px}
+    .bio p{color:var(--muted);margin:0}
+    .meta{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:22px}
+    .chip{padding:10px 12px;border-radius:14px;font-size:13px;color:#0d0b12;background:linear-gradient(180deg, rgba(255,77,225,.9), rgba(159,83,255,.9));box-shadow:var(--glow-1);font-weight:700;text-align:center;border:1px solid rgba(255,255,255,.15)}
+    .schematic{padding:22px;display:grid;place-items:center}
+    .neon-svg{filter:drop-shadow(0 0 10px rgba(255,77,225,.6));}
+
+    /* ================ SKILLS ================ */
+    .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .skill{padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:var(--panel);transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease}
+    .skill:hover{transform:translateY(-4px);box-shadow:0 0 18px rgba(159,83,255,.35);border-color:rgba(159,83,255,.45)}
+    .skill h4{margin:0 0 6px 0;font-family:'Orbitron',sans-serif}
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{font-family:"JetBrains Mono",monospace;font-size:12px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.06);color:var(--muted);border:1px dashed rgba(255,255,255,.14)}
+
+    /* ================ PROJECTS ================ */
+    .filter{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+    .filter button{padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer}
+    .filter button.active{border-color:rgba(255,77,225,.45);box-shadow:var(--glow-1)}
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{position:relative;overflow:hidden;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));transition:transform .25s ease, box-shadow .25s ease}
+    .card:hover{transform:translateY(-5px);box-shadow:0 0 22px rgba(159,83,255,.35)}
+    .thumb{aspect-ratio:16/9;background:linear-gradient(145deg, rgba(255,77,225,.16), rgba(159,83,255,.16));display:grid;place-items:center}
+    .thumb svg{opacity:.95}
+    .card .content{padding:16px}
+    .badge{font-size:11px;padding:6px 10px;border-radius:999px;background:rgba(255,77,225,.12);border:1px solid rgba(255,77,225,.35);color:var(--primary)}
+    .card h3{margin:.4em 0 0;font-family:'Orbitron',sans-serif}
+
+    /* ================ TIMELINE ================ */
+    .timeline{position:relative;margin-left:8px}
+    .timeline::before{content:"";position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(180deg, var(--accent), transparent)}
+    .tl-item{position:relative;padding-left:34px;margin-bottom:18px}
+    .dot{position:absolute;left:2px;top:.42em;width:16px;height:16px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:var(--glow-2)}
+    .tl-item h4{margin:.2em 0}
+    .tl-item p{margin:0;color:var(--muted)}
+
+    /* ================ CONTACT ================ */
+    form{display:grid;gap:12px}
+    input,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0d0a1a;color:var(--text)}
+    textarea{min-height:140px;resize:vertical}
+    .contact-actions{display:flex;gap:12px;align-items:center}
+
+    /* ================ FOOTER ================ */
+    footer{padding:28px 0;color:var(--muted);font-size:14px;text-align:center;border-top:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg, rgba(255,255,255,.02), transparent)}
+
+    /* ================ REVEAL ON SCROLL ================ */
+    .reveal{opacity:0;transform:translateY(18px);transition:650ms ease}
+    .reveal.visible{opacity:1;transform:none}
+
+    /* ================ RESPONSIVE ================ */
+    @media (max-width: 980px){
+      .grid-hero{grid-template-columns:1fr}
+      .about-grid{grid-template-columns:1fr}
+      .skills-grid{grid-template-columns:repeat(2,1fr)}
+      .projects{grid-template-columns:1fr 1fr}
+      .search input{width:160px}
+    }
+    @media (max-width: 640px){
+      h1{font-size:36px}
+      .skills-grid{grid-template-columns:1fr}
+      .projects{grid-template-columns:1fr}
+      .search input{width:130px}
+    }
+  </style>
+</head>
+<body>
+  <!-- LAYERS -->
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- Shield/lock néon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 3l7 3v6c0 5-3.5 9-7 9s-7-4-7-9V6l7-3z" stroke="#FF4DE1" stroke-width="1.6"/>
+            <path d="M9.5 12.5v-1.5a2.5 2.5 0 115 0v1.5" stroke="#A653FF" stroke-width="1.6"/>
+            <rect x="8" y="12" width="8" height="6" rx="2" stroke="#FF4DE1" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <span id="brand">KYLIAN • PORTFOLIO</span>
+      </div>
+
+      <div class="topbar">
+        <label class="search" title="Recherche dans la page">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#b39ccc"/><path d="M20 20l-3.2-3.2" stroke="#b39ccc"/></svg>
+          <input id="q" type="text" placeholder="Rechercher...">
+        </label>
+        <button id="lang" class="btn" title="FR / EN">FR/EN</button>
+        <a class="btn primary" href="#contact">Contact</a>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#about" id="navAbout">À propos</a></li>
+          <li><a href="#skills" id="navSkills">Compétences</a></li>
+          <li><a href="#projects" id="navProjects">Projets</a></li>
+          <li><a href="#xp" id="navXp">Expériences</a></li>
+          <li><a href="#contact" id="navContact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main id="root">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container grid-hero">
+        <div>
+          <span class="eyebrow" id="eyebrow">Réseaux • Cybersécurité • FTTH • DevOps</span>
+          <h1 id="h1">Étudiant Réseau & Cybersécurité</h1>
+          <p id="hp">
+            Je conçois, sécurise et supervise des infrastructures modernes : <strong>segmentation VLAN</strong>,
+            <strong>pare-feu</strong>, <strong>SIEM</strong> (Wazuh/Loki), supervision <strong>Prometheus/Grafana</strong>,
+            durcissement Linux et <strong>CI/CD</strong> pour déployer des services fiables.
+          </p>
+          <div class="cta">
+            <a class="btn primary" href="#projects" id="ctaProjects">Voir mes projets</a>
+            <a class="btn" href="CV_BUT_Cyber.pdf" id="ctaCv">Télécharger le CV (PDF)</a>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi">
+              <h3>+12</h3><span>Stacks Docker observabilité</span>
+            </div>
+            <div class="kpi">
+              <h3>+9</h3><span>Labs sécurité & VLAN</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card panel">
+          <h3 style="margin:0 0 8px 0" id="consoleTitle">Console (démo)</h3>
+          <div id="console" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="sec-title"><h2 id="aboutTitle">À propos</h2><div class="bar"></div></div>
+        <div class="about-grid">
+          <div class="bio panel reveal">
+            <p id="aboutText">
+              Étudiant passionné par la <strong>défense des systèmes</strong> et la <strong>résilience réseau</strong>,
+              j'aime transformer des environnements hétérogènes en plateformes <em>observables</em> et <em>sécurisées</em>.
+              De la cartographie d'architecture à la réponse à incident, je documente, j'automatise et je mesure.
+            </p>
+          </div>
+          <div class="panel meta reveal">
+            <div class="chip">Réseaux IPv4/IPv6</div>
+            <div class="chip">Segmentation & ACL</div>
+            <div class="chip">Pentest</div>
+            <div class="chip">Windows / Linux</div>
+            <div class="chip">OPNsense / Stormshield</div>
+            <div class="chip">Falco</div>
+            <div class="chip">Docker Compose</div>
+            <div class="chip">FTTH</div>
+          </div>
+          <div class="panel schematic reveal" style="grid-column:1/-1">
+            <!-- Schéma SVG "réseau" néon -->
+            <svg class="neon-svg" width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schéma réseau">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#FF4DE1"/><stop offset="100%" stop-color="#9F53FF"/>
+                </linearGradient>
+                <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <!-- Nodes -->
+              <g filter="url(#glow)" stroke="url(#g1)" stroke-width="2" fill="none">
+                <rect x="30"  y="60" width="120" height="80" rx="12"/>
+                <rect x="210" y="40" width="120" height="50" rx="10"/>
+                <rect x="210" y="110" width="120" height="50" rx="10"/>
+                <rect x="390" y="60" width="120" height="80" rx="12"/>
+                <rect x="570" y="60" width="120" height="80" rx="12"/>
+              </g>
+              <!-- Links -->
+              <g stroke="url(#g1)" stroke-width="2" filter="url(#glow)">
+                <path d="M150 100 L210 65"/>
+                <path d="M150 100 L210 135"/>
+                <path d="M330 65 L390 100"/>
+                <path d="M330 135 L390 100"/>
+                <path d="M510 100 L570 100"/>
+              </g>
+              <!-- Dots -->
+              <g fill="#FF4DE1">
+                <circle cx="150" cy="100" r="4"/>
+                <circle cx="210" cy="65"  r="4"/>
+                <circle cx="210" cy="135" r="4"/>
+                <circle cx="390" cy="100" r="4"/>
+                <circle cx="570" cy="100" r="4"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="container">
+        <div class="sec-title"><h2 id="skillsTitle">Compétences</h2><div class="bar"></div></div>
+        <div class="skills-grid">
+          <!-- Réseaux -->
+          <div class="skill panel reveal">
+            <h4>Réseaux</h4>
+            <div class="tags">
+              <span class="tag">VLAN • 802.1Q</span>
+              <span class="tag">OSPF • BGP</span>
+              <span class="tag">QoS</span>
+              <span class="tag">VPN IPSec/WireGuard</span>
+            </div>
+          </div>
+          <!-- Cybersécurité -->
+          <div class="skill panel reveal">
+            <h4>Cybersécurité</h4>
+            <div class="tags">
+              <span class="tag">Durcissement Linux</span>
+              <span class="tag">MITM</span>
+              <span class="tag">Pentest</span>
+              <span class="tag">Metasploit</span>
+            </div>
+          </div>
+          <!-- Observabilité -->
+          <div class="skill panel reveal">
+            <h4>Supervision</h4>
+            <div class="tags">
+              <span class="tag">Prometheus</span>
+              <span class="tag">Grafana</span>
+              <span class="tag">Loki • Wazuh</span>
+              <span class="tag">Alerting</span>
+            </div>
+          </div>
+          <!-- Dev & Ops -->
+          <div class="skill panel reveal">
+            <h4>Dev & Ops</h4>
+            <div class="tags">
+              <span class="tag">Docker & Compose</span>
+              <span class="tag">Bash • Python</span>
+              <span class="tag">Git • CI/CD</span>
+              <span class="tag">PHP • C • SQL • HTML/CSS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="container">
+        <div class="sec-title"><h2 id="projectsTitle">Projets</h2><div class="bar"></div></div>
+        <div class="filter">
+          <button class="active" data-filter="*">Tous</button>
+          <button data-filter="security">Sécurité</button>
+          <button data-filter="network">Réseaux</button>
+          <button data-filter="observability">Supervision</button>
+          <button data-filter="devops">DevOps</button>
+          <button data-filter="ftth">FTTH</button>
+        </div>
+
+        <div class="projects">
+          <!-- 1 -->
+          <article class="card reveal" data-type="observability devops" onclick="window.open('pdfs/Grafana.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 3h18v4H3zM5 7v14h14V7" stroke="#9F53FF"/>
+                <path d="M8 12h2v6H8zM12 10h2v8h-2zM16 14h2v4h-2z" fill="#FF4DE1"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">Prometheus • Grafana • Loki</div>
+              <h3>Stack d'observabilité Docker</h3>
+              <p class="muted">Monitoring de services, logs centralisés, dashboards et alertes.</p>
+            </div>
+          </article>
+          <!-- 2 -->
+          <article class="card reveal" data-type="security" onclick="window.open('pdfs/campus.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 2l8 4v6c0 6-4 10-8 10S4 18 4 12V6l8-4z" stroke="#FF4DE1"/>
+                <path d="M9 12h6v4H9z" fill="#9F53FF"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">OPNsense • IDS • VLAN</div>
+              <h3>Sécurisation réseau campus</h3>
+              <p class="muted">Segmentation, règles firewall et détection d'intrusion pour lab.</p>
+            </div>
+          </article>
+          <!-- 3 -->
+          <article class="card reveal" data-type="network" onclick="window.open('pdfs/routing.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                <path d="M4 17h16M4 7h16M12 7v10" stroke="#9F53FF"/>
+                <circle cx="12" cy="7" r="3" stroke="#FF4DE1"/>
+                <circle cx="12" cy="17" r="3" stroke="#FF4DE1"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">OSPF • DHCP • NAT</div>
+              <h3>Lab routage multi-VLAN</h3>
+              <p class="muted">Topologie 3 switches, 1 routeur, inter-VLAN et accès Internet.</p>
+            </div>
+          </article>
+          <!-- 4 -->
+          <article class="card reveal" data-type="security observability" onclick="window.open('pdfs/wazuh.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                <path d="M3 12h18" stroke="#9F53FF"/>
+                <circle cx="12" cy="12" r="7" stroke="#FF4DE1"/>
+                <path d="M12 9v6M9 12h6" stroke="#FF4DE1"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">Wazuh • SIEM</div>
+              <h3>Détection & réponse</h3>
+              <p class="muted">Collecte d'événements, corrélation et tableaux d'incidents.</p>
+            </div>
+          </article>
+          <!-- 5 -->
+          <article class="card reveal" data-type="devops" onclick="window.open('pdfs/pipeline.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                <path d="M4 12h6l2-3 2 6 2-3h4" stroke="#9F53FF"/>
+                <circle cx="6" cy="18" r="2" stroke="#FF4DE1"/>
+                <circle cx="18" cy="6" r="2" stroke="#FF4DE1"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">CI/CD • Docker</div>
+              <h3>Pipeline sécurisé</h3>
+              <p class="muted">Analyse SAST, images signées et déploiement automatisé.</p>
+            </div>
+          </article>
+          <!-- 6 -->
+          <article class="card reveal" data-type="ftth" onclick="window.open('pdfs/ftth.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                <path d="M4 12h16M4 6h16M4 18h16" stroke="#FF4DE1" stroke-width="1.6"/>
+                <circle cx="6" cy="6" r="2" stroke="#9F53FF"/>
+                <circle cx="18" cy="12" r="2" stroke="#9F53FF"/>
+                <circle cx="6" cy="18" r="2" stroke="#9F53FF"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">FTTH • Fibre</div>
+              <h3>Déploiement FTTH</h3>
+              <p class="muted">Mise en place d'infrastructure FTTH : OLT/ONT, sécurisation des accès.</p>
+            </div>
+          </article>
+          <!-- 7 -->
+          <article class="card reveal" data-type="devops" onclick="window.open('pdfs/nodejs.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="4" width="16" height="16" rx="2" stroke="#9F53FF"/>
+                <path d="M8 12h8M12 8v8" stroke="#FF4DE1"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">Node.js • App</div>
+              <h3>Application Node.js</h3>
+              <p class="muted">Développement et déploiement d’une application Node.js avec backend sécurisé.</p>
+            </div>
+          </article>
+          <!-- 8 -->
+          <article class="card reveal" data-type="network" onclick="window.open('pdfs/parking.pdf','_blank')" style="cursor:pointer;">
+            <div class="thumb">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="9" stroke="#FF4DE1"/>
+                <path d="M12 8v8M8 12h8" stroke="#9F53FF"/>
+              </svg>
+            </div>
+            <div class="content">
+              <div class="badge">Projet Parking</div>
+              <h3>Parking payant (La Réunion)</h3>
+              <p class="muted">Gestion de parkings à La Réunion avec attribution et contrôle des places payantes.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="xp">
+      <div class="container">
+        <div class="sec-title"><h2 id="xpTitle">Expériences Professionnelles</h2><div class="bar"></div></div>
+        <div class="panel" style="padding:18px">
+          <div class="timeline">
+            <div class="tl-item reveal">
+              <div class="dot"></div>
+              <h4>2025 — Stage • Technicien Informatique</h4>
+              <p>Missions : support technique N1/N2 (Fondation Père Favron, La Réunion). Gestion des utilisateurs Active Directory, tickets GLPI, M365, audit cybersécurité, réseau Cisco.</p>
+            </div>
+            <div class="tl-item reveal">
+              <div class="dot"></div>
+              <h4>2025 — Projets académiques</h4>
+              <p>Segmentation réseau (VLAN, routage inter-VLAN), projet Parking (La Réunion), durcissement Debian, app Node.js.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="sec-title"><h2 id="contactTitle">Contact</h2><div class="bar"></div></div>
+        <div class="panel" style="padding:22px">
+          <form id="contactForm" novalidate>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <input type="text" name="name" placeholder="Votre nom" required>
+              <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <input type="text" name="subject" placeholder="Sujet" required>
+            <textarea name="message" placeholder="Votre message" required></textarea>
+            <div class="contact-actions">
+              <button type="submit" class="btn primary" id="sendBtn">Envoyer</button>
+              <span id="formMsg" style="color:var(--muted)"></span>
+            </div>
+          </form>
+          <div style="margin-top:16px; display:flex; align-items:center; gap:12px">
+            <a class="btn" href="#" aria-label="GitHub">GitHub</a>
+            <a class="btn" href="#" aria-label="LinkedIn">LinkedIn</a>
+            <a class="btn" href="mailto:email@example.com" aria-label="Email">Email</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>© 2025 — Réseaux & Cybersécurité — Thème cyberpunk violet/rose</footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    /* =========================
+       Canvas arrière-plan (particules reliées)
+       ========================= */
+    (function(){
+      const c = document.getElementById('bg');
+      const ctx = c.getContext('2d');
+      let DPR = Math.max(1, window.devicePixelRatio || 1);
+      let W, H, P=[], N=120;
+
+      function resize(){
+        W = c.width = innerWidth * DPR;
+        H = c.height = innerHeight * DPR;
+        c.style.width = innerWidth+'px';
+        c.style.height = innerHeight+'px';
+        ctx.setTransform(1,0,0,1,0,0); ctx.scale(DPR, DPR);
+      }
+      function init(){
+        P = Array.from({length:N}, () => ({
+          x: Math.random()*innerWidth,
+          y: Math.random()*innerHeight,
+          vx:(Math.random()-.5)*.8,
+          vy:(Math.random()-.5)*.8,
+          r: Math.random()*2 + .8
+        }));
+      }
+      function draw(){
+        ctx.clearRect(0,0,innerWidth,innerHeight);
+        // voile
+        const g = ctx.createLinearGradient(0,0,innerWidth,innerHeight);
+        g.addColorStop(0,'rgba(255,77,225,.05)');
+        g.addColorStop(1,'rgba(159,83,255,.05)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,innerWidth,innerHeight);
+
+        // points
+        P.forEach(p=>{
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.x<0||p.x>innerWidth)p.vx*=-1;
+          if(p.y<0||p.y>innerHeight)p.vy*=-1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fillStyle = 'rgba(255,77,225,.85)';
+          ctx.shadowColor = '#ff4de1'; ctx.shadowBlur = 14;
+          ctx.fill();
+        });
+
+        // liens
+        for(let i=0;i<P.length;i++){
+          for(let j=i+1;j<P.length;j++){
+            const dx=P[i].x-P[j].x, dy=P[i].y-P[j].y, d=Math.hypot(dx,dy);
+            if(d<140){
+              ctx.strokeStyle = 'rgba(159,83,255,'+(1-d/140)+')';
+              ctx.beginPath(); ctx.moveTo(P[i].x,P[i].y); ctx.lineTo(P[j].x,P[j].y); ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      addEventListener('resize', resize);
+      resize(); init(); draw();
+    })();
+
+    /* =========================
+       Smooth scroll
+       ========================= */
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href');
+        if(id.length>1){
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      });
+    });
+
+    /* =========================
+       Reveal on scroll
+       ========================= */
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} });
+    }, {threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+    /* =========================
+       Search (highlight + scroll)
+       ========================= */
+    (function(){
+      const input = document.getElementById('q');
+      let marks=[];
+      function clear(){
+        marks.forEach(m=>{
+          const p=m.parentNode; if(!p) return;
+          p.replaceChild(document.createTextNode(m.textContent), m); p.normalize();
+        });
+        marks=[];
+      }
+      function* texts(root){
+        const w=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+          acceptNode(n){
+            if(!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+            if(n.parentElement.closest('script,style,svg,header,footer')) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        });
+        let node; while(node=w.nextNode()) yield node;
+      }
+      function hilite(q){
+        clear(); if(!q) return;
+        const re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
+        const root=document.getElementById('root');
+        let first=null;
+        for(const t of texts(root)){
+          const str=t.nodeValue; let m, idx=0; let frag=document.createDocumentFragment(); let touched=false;
+          while((m=re.exec(str))){
+            touched=true;
+            const before=str.slice(idx, m.index); const hit=str.slice(m.index, m.index+m[0].length);
+            if(before) frag.appendChild(document.createTextNode(before));
+            const mark=document.createElement('mark'); mark.textContent=hit;
+            mark.style.background='rgba(255,241,118,.28)'; mark.style.borderRadius='.25em'; mark.style.padding='0 .2em';
+            mark.style.boxShadow='0 0 0 6px rgba(255,241,118,.12), 0 0 16px rgba(255,241,118,.35)';
+            frag.appendChild(mark); marks.push(mark);
+            idx = m.index + m[0].length;
+            if(!first) first=mark;
+          }
+          if(touched){
+            const after=str.slice(idx); if(after) frag.appendChild(document.createTextNode(after));
+            t.parentNode.replaceChild(frag, t);
+          }
+        }
+        if(first) first.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+      let timer;
+      input.addEventListener('input', ()=>{
+        clearTimeout(timer); timer=setTimeout(()=>hilite(input.value.trim()), 220);
+      });
+    })();
+
+    /* =========================
+       Project filters (client-side)
+       ========================= */
+    (function(){
+      const btns=[...document.querySelectorAll('.filter button')];
+      const cards=[...document.querySelectorAll('.projects .card')];
+      btns.forEach(b=>b.addEventListener('click',()=>{
+        btns.forEach(x=>x.classList.remove('active')); b.classList.add('active');
+        const f=b.dataset.filter;
+        cards.forEach(c=>{
+          if(f==='*'){ c.style.display='block'; return; }
+          const types = (c.getAttribute('data-type')||'').split(/\s+/);
+          c.style.display = types.includes(f) ? 'block' : 'none';
+        });
+      }));
+    })();
+
+    /* =========================
+       Console typing demo
+       ========================= */
+    (function(){
+      const el=document.getElementById('console'); if(!el) return;
+      const lines=[
+        'msf6 > use exploit/multi/handler',
+        'msf6 exploit(handler) > set PAYLOAD linux/x64/meterpreter/reverse_tcp',
+        'msf6 exploit(handler) > set LHOST 192.168.50.10',
+        'msf6 exploit(handler) > set LPORT 4444',
+        'msf6 exploit(handler) > exploit',
+        '[*] Started reverse TCP handler on 192.168.50.10:4444',
+        '[*] Waiting for connection...',
+        '',
+        'root@debian:~# systemctl status loki',
+        '● loki.service - Loki Log Aggregation',
+        '   Loaded: loaded (/etc/systemd/system/loki.service; enabled)',
+        '   Active: active (running) since Tue 2025-10-01 09:25:03',
+        'root@debian:~# curl -s localhost:9090/-/ready',
+        'Prometheus is Ready.',
+      ];
+      let i=0, j=0;
+      function tick(){
+        if(i>=lines.length){ return; }
+        const line=lines[i];
+        if(j<=line.length){
+          el.textContent = (i?el.textContent+'\\n':'') + line.slice(0,j);
+          j++; setTimeout(tick, 12+Math.random()*28);
+        }else{ i++; j=0; setTimeout(tick, 320); }
+      }
+      tick();
+    })();
+
+    /* =========================
+       Mini i18n (FR/EN toggle)
+       ========================= */
+    (function(){
+      const t = {
+        fr:{
+          eyebrow:"Réseaux • Cybersécurité • FTTH • DevOps",
+          h1:"Étudiant Réseau & Cybersécurité",
+          hp:`Je conçois, sécurise et supervise des infrastructures modernes : <strong>segmentation VLAN</strong>, <strong>pare-feu</strong>, <strong>SIEM</strong> (Wazuh/Loki), supervision <strong>Prometheus/Grafana</strong>, durcissement Linux et <strong>CI/CD</strong>.`,
+          aboutTitle:"À propos",
+          projectsTitle:"Projets",
+          skillsTitle:"Compétences",
+          xpTitle:"Expériences Professionnelles",
+          contactTitle:"Contact",
+          ctaProjects:"Voir mes projets",
+          ctaCv:"Télécharger le CV (PDF)",
+          consoleTitle:"Console (démo)"
+        },
+        en:{
+          eyebrow:"Networking • Cybersecurity • FTTH • DevOps",
+          h1:"Network & Cybersecurity Student",
+          hp:`I design, secure and monitor modern infrastructures: <strong>VLAN segmentation</strong>, <strong>firewalls</strong>, <strong>SIEM</strong> (Wazuh/Loki), <strong>Prometheus/Grafana</strong> monitoring, Linux hardening and <strong>CI/CD</strong>.`,
+          aboutTitle:"About",
+          projectsTitle:"Projects",
+          skillsTitle:"Skills",
+          xpTitle:"Experience",
+          contactTitle:"Contact",
+          ctaProjects:"View my projects",
+          ctaCv:"Download CV (PDF)",
+          consoleTitle:"Console (demo)"
+        }
+      };
+      let lang='fr';
+      const map = {
+        eyebrow:document.getElementById('eyebrow'),
+        h1:document.getElementById('h1'),
+        hp:document.getElementById('hp'),
+        aboutTitle:document.getElementById('aboutTitle'),
+        projectsTitle:document.getElementById('projectsTitle'),
+        skillsTitle:document.getElementById('skillsTitle'),
+        xpTitle:document.getElementById('xpTitle'),
+        contactTitle:document.getElementById('contactTitle'),
+        ctaProjects:document.getElementById('ctaProjects'),
+        ctaCv:document.getElementById('ctaCv'),
+        consoleTitle:document.getElementById('consoleTitle'),
+      };
+      function setLang(l){
+        const d=t[l]; if(!d) return;
+        map.eyebrow.textContent=d.eyebrow;
+        map.h1.textContent=d.h1;
+        map.hp.innerHTML=d.hp;
+        map.aboutTitle.textContent=d.aboutTitle;
+        map.projectsTitle.textContent=d.projectsTitle;
+        map.skillsTitle.textContent=d.skillsTitle;
+        map.xpTitle.textContent=d.xpTitle;
+        map.contactTitle.textContent=d.contactTitle;
+        map.ctaProjects.textContent=d.ctaProjects;
+        map.ctaCv.textContent=d.ctaCv;
+        map.consoleTitle.textContent=d.consoleTitle;
+      }
+      document.getElementById('lang').addEventListener('click',()=>{
+        lang = (lang==='fr'?'en':'fr'); setLang(lang);
+      });
+      setLang('fr');
+    })();
+
+    /* =========================
+       Contact (fake send)
+       ========================= */
+    (function(){
+      const form=document.getElementById('contactForm');
+      const msg = document.getElementById('formMsg');
+      if(!form) return;
+      form.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        msg.textContent='Envoi...';
+        msg.style.color='var(--muted)';
+        setTimeout(()=>{
+          msg.textContent='✅ Message envoyé (démo).';
+          msg.style.color='var(--ok)';
+          form.reset();
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>
+
