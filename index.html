@@ -697,8 +697,8 @@ form.addEventListener('submit', async (e) => {
 
     if (response.ok) {
       msg.textContent = currentLang === 'fr'
-        ? '✅ Message envoyé avec succès !'
-        : '✅ Message sent successfully!';
+        ? 'Message envoyé avec succès !'
+        : 'Message sent successfully!';
       msg.style.color = 'var(--primary)';
       form.reset();
     } else {
