@@ -134,6 +134,69 @@
     .nav-links a:hover{
       color:var(--text);
     }
+
+    /* Lang switch */
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .lang-label{
+      font-weight:500;
+      letter-spacing:.06em;
+    }
+    .switch{
+      position:relative;
+      width:56px;
+      height:26px;
+      display:inline-block;
+    }
+    .switch input{
+      opacity:0;
+      width:0;
+      height:0;
+    }
+    .slider{
+      position:absolute;
+      inset:0;
+      background:rgba(255,255,255,.08);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      transition:.25s;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 6px;
+      gap:4px;
+      font-size:11px;
+    }
+    .slider::before{
+      content:"";
+      position:absolute;
+      width:22px;
+      height:22px;
+      left:2px;
+      top:1px;
+      border-radius:50%;
+      background:linear-gradient(145deg,#4DD2FF,#1b86a9);
+      box-shadow:0 0 10px rgba(77,210,255,.8);
+      transition:.25s;
+    }
+    .switch-icon{
+      width:14px;
+      height:14px;
+      opacity:.9;
+    }
+    .switch input:checked + .slider{
+      background:rgba(77,210,255,.18);
+      border-color:rgba(77,210,255,.6);
+    }
+    .switch input:checked + .slider::before{
+      transform:translateX(26px);
+    }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -602,61 +665,62 @@
       opacity:1;
       transform:none;
     }
-/* Bouton qui remonte en haut de la page (en bas à droite) */
-.back-top{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  border:1px solid rgba(77,210,255,.6);
-  background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
-             radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
-             #050814;
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  box-shadow:0 0 16px rgba(77,210,255,.7);
-  z-index:30;
-  opacity:0;
-  transform:translateY(10px) scale(.8);
-  pointer-events:none;
-  transition:opacity .25s ease, transform .25s ease, box-shadow .2s ease;
-}
-.back-top svg{
-  filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
-}
-.back-top:hover{
-  box-shadow:0 0 24px rgba(77,210,255,.9);
-}
 
-    /* ===== BACK TO TOP BUTTON ===== */
+    /* Bouton qui remonte en haut de la page (en bas à droite) */
+    .back-top{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:1px solid rgba(77,210,255,.6);
+      background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
+                 radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
+                 #050814;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 0 16px rgba(77,210,255,.7);
+      z-index:30;
+      opacity:0;
+      transform:translateY(10px) scale(.8);
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+    }
+    .back-top svg{
+      filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
+    }
+    .back-top:hover{
+      box-shadow:0 0 24px rgba(77,210,255,.9);
+    }
+
+    /* Bouton retour page précédente */
     .back-prev{
-  position:fixed;
-  left:22px;
-  bottom:22px;
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  border:1px solid rgba(77,210,255,.6);
-  background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
-             radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
-             #050814;
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  box-shadow:0 0 16px rgba(77,210,255,.7);
-  z-index:30;
-  transition:box-shadow .2s ease, transform .2s ease;
-}
-.back-prev svg{
-  filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
-}
-.back-prev:hover{
-  box-shadow:0 0 24px rgba(77,210,255,.9);
-  transform:translateY(-1px);
-}
+      position:fixed;
+      left:22px;
+      bottom:22px;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:1px solid rgba(77,210,255,.6);
+      background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
+                 radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
+                 #050814;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 0 16px rgba(77,210,255,.7);
+      z-index:30;
+      transition:box-shadow .2s ease, transform .2s ease;
+    }
+    .back-prev svg{
+      filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
+    }
+    .back-prev:hover{
+      box-shadow:0 0 24px rgba(77,210,255,.9);
+      transform:translateY(-1px);
+    }
 
     .back-top.show{
       opacity:1;
@@ -678,6 +742,7 @@
       h1{font-size:32px}
       .nav{flex-wrap:wrap;}
       .nav-links{display:none;}
+      .lang-switch{margin-left:auto;}
     }
     @media (max-width: 640px){
       .id-infos{
@@ -706,7 +771,24 @@
             <path d="M8 12h8v4H8z" stroke="#4DD2FF" stroke-width="1.4"/>
           </svg>
         </div>
-        <span>KYLIAN HONORINE • CV</span>
+        <span data-i18n="brand">KYLIAN HONORINE • CV</span>
+      </div>
+
+      <!-- Switch langue FR / EN -->
+      <div class="lang-switch">
+        <span class="lang-label">FR</span>
+        <label class="switch">
+          <input type="checkbox" id="langToggle">
+          <span class="slider">
+            <!-- petite icône globe -->
+            <svg class="switch-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="#4DD2FF" stroke-width="1.3" fill="none"/>
+              <path d="M12 3C9.5 6 8.5 9 8.5 12C8.5 15 9.5 18 12 21C14.5 18 15.5 15 15.5 12C15.5 9 14.5 6 12 3Z" stroke="#4DD2FF" stroke-width="1.1" fill="none"/>
+              <path d="M5 9.5H19M5 14.5H19" stroke="#4DD2FF" stroke-width="1.1"/>
+            </svg>
+          </span>
+        </label>
+        <span class="lang-label">EN</span>
       </div>
     </div>
   </header>
@@ -719,14 +801,14 @@
         <div class="reveal">
           <div class="eyebrow">
             <span class="eyebrow-dot"></span>
-            <span>Réseaux • Cybersécurité • Systèmes</span>
+            <span data-i18n="eyebrowTag">Réseaux • Cybersécurité • Systèmes</span>
           </div>
           <h1>
-            <span class="glitch" data-text="Technicien Informatique">
+            <span class="glitch" data-text="Technicien Informatique" data-i18n="heroTitle">
               Technicien Informatique
             </span>
           </h1>
-          <p class="hero-sub">
+          <p class="hero-sub" data-i18n="heroIntro">
             Passionné par la <strong>sécurité informatique</strong> et les
             <strong>architectures réseau</strong>, je vise des postes de
             <strong>pentester</strong> ou
@@ -736,16 +818,16 @@
           </p>
 
           <div class="hero-meta">
-            <span class="pill primary">Cybersécurité • Pentest • CTF</span>
-            <span class="pill">Réseaux : Cisco • Stormshield • OPNsense • pfSense</span>
-            <span class="pill">Systèmes : Linux • Windows • Services réseau</span>
+            <span class="pill primary" data-i18n="pill1">Cybersécurité • Pentest • CTF</span>
+            <span class="pill" data-i18n="pill2">Réseaux : Cisco • Stormshield • OPNsense • pfSense</span>
+            <span class="pill" data-i18n="pill3">Systèmes : Linux • Windows • Services réseau</span>
           </div>
 
           <div class="hero-cta">
-            <button class="btn primary" onclick="document.getElementById('xp').scrollIntoView({behavior:'smooth'})">
+            <button class="btn primary" onclick="document.getElementById('xp').scrollIntoView({behavior:'smooth'})" data-i18n="btnExp">
               Voir mes expériences
             </button>
-            <button class="btn" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'})">
+            <button class="btn" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'})" data-i18n="btnSkills">
               Stack & Compétences
             </button>
           </div>
@@ -757,38 +839,38 @@
             <div class="avatar">KH</div>
             <div class="id-main">
               <h2>Kylian Honorine</h2>
-              <span class="role">Réseaux & Cybersécurité • BUT RT</span>
+              <span class="role" data-i18n="idRole">Réseaux & Cybersécurité • BUT RT</span>
             </div>
             <div class="id-infos">
               <div>
-                <div class="tiny-label">Localisation</div>
-                <strong>Saint-Paul (97435), Réunion</strong>
+                <div class="tiny-label" data-i18n="labelLocation">Localisation</div>
+                <strong data-i18n="valueLocation">Saint-Paul (97435), Réunion</strong>
               </div>
               <div>
-                <div class="tiny-label">Âge</div>
-                <strong>20 ans</strong>
+                <div class="tiny-label" data-i18n="labelAge">Âge</div>
+                <strong data-i18n="valueAge">20 ans</strong>
               </div>
               <div>
-                <div class="tiny-label">Email</div>
+                <div class="tiny-label" data-i18n="labelEmail">Email</div>
                 <strong id="mailCopy" style="cursor:pointer;">kylian.honorine404@gmail.com</strong>
               </div>
               <div>
-                <div class="tiny-label">Téléphone</div>
+                <div class="tiny-label" data-i18n="labelPhone">Téléphone</div>
                 <strong>06 92 78 91 86</strong>
               </div>
               <div>
-                <div class="tiny-label">Mode</div>
-                <span>Présentiel ou télétravail</span>
+                <div class="tiny-label" data-i18n="labelMode">Mode</div>
+                <span data-i18n="valueMode">Présentiel ou télétravail</span>
               </div>
               <div>
-                <div class="tiny-label">Nationalité</div>
-                <span>Français</span>
+                <div class="tiny-label" data-i18n="labelNationality">Nationalité</div>
+                <span data-i18n="valueNationality">Français</span>
               </div>
             </div>
           </div>
 
           <div style="margin-top:16px;">
-            <div class="tiny-label">Console CTF / Pentest (fake log)</div>
+            <div class="tiny-label" data-i18n="consoleLabel">Console CTF / Pentest (fake log)</div>
             <div id="consoleBox" style="
               font-family:'JetBrains Mono',monospace;
               font-size:13px;
@@ -823,31 +905,31 @@ msf6 exploit(ms08_067_netapi) > run
           <!-- Compétences clés -->
           <div id="skills" class="reveal subcard">
             <div class="sec-title">
-              <h2>Compétences techniques</h2><div class="sec-bar"></div>
+              <h2 data-i18n="skillsTitle">Compétences techniques</h2><div class="sec-bar"></div>
             </div>
 
-            <h3>Cybersécurité</h3>
+            <h3 data-i18n="skillsCyberTitle">Cybersécurité</h3>
             <ul class="bullets">
-              <li>Capture the Flag, mise en situation offensive/défensive.</li>
-              <li>Audit de sécurité : identification des vulnérabilités, recommandations.</li>
-              <li>Application des règles d’hygiène ANSSI, sensibilisation utilisateurs.</li>
-              <li>Pentests encadrés (scans, exploitation contrôlée, reporting).</li>
+              <li data-i18n="skillsCyber1">Capture the Flag, mise en situation offensive/défensive.</li>
+              <li data-i18n="skillsCyber2">Audit de sécurité : identification des vulnérabilités, recommandations.</li>
+              <li data-i18n="skillsCyber3">Application des règles d’hygiène ANSSI, sensibilisation utilisateurs.</li>
+              <li data-i18n="skillsCyber4">Pentests encadrés (scans, exploitation contrôlée, reporting).</li>
             </ul>
 
             <div class="chip-row">
-              <span class="chip hot">CTF</span>
-              <span class="chip hot">Pentest</span>
-              <span class="chip">Hygiène ANSSI</span>
-              <span class="chip">MOOC cybersécurité</span>
+              <span class="chip hot" data-i18n="chipCTF">CTF</span>
+              <span class="chip hot" data-i18n="chipPentest">Pentest</span>
+              <span class="chip" data-i18n="chipANSSI">Hygiène ANSSI</span>
+              <span class="chip" data-i18n="chipMooc">MOOC cybersécurité</span>
             </div>
 
             <hr style="border:none;border-top:1px solid rgba(255,255,255,.06);margin:14px 0;">
 
-            <h3>Réseaux</h3>
+            <h3 data-i18n="skillsNetTitle">Réseaux</h3>
             <ul class="bullets">
-              <li>Architecture réseau, adressage IP, conception de topologies.</li>
-              <li>Cisco (Packet Tracer / GNS3), VLAN, routage, ACL.</li>
-              <li>Pare-feu : Stormshield, OPNsense, pfSense.</li>
+              <li data-i18n="skillsNet1">Architecture réseau, adressage IP, conception de topologies.</li>
+              <li data-i18n="skillsNet2">Cisco (Packet Tracer / GNS3), VLAN, routage, ACL.</li>
+              <li data-i18n="skillsNet3">Pare-feu : Stormshield, OPNsense, pfSense.</li>
             </ul>
 
             <div class="chip-row">
@@ -861,11 +943,11 @@ msf6 exploit(ms08_067_netapi) > run
 
             <hr style="border:none;border-top:1px solid rgba(255,255,255,.06);margin:14px 0;">
 
-            <h3>Systèmes & Services</h3>
+            <h3 data-i18n="skillsSysTitle">Systèmes & Services</h3>
             <ul class="bullets">
-              <li>Linux & Windows : installation, configuration de base et maintenance.</li>
-              <li>Services réseau : FTP, DNS, DHCP, Apache2.</li>
-              <li>Gestion d’Active Directory côté utilisateurs et postes.</li>
+              <li data-i18n="skillsSys1">Linux & Windows : installation, configuration de base et maintenance.</li>
+              <li data-i18n="skillsSys2">Services réseau : FTP, DNS, DHCP, Apache2.</li>
+              <li data-i18n="skillsSys3">Gestion d’Active Directory côté utilisateurs et postes.</li>
             </ul>
 
             <div class="chip-row">
@@ -878,11 +960,11 @@ msf6 exploit(ms08_067_netapi) > run
 
             <hr style="border:none;border-top:1px solid rgba(255,255,255,.06);margin:14px 0;">
 
-            <h3>Développement & Scripts</h3>
+            <h3 data-i18n="skillsDevTitle">Développement & Scripts</h3>
             <ul class="bullets">
-              <li>Analyse Python, scripts Bash pour automatisation simple.</li>
-              <li>HTML/CSS pour interfaces web de base.</li>
-              <li>Notions de SQL et langage C.</li>
+              <li data-i18n="skillsDev1">Analyse Python, scripts Bash pour automatisation simple.</li>
+              <li data-i18n="skillsDev2">HTML/CSS pour interfaces web de base.</li>
+              <li data-i18n="skillsDev3">Notions de SQL et langage C.</li>
             </ul>
 
             <div class="chip-row">
@@ -895,7 +977,7 @@ msf6 exploit(ms08_067_netapi) > run
 
             <hr style="border:none;border-top:1px solid rgba(255,255,255,.06);margin:14px 0;">
 
-            <h3>Logiciels & outils</h3>
+            <h3 data-i18n="skillsToolsTitle">Logiciels & outils</h3>
             <div class="chip-row">
               <span class="chip">Packet Tracer</span>
               <span class="chip">GNS3</span>
@@ -908,38 +990,38 @@ msf6 exploit(ms08_067_netapi) > run
           <!-- Langues / Soft skills / Centres d'intérêt -->
           <div class="reveal subcard" style="margin-top:20px;">
             <div class="sec-title">
-              <h2>Langues & Atouts</h2><div class="sec-bar"></div>
+              <h2 data-i18n="langTitle">Langues & Atouts</h2><div class="sec-bar"></div>
             </div>
 
-            <h3>Langues</h3>
+            <h3 data-i18n="langSectionTitle">Langues</h3>
             <div class="lang-grid">
               <div class="lang-item">
-                <div>Français</div>
-                <span class="level">Langue maternelle</span>
+                <div data-i18n="langFR">Français</div>
+                <span class="level" data-i18n="langFRLevel">Langue maternelle</span>
                 <div class="bar-lang"><div class="bar-lang-fill fr"></div></div>
               </div>
               <div class="lang-item">
-                <div>Anglais</div>
-                <span class="level">Niveau intermédiaire</span>
+                <div data-i18n="langEN">Anglais</div>
+                <span class="level" data-i18n="langENLevel">Niveau intermédiaire</span>
                 <div class="bar-lang"><div class="bar-lang-fill en"></div></div>
               </div>
             </div>
 
-            <h3 style="margin-top:16px;">Atouts</h3>
+            <h3 style="margin-top:16px;" data-i18n="softTitle">Atouts</h3>
             <div class="soft-grid">
-              <span class="soft-pill">Détermination</span>
-              <span class="soft-pill">Rigueur</span>
-              <span class="soft-pill">Travail en équipe</span>
+              <span class="soft-pill" data-i18n="softDet">Détermination</span>
+              <span class="soft-pill" data-i18n="softRig">Rigueur</span>
+              <span class="soft-pill" data-i18n="softTeam">Travail en équipe</span>
             </div>
 
-            <h3 style="margin-top:16px;">Centres d’intérêt</h3>
+            <h3 style="margin-top:16px;" data-i18n="hobbiesTitle">Centres d’intérêt</h3>
             <div class="soft-grid">
-              <span class="soft-pill">Volley-ball</span>
-              <span class="soft-pill">Musculation</span>
-              <span class="soft-pill">Handball</span>
-              <span class="soft-pill">Jeux vidéo</span>
-              <span class="soft-pill">Films / Séries</span>
-              <span class="soft-pill">Cybersécurité & CTF</span>
+              <span class="soft-pill" data-i18n="hobVolley">Volley-ball</span>
+              <span class="soft-pill" data-i18n="hobMuscu">Musculation</span>
+              <span class="soft-pill" data-i18n="hobHand">Handball</span>
+              <span class="soft-pill" data-i18n="hobJV">Jeux vidéo</span>
+              <span class="soft-pill" data-i18n="hobFilms">Films / Séries</span>
+              <span class="soft-pill" data-i18n="hobCyber">Cybersécurité & CTF</span>
             </div>
           </div>
         </div>
@@ -949,26 +1031,26 @@ msf6 exploit(ms08_067_netapi) > run
           <!-- Expériences -->
           <div id="xp" class="reveal subcard">
             <div class="sec-title">
-              <h2>Expériences professionnelles</h2><div class="sec-bar"></div>
+              <h2 data-i18n="xpTitle">Expériences professionnelles</h2><div class="sec-bar"></div>
             </div>
 
             <div class="timeline">
               <div class="tl-item">
                 <div class="tl-dot"></div>
                 <div class="tl-header">
-                  <div class="tl-title">Stage 2ᵉ année BUT — Technicien Informatique</div>
-                  <div class="tl-date">Avril 2025 — Juin 2025</div>
+                  <div class="tl-title" data-i18n="xp1Title">Stage 2ᵉ année BUT — Technicien Informatique</div>
+                  <div class="tl-date" data-i18n="xp1Date">Avril 2025 — Juin 2025</div>
                 </div>
-                <div class="tl-loc">Fondation Père Favron — La Ravine Blanche, Réunion</div>
+                <div class="tl-loc" data-i18n="xp1Loc">Fondation Père Favron — La Ravine Blanche, Réunion</div>
                 <ul class="bullets">
-                  <li>Support utilisateur N1/N2.</li>
-                  <li>Gestion des comptes <strong>Active Directory</strong>.</li>
-                  <li>Gestion et suivi des tickets <strong>GLPI</strong>.</li>
-                  <li>Suivi de l’inventaire matériel dans GLPI.</li>
-                  <li>Configuration et déploiement de PC.</li>
-                  <li>Participation à un <strong>audit cybersécurité</strong>.</li>
-                  <li>Gestion des utilisateurs administrateurs <strong>M365</strong>.</li>
-                  <li>Diagnostic et résolution de problèmes réseaux <strong>Cisco</strong>.</li>
+                  <li data-i18n="xp1b1">Support utilisateur N1/N2.</li>
+                  <li data-i18n="xp1b2">Gestion des comptes <strong>Active Directory</strong>.</li>
+                  <li data-i18n="xp1b3">Gestion et suivi des tickets <strong>GLPI</strong>.</li>
+                  <li data-i18n="xp1b4">Suivi de l’inventaire matériel dans GLPI.</li>
+                  <li data-i18n="xp1b5">Configuration et déploiement de PC.</li>
+                  <li data-i18n="xp1b6">Participation à un <strong>audit cybersécurité</strong>.</li>
+                  <li data-i18n="xp1b7">Gestion des utilisateurs administrateurs <strong>M365</strong>.</li>
+                  <li data-i18n="xp1b8">Diagnostic et résolution de problèmes réseaux <strong>Cisco</strong>.</li>
                 </ul>
               </div>
             </div>
@@ -977,38 +1059,38 @@ msf6 exploit(ms08_067_netapi) > run
           <!-- Formations -->
           <div id="education" class="reveal subcard" style="margin-top:20px;">
             <div class="sec-title">
-              <h2>Diplômes & Formations</h2><div class="sec-bar"></div>
+              <h2 data-i18n="eduTitle">Diplômes & Formations</h2><div class="sec-bar"></div>
             </div>
 
             <div class="timeline">
               <div class="tl-item">
                 <div class="tl-dot"></div>
                 <div class="tl-header">
-                  <div class="tl-title">BUT Réseaux & Télécommunications — Parcours Cybersécurité</div>
-                  <div class="tl-date">Depuis Août 2023</div>
+                  <div class="tl-title" data-i18n="edu1Title">BUT Réseaux & Télécommunications — Parcours Cybersécurité</div>
+                  <div class="tl-date" data-i18n="edu1Date">Depuis Août 2023</div>
                 </div>
-                <div class="tl-loc">IUT de Saint-Pierre, Terre-Sainte — Réunion</div>
-                <p>Diplôme en 3 ans orienté réseaux, systèmes et sécurité.</p>
+                <div class="tl-loc" data-i18n="edu1Loc">IUT de Saint-Pierre, Terre-Sainte — Réunion</div>
+                <p data-i18n="edu1Txt">Diplôme en 3 ans orienté réseaux, systèmes et sécurité.</p>
               </div>
 
               <div class="tl-item">
                 <div class="tl-dot"></div>
                 <div class="tl-header">
-                  <div class="tl-title">Attestation MOOC Cybersécurité</div>
-                  <div class="tl-date">Novembre 2023</div>
+                  <div class="tl-title" data-i18n="edu2Title">Attestation MOOC Cybersécurité</div>
+                  <div class="tl-date" data-i18n="edu2Date">Novembre 2023</div>
                 </div>
-                <div class="tl-loc">IUT de Saint-Pierre</div>
-                <p>Attestation MOOC obtenue dans le cadre de la formation, centrée sur les fondamentaux de la sécurité.</p>
+                <div class="tl-loc" data-i18n="edu2Loc">IUT de Saint-Pierre</div>
+                <p data-i18n="edu2Txt">Attestation MOOC obtenue dans le cadre de la formation, centrée sur les fondamentaux de la sécurité.</p>
               </div>
 
               <div class="tl-item">
                 <div class="tl-dot"></div>
                 <div class="tl-header">
-                  <div class="tl-title">Baccalauréat Général — Spécialité NSI</div>
-                  <div class="tl-date">Juillet 2023</div>
+                  <div class="tl-title" data-i18n="edu3Title">Baccalauréat Général — Spécialité NSI</div>
+                  <div class="tl-date" data-i18n="edu3Date">Juillet 2023</div>
                 </div>
-                <div class="tl-loc">Lycée Évariste de Parny — Plateau Caillou, Réunion</div>
-                <p>Obtention du bac général avec mention, spécialité Numérique et Sciences Informatiques.</p>
+                <div class="tl-loc" data-i18n="edu3Loc">Lycée Évariste de Parny — Plateau Caillou, Réunion</div>
+                <p data-i18n="edu3Txt">Obtention du bac général avec mention, spécialité Numérique et Sciences Informatiques.</p>
               </div>
             </div>
           </div>
@@ -1016,19 +1098,19 @@ msf6 exploit(ms08_067_netapi) > run
           <!-- Contact strip -->
           <div id="contact" class="reveal contact-strip">
             <div>
-              <div class="contact-label">Contact</div>
+              <div class="contact-label" data-i18n="contactLabel">Contact</div>
               <div class="tag-contact">kylian.honorine404@gmail.com</div>
             </div>
             <div>
-              <div class="contact-label">Téléphone</div>
+              <div class="contact-label" data-i18n="contactPhoneLabel">Téléphone</div>
               <div class="tag-contact">+262 692 78 91 86</div>
             </div>
             <div>
-              <div class="contact-label">Localisation</div>
-              <div class="tag-contact">Saint-Paul, La Réunion</div>
+              <div class="contact-label" data-i18n="contactLocLabel">Localisation</div>
+              <div class="tag-contact" data-i18n="contactLocValue">Saint-Paul, La Réunion</div>
             </div>
             <div>
-              <div class="contact-label">Réseaux sociaux</div>
+              <div class="contact-label" data-i18n="contactSocialLabel">Réseaux sociaux</div>
               <div class="tag-contact">@Kylian&nbsp;Honorine</div>
             </div>
           </div>
@@ -1038,8 +1120,8 @@ msf6 exploit(ms08_067_netapi) > run
 
     <footer class="container">
       <div class="row">
-        <span>2025 — Kylian Honorine • Réseaux & Cybersécurité</span>
-        <span style="opacity:.7;"> Merci d'avoir lu ! </span>
+        <span data-i18n="footerLeft">2025 — Kylian Honorine • Réseaux & Cybersécurité</span>
+        <span style="opacity:.7;" data-i18n="footerRight">Merci d'avoir lu !</span>
       </div>
     </footer>
   </main>
@@ -1053,17 +1135,347 @@ msf6 exploit(ms08_067_netapi) > run
             stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </button>
-<button id="backPrev" class="back-prev" aria-label="Revenir à la page précédente">
-  <!-- Icône flèche vers la gauche -->
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="#4DD2FF" stroke-width="1.6"/>
-    <path d="M10 8L6 12M10 8L14 12M10 8V16" stroke="#4DD2FF" stroke-width="1.6"
-          stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</button>
+
+  <!-- Bouton retour page précédente -->
+  <button id="backPrev" class="back-prev" aria-label="Revenir à la page précédente">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="#4DD2FF" stroke-width="1.6"/>
+      <path d="M10 8L6 12M10 8L14 12M10 8V16" stroke="#4DD2FF" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 
   <script>
+    // ===== SWITCH LANGUE FR / EN =====
+    const translations = {
+      fr: {
+        metaDesc: "CV en ligne de Kylian Honorine, technicien informatique passionné de réseaux et cybersécurité.",
+        brand: "KYLIAN HONORINE • CV",
+        eyebrowTag: "Réseaux • Cybersécurité • Systèmes",
+        heroTitle: "Technicien Informatique",
+        heroIntro: `Passionné par la <strong>sécurité informatique</strong> et les
+            <strong>architectures réseau</strong>, je vise des postes de
+            <strong>pentester</strong> ou
+            <strong>administrateur système/réseau</strong> pour mettre mes
+            compétences au service de la protection des systèmes numériques
+            et de la configuration d’infrastructures fiables.`,
+        pill1: "Cybersécurité • Pentest • CTF",
+        pill2: "Réseaux : Cisco • Stormshield • OPNsense • pfSense",
+        pill3: "Systèmes : Linux • Windows • Services réseau",
+        btnExp: "Voir mes expériences",
+        btnSkills: "Stack & Compétences",
+
+        idRole: "Réseaux & Cybersécurité • BUT RT",
+        labelLocation: "Localisation",
+        valueLocation: "Saint-Paul (97435), Réunion",
+        labelAge: "Âge",
+        valueAge: "20 ans",
+        labelEmail: "Email",
+        labelPhone: "Téléphone",
+        labelMode: "Mode",
+        valueMode: "Présentiel ou télétravail",
+        labelNationality: "Nationalité",
+        valueNationality: "Français",
+
+        consoleLabel: "Console CTF / Pentest (fake log)",
+
+        skillsTitle: "Compétences techniques",
+        skillsCyberTitle: "Cybersécurité",
+        skillsCyber1: "Capture the Flag, mise en situation offensive/défensive.",
+        skillsCyber2: "Audit de sécurité : identification des vulnérabilités, recommandations.",
+        skillsCyber3: "Application des règles d’hygiène ANSSI, sensibilisation utilisateurs.",
+        skillsCyber4: "Pentests encadrés (scans, exploitation contrôlée, reporting).",
+        chipCTF: "CTF",
+        chipPentest: "Pentest",
+        chipANSSI: "Hygiène ANSSI",
+        chipMooc: "MOOC cybersécurité",
+
+        skillsNetTitle: "Réseaux",
+        skillsNet1: "Architecture réseau, adressage IP, conception de topologies.",
+        skillsNet2: "Cisco (Packet Tracer / GNS3), VLAN, routage, ACL.",
+        skillsNet3: "Pare-feu : Stormshield, OPNsense, pfSense.",
+
+        skillsSysTitle: "Systèmes & Services",
+        skillsSys1: "Linux & Windows : installation, configuration de base et maintenance.",
+        skillsSys2: "Services réseau : FTP, DNS, DHCP, Apache2.",
+        skillsSys3: "Gestion d’Active Directory côté utilisateurs et postes.",
+
+        skillsDevTitle: "Développement & Scripts",
+        skillsDev1: "Analyse Python, scripts Bash pour automatisation simple.",
+        skillsDev2: "HTML/CSS pour interfaces web de base.",
+        skillsDev3: "Notions de SQL et langage C.",
+
+        skillsToolsTitle: "Logiciels & outils",
+
+        langTitle: "Langues & Atouts",
+        langSectionTitle: "Langues",
+        langFR: "Français",
+        langFRLevel: "Langue maternelle",
+        langEN: "Anglais",
+        langENLevel: "Niveau intermédiaire",
+        softTitle: "Atouts",
+        softDet: "Détermination",
+        softRig: "Rigueur",
+        softTeam: "Travail en équipe",
+        hobbiesTitle: "Centres d’intérêt",
+        hobVolley: "Volley-ball",
+        hobMuscu: "Musculation",
+        hobHand: "Handball",
+        hobJV: "Jeux vidéo",
+        hobFilms: "Films / Séries",
+        hobCyber: "Cybersécurité & CTF",
+
+        xpTitle: "Expériences professionnelles",
+        xp1Title: "Stage 2ᵉ année BUT — Technicien Informatique",
+        xp1Date: "Avril 2025 — Juin 2025",
+        xp1Loc: "Fondation Père Favron — La Ravine Blanche, Réunion",
+        xp1b1: "Support utilisateur N1/N2.",
+        xp1b2: "Gestion des comptes <strong>Active Directory</strong>.",
+        xp1b3: "Gestion et suivi des tickets <strong>GLPI</strong>.",
+        xp1b4: "Suivi de l’inventaire matériel dans GLPI.",
+        xp1b5: "Configuration et déploiement de PC.",
+        xp1b6: "Participation à un <strong>audit cybersécurité</strong>.",
+        xp1b7: "Gestion des utilisateurs administrateurs <strong>M365</strong>.",
+        xp1b8: "Diagnostic et résolution de problèmes réseaux <strong>Cisco</strong>.",
+
+        eduTitle: "Diplômes & Formations",
+        edu1Title: "BUT Réseaux & Télécommunications — Parcours Cybersécurité",
+        edu1Date: "Depuis Août 2023",
+        edu1Loc: "IUT de Saint-Pierre, Terre-Sainte — Réunion",
+        edu1Txt: "Diplôme en 3 ans orienté réseaux, systèmes et sécurité.",
+        edu2Title: "Attestation MOOC Cybersécurité",
+        edu2Date: "Novembre 2023",
+        edu2Loc: "IUT de Saint-Pierre",
+        edu2Txt: "Attestation MOOC obtenue dans le cadre de la formation, centrée sur les fondamentaux de la sécurité.",
+        edu3Title: "Baccalauréat Général — Spécialité NSI",
+        edu3Date: "Juillet 2023",
+        edu3Loc: "Lycée Évariste de Parny — Plateau Caillou, Réunion",
+        edu3Txt: "Obtention du bac général avec mention, spécialité Numérique et Sciences Informatiques.",
+
+        contactLabel: "Contact",
+        contactPhoneLabel: "Téléphone",
+        contactLocLabel: "Localisation",
+        contactLocValue: "Saint-Paul, La Réunion",
+        contactSocialLabel: "Réseaux sociaux",
+
+        footerLeft: "2025 — Kylian Honorine • Réseaux & Cybersécurité",
+        footerRight: "Merci d'avoir lu !",
+
+        consoleFrames: [
+`└─$ nmap -sV -Pn 192.168.50.121
+[+] Ports ouverts : 22 (ssh), 80 (http), 445 (smb)
+└─$ gobuster dir -u http://192.168.50.121 -w /wordlists
+[/admin]  [/backup]  [/old]
+└─$ metasploit-framework
+msf6 > use exploit/windows/smb/ms08_067_netapi
+msf6 exploit(ms08_067_netapi) > run
+[*] Session meterpreter ouverte (LAB)`,
+`└─$ ssh kylian@192.168.50.10
+Last login: Thu Nov 20 10:42
+[LAB] Analyse logs & supervision...
+└─$ tail -f /var/log/auth.log
+[INFO] Connexions SSH légitimes
+[WARN] Tentatives bruteforce détectées`,
+`└─$ sudo tcpdump -i eth0 port 80
+[+] Capture du trafic HTTP...
+[+] Détection de credentials en clair (environnement de test)
+[OK] Recommandation : forcer HTTPS + durcissement`
+        ]
+      },
+
+      en: {
+        metaDesc: "Online resume of Kylian Honorine, IT technician focused on networks and cybersecurity.",
+        brand: "KYLIAN HONORINE • RESUME",
+        eyebrowTag: "Networks • Cybersecurity • Systems",
+        heroTitle: "IT Technician",
+        heroIntro: `Passionate about <strong>cybersecurity</strong> and
+            <strong>network architectures</strong>, I aim for roles as a
+            <strong>pentester</strong> or
+            <strong>system / network administrator</strong> to help secure
+            information systems and design reliable infrastructures.`,
+        pill1: "Cybersecurity • Pentest • CTF",
+        pill2: "Networks: Cisco • Stormshield • OPNsense • pfSense",
+        pill3: "Systems: Linux • Windows • Network services",
+        btnExp: "View my experience",
+        btnSkills: "Stack & Skills",
+
+        idRole: "Networks & Cybersecurity • Bachelor (BUT RT)",
+        labelLocation: "Location",
+        valueLocation: "Saint-Paul (97435), Reunion Island",
+        labelAge: "Age",
+        valueAge: "20 years old",
+        labelEmail: "Email",
+        labelPhone: "Phone",
+        labelMode: "Work mode",
+        valueMode: "On-site or remote",
+        labelNationality: "Nationality",
+        valueNationality: "French",
+
+        consoleLabel: "CTF / Pentest console (fake log)",
+
+        skillsTitle: "Technical Skills",
+        skillsCyberTitle: "Cybersecurity",
+        skillsCyber1: "Capture the Flag, offensive and defensive scenarios.",
+        skillsCyber2: "Security audit: vulnerability identification and recommendations.",
+        skillsCyber3: "Application of ANSSI hygiene rules and user awareness.",
+        skillsCyber4: "Supervised pentests (scans, controlled exploitation, reporting).",
+        chipCTF: "CTF",
+        chipPentest: "Pentest",
+        chipANSSI: "ANSSI hygiene",
+        chipMooc: "Cybersecurity MOOC",
+
+        skillsNetTitle: "Networks",
+        skillsNet1: "Network architecture, IP addressing, topology design.",
+        skillsNet2: "Cisco (Packet Tracer / GNS3), VLANs, routing, ACLs.",
+        skillsNet3: "Firewalls: Stormshield, OPNsense, pfSense.",
+
+        skillsSysTitle: "Systems & Services",
+        skillsSys1: "Linux & Windows: installation, basic configuration and maintenance.",
+        skillsSys2: "Network services: FTP, DNS, DHCP, Apache2.",
+        skillsSys3: "Active Directory management for users and workstations.",
+
+        skillsDevTitle: "Development & Scripting",
+        skillsDev1: "Python analysis, Bash scripts for simple automation.",
+        skillsDev2: "HTML/CSS for basic web interfaces.",
+        skillsDev3: "Basics of SQL and C language.",
+
+        skillsToolsTitle: "Software & Tools",
+
+        langTitle: "Languages & Strengths",
+        langSectionTitle: "Languages",
+        langFR: "French",
+        langFRLevel: "Native language",
+        langEN: "English",
+        langENLevel: "Intermediate level",
+        softTitle: "Soft Skills",
+        softDet: "Determination",
+        softRig: "Rigor",
+        softTeam: "Teamwork",
+        hobbiesTitle: "Interests",
+        hobVolley: "Volleyball",
+        hobMuscu: "Weight training",
+        hobHand: "Handball",
+        hobJV: "Video games",
+        hobFilms: "Movies / Series",
+        hobCyber: "Cybersecurity & CTFs",
+
+        xpTitle: "Professional Experience",
+        xp1Title: "2nd Year Internship — IT Technician (BUT)",
+        xp1Date: "April 2025 — June 2025",
+        xp1Loc: "Fondation Père Favron — La Ravine Blanche, Reunion Island",
+        xp1b1: "Level 1 / Level 2 user support.",
+        xp1b2: "Management of <strong>Active Directory</strong> accounts.",
+        xp1b3: "Handling and tracking <strong>GLPI</strong> tickets.",
+        xp1b4: "Hardware inventory tracking in GLPI.",
+        xp1b5: "PC configuration and deployment.",
+        xp1b6: "Participation in a <strong>cybersecurity audit</strong>.",
+        xp1b7: "Administration of <strong>M365</strong> user accounts.",
+        xp1b8: "Troubleshooting and resolving <strong>Cisco</strong> network issues.",
+
+        eduTitle: "Degrees & Education",
+        edu1Title: "Bachelor of Technology — Networks & Telecom (Cybersecurity track)",
+        edu1Date: "Since August 2023",
+        edu1Loc: "IUT of Saint-Pierre, Terre-Sainte — Reunion Island",
+        edu1Txt: "3-year degree focused on networks, systems and security.",
+        edu2Title: "Cybersecurity MOOC Certificate",
+        edu2Date: "November 2023",
+        edu2Loc: "IUT of Saint-Pierre",
+        edu2Txt: "MOOC certificate obtained as part of the program, covering cybersecurity fundamentals.",
+        edu3Title: "General Baccalaureate — NSI Specialization",
+        edu3Date: "July 2023",
+        edu3Loc: "Lycée Évariste de Parny — Plateau Caillou, Reunion Island",
+        edu3Txt: "General baccalaureate with honours, specialization in Computer Science (NSI).",
+
+        contactLabel: "Contact",
+        contactPhoneLabel: "Phone",
+        contactLocLabel: "Location",
+        contactLocValue: "Saint-Paul, Reunion Island",
+        contactSocialLabel: "Social networks",
+
+        footerLeft: "2025 — Kylian Honorine • Networks & Cybersecurity",
+        footerRight: "Thanks for reading!",
+
+        consoleFrames: [
+`└─$ nmap -sV -Pn 192.168.50.121
+[+] Open ports: 22 (ssh), 80 (http), 445 (smb)
+└─$ gobuster dir -u http://192.168.50.121 -w /wordlists
+[/admin]  [/backup]  [/old]
+└─$ metasploit-framework
+msf6 > use exploit/windows/smb/ms08_067_netapi
+msf6 exploit(ms08_067_netapi) > run
+[*] Meterpreter session opened (LAB)`,
+`└─$ ssh kylian@192.168.50.10
+Last login: Thu Nov 20 10:42
+[LAB] Log analysis & monitoring...
+└─$ tail -f /var/log/auth.log
+[INFO] Legitimate SSH connections
+[WARN] Brute-force attempts detected`,
+`└─$ sudo tcpdump -i eth0 port 80
+[+] Capturing HTTP traffic...
+[+] Plaintext credentials detected (lab environment)
+[OK] Recommendation: enforce HTTPS + hardening`
+        ]
+      }
+    };
+
+    function setLanguage(lang){
+      const dict = translations[lang] || translations.fr;
+
+      // <html lang="...">
+      document.documentElement.setAttribute("lang", lang === "en" ? "en" : "fr");
+
+      // Title
+      if (lang === "fr") {
+        document.title = "CV — Kylian Honorine • Réseaux & Cybersécurité";
+      } else {
+        document.title = "Resume — Kylian Honorine • Networks & Cybersecurity";
+      }
+
+      // Meta description
+      const descTag = document.querySelector('meta[name="description"]');
+      if (descTag && dict.metaDesc) {
+        descTag.setAttribute("content", dict.metaDesc);
+      }
+
+      // Textes
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (!dict[key]) return;
+
+        if (key === "heroTitle") {
+          el.textContent = dict[key];
+          el.setAttribute("data-text", dict[key]);
+        } else {
+          el.innerHTML = dict[key];
+        }
+      });
+
+      // Console frames
+      window.consoleFrames = dict.consoleFrames || [];
+      const consoleBlock = document.getElementById("consoleLines");
+      if (consoleBlock && window.consoleFrames.length > 0) {
+        consoleBlock.textContent = window.consoleFrames[0];
+      }
+
+      localStorage.setItem("lang", lang);
+    }
+
+    (function initLangSwitch(){
+      const toggle = document.getElementById("langToggle");
+      const saved = localStorage.getItem("lang") || "fr";
+
+      setLanguage(saved);
+
+      if (toggle) {
+        toggle.checked = (saved === "en");
+        toggle.addEventListener("change", () => {
+          const lang = toggle.checked ? "en" : "fr";
+          setLanguage(lang);
+        });
+      }
+    })();
+
     /* ===== PARTICLES BACKGROUND ===== */
     (function(){
       const canvas = document.getElementById('particles');
@@ -1160,29 +1572,11 @@ msf6 exploit(ms08_067_netapi) > run
       const block = document.getElementById('consoleLines');
       if(!block) return;
 
-      const frames = [
-`└─$ nmap -sV -Pn 192.168.50.121
-[+] Ports ouverts : 22 (ssh), 80 (http), 445 (smb)
-└─$ gobuster dir -u http://192.168.50.121 -w /wordlists
-[/admin]  [/backup]  [/old]
-└─$ metasploit-framework
-msf6 > use exploit/windows/smb/ms08_067_netapi
-msf6 exploit(ms08_067_netapi) > run
-[*] Session meterpreter ouverte (LAB)`,
-`└─$ ssh kylian@192.168.50.10
-Last login: Thu Nov 20 10:42
-[LAB] Analyse logs & supervision...
-└─$ tail -f /var/log/auth.log
-[INFO] Connexions SSH légitimes
-[WARN] Tentatives bruteforce détectées`,
-`└─$ sudo tcpdump -i eth0 port 80
-[+] Capture du trafic HTTP...
-[+] Détection de credentials en clair (environnement de test)
-[OK] Recommandation : forcer HTTPS + durcissement`
-      ];
       let idx = 0;
 
       setInterval(()=>{
+        const frames = window.consoleFrames || [];
+        if(!frames.length) return;
         idx = (idx+1) % frames.length;
         block.textContent = frames[idx];
       }, 5500);
@@ -1196,10 +1590,14 @@ Last login: Thu Nov 20 10:42
         try{
           await navigator.clipboard.writeText(mail.textContent.trim());
           mail.style.color = '#4dd2ff';
-          mail.textContent = 'Copié dans le presse-papier';
+          const original = 'kylian.honorine404@gmail.com';
+          const lang = localStorage.getItem("lang") || "fr";
+          mail.textContent = (lang === "en")
+            ? 'Copied to clipboard'
+            : 'Copié dans le presse-papier';
           setTimeout(()=>{
             mail.style.color = '';
-            mail.textContent = 'kylian.honorine404@gmail.com';
+            mail.textContent = original;
           }, 1800);
         }catch(e){
           /* silencieux */
@@ -1227,22 +1625,20 @@ Last login: Thu Nov 20 10:42
         });
       });
     })();
-    
-  (function(){
-    const backPrev = document.getElementById('backPrev');
-    if(!backPrev) return;
 
-    backPrev.addEventListener('click', () => {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        // fallback si on n'a pas d'historique (ex : ouverture directe)
-        window.location.href = '/';
-      }
-    });
-  })();
+    /* ===== BACK TO PREVIOUS PAGE ===== */
+    (function(){
+      const backPrev = document.getElementById('backPrev');
+      if(!backPrev) return;
 
-
+      backPrev.addEventListener('click', () => {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = '/';
+        }
+      });
+    })();
   </script>
 </body>
 </html>
