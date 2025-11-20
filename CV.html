@@ -18,7 +18,7 @@
       --panel:#0d1324;
       --text:#e9f0ff;
       --muted:#9aa5c5;
-      --primary:#4dd2ff; /* bleu à la place du vert */
+      --primary:#4dd2ff;
       --accent:#4dd2ff;
       --danger:#ff4d6d;
       --radius:18px;
@@ -144,9 +144,10 @@
       border-radius:14px;
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       border:1px solid rgba(255,255,255,.12);
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-soft);
       transition:transform .2s ease, box-shadow .2s ease;
       white-space:nowrap;
+      cursor:pointer;
     }
 
     .btn.primary{
@@ -347,7 +348,7 @@
     .id-infos strong{color:var(--text);font-weight:500}
 
     .tiny-label{
-      font-size:px;
+      font-size:11px;
       text-transform:uppercase;
       letter-spacing:.18em;
       color:var(--muted);
@@ -601,6 +602,67 @@
       opacity:1;
       transform:none;
     }
+/* Bouton qui remonte en haut de la page (en bas à droite) */
+.back-top{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:1px solid rgba(77,210,255,.6);
+  background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
+             radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
+             #050814;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow:0 0 16px rgba(77,210,255,.7);
+  z-index:30;
+  opacity:0;
+  transform:translateY(10px) scale(.8);
+  pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease, box-shadow .2s ease;
+}
+.back-top svg{
+  filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
+}
+.back-top:hover{
+  box-shadow:0 0 24px rgba(77,210,255,.9);
+}
+
+    /* ===== BACK TO TOP BUTTON ===== */
+    .back-prev{
+  position:fixed;
+  left:22px;
+  bottom:22px;
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:1px solid rgba(77,210,255,.6);
+  background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
+             radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
+             #050814;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow:0 0 16px rgba(77,210,255,.7);
+  z-index:30;
+  transition:box-shadow .2s ease, transform .2s ease;
+}
+.back-prev svg{
+  filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
+}
+.back-prev:hover{
+  box-shadow:0 0 24px rgba(77,210,255,.9);
+  transform:translateY(-1px);
+}
+
+    .back-top.show{
+      opacity:1;
+      transform:translateY(0) scale(1);
+      pointer-events:auto;
+    }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 980px){
@@ -625,38 +687,6 @@
     #mailCopy{
       word-break:break-all;
       display:block;
-    }
-    .back-top{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      width:46px;
-      height:46px;
-      border-radius:50%;
-      border:1px solid rgba(77,210,255,.6);
-      background:radial-gradient(circle at 30% 0%, rgba(255,255,255,.18), transparent 60%),
-                 radial-gradient(circle at 80% 80%, rgba(77,210,255,.35), transparent 70%),
-                 #050814;
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      box-shadow:0 0 16px rgba(77,210,255,.7);
-      z-index:30;
-      opacity:0;
-      transform:translateY(10px) scale(.8);
-      pointer-events:none;
-      transition:opacity .25s ease, transform .25s ease, box-shadow .2s ease;
-    }
-    .back-top svg{
-      filter:drop-shadow(0 0 6px rgba(77,210,255,.7));
-    }
-    .back-top:hover{
-      box-shadow:0 0 24px rgba(77,210,255,.9);
-    }
-    .back-top.show{
-      opacity:1;
-      transform:translateY(0) scale(1);
-      pointer-events:auto;
     }
   </style>
 </head>
@@ -1014,6 +1044,25 @@ msf6 exploit(ms08_067_netapi) > run
     </footer>
   </main>
 
+  <!-- Bouton retour en haut -->
+  <button id="backTop" class="back-top" aria-label="Retour en haut de la page">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="#4DD2FF" stroke-width="1.6"/>
+      <path d="M12 8L8 12M12 8L16 12M12 8V16" stroke="#4DD2FF" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+<button id="backPrev" class="back-prev" aria-label="Revenir à la page précédente">
+  <!-- Icône flèche vers la gauche -->
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="#4DD2FF" stroke-width="1.6"/>
+    <path d="M10 8L6 12M10 8L14 12M10 8V16" stroke="#4DD2FF" stroke-width="1.6"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
   <script>
     /* ===== PARTICLES BACKGROUND ===== */
     (function(){
@@ -1157,38 +1206,43 @@ Last login: Thu Nov 20 10:42
         }
       });
     })();
-    
-  </script>
-  <button id="backTop" class="back-top" aria-label="Retour en haut de la page">
-  <!-- Icône flèche vers le haut -->
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="12" cy="12" r="9" stroke="#4DD2FF" stroke-width="1.6"/>
-    <path d="M12 8L8 12M12 8L16 12M12 8V16" stroke="#4DD2FF" stroke-width="1.6"
-          stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</button>
-<script>
-  (function(){
-    const backTop = document.getElementById('backTop');
-    if(!backTop) return;
 
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backTop.classList.add('show');
+    /* ===== BACK TO TOP LOGIC ===== */
+    (function(){
+      const backTop = document.getElementById('backTop');
+      if(!backTop) return;
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backTop.classList.add('show');
+        } else {
+          backTop.classList.remove('show');
+        }
+      });
+
+      backTop.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    })();
+    
+  (function(){
+    const backPrev = document.getElementById('backPrev');
+    if(!backPrev) return;
+
+    backPrev.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
       } else {
-        backTop.classList.remove('show');
+        // fallback si on n'a pas d'historique (ex : ouverture directe)
+        window.location.href = '/';
       }
     });
-
-    backTop.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
   })();
-</script>
 
+
+  </script>
 </body>
 </html>
