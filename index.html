@@ -370,10 +370,12 @@ msf6 exploit(handler) > exploit
         <div class="skill panel reveal">
           <h4 data-i18n="skills.cards.security.title">Cybersécurité</h4>
           <div class="tags">
-            <span class="tag" data-i18n="skills.cards.security.tags.0">Durcissement Linux</span>
             <span class="tag" data-i18n="skills.cards.security.tags.1">MITM</span>
             <span class="tag" data-i18n="skills.cards.security.tags.2">PENTEST</span>
             <span class="tag" data-i18n="skills.cards.security.tags.3">Metasploit</span>
+            <span class="tag" data-i18n="skills.cards.security.tags.4">Audit</span>
+            <span class="tag" data-i18n="skills.cards.security.tags.5">Gateway API & Kong Plugin</span>
+            <span class="tag" data-i18n="skills.cards.security.tags.6">SSO Keycloak</span>
           </div>
         </div>
         <div class="skill panel reveal">
@@ -383,6 +385,10 @@ msf6 exploit(handler) > exploit
             <span class="tag" data-i18n="skills.cards.observability.tags.1">Grafana</span>
             <span class="tag" data-i18n="skills.cards.observability.tags.2">Loki • Wazuh</span>
             <span class="tag" data-i18n="skills.cards.observability.tags.3">Alerting</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.4">Alloy</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.5">Falco</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.6">netdata</span>
+            <span class="tag" data-i18n="skills.cards.observability.tags.7">Blackbox</span>
           </div>
         </div>
         <div class="skill panel reveal">
@@ -390,9 +396,8 @@ msf6 exploit(handler) > exploit
           <div class="tags">
             <span class="tag" data-i18n="skills.cards.devops.tags.0">Docker & Compose</span>
             <span class="tag" data-i18n="skills.cards.devops.tags.1">Bash • Python</span>
-            <span class="tag" data-i18n="skills.cards.devops.tags.2">Git • CVS</span>
-            <span class="tag" data-i18n="skills.cards.devops.tags.3">Python • Powershell • Bash</span>
-            <span class="tag" data-i18n="skills.cards.devops.tags.4">PHP • C • SQL • HTML/CSS</span>
+            <span class="tag" data-i18n="skills.cards.devops.tags.2">Git</span>
+            <span class="tag" data-i18n="skills.cards.devops.tags.4">SQL • HTML/CSS</span>
           </div>
         </div>
       </div>
@@ -580,6 +585,7 @@ msf6 exploit(handler) > exploit
       Nim • Reverse Shell • Malware
     </span>
     <h3>Implant Nim + Reverse Shell</h3>
+
     <p>
       Étude et adaptation d'un implant codé en Nim, combiné à un reverse shell.
       Réalisé en environnement isolé à des fins d'apprentissage offensif.
@@ -854,8 +860,8 @@ msf6 exploit(handler) > exploit
           cards:{
             network:{title:"Réseaux", tags:["VLAN • 802.1Q","OSPF • BGP","QoS","Cisco","FTTH"]},
             security:{title:"Cybersécurité", tags:["Durcissement Linux","Man in the middle","Pentest","Metasploit"]},
-            observability:{title:"Observabilité", tags:["Prometheus","Grafana","Wazuh","Alerting"]},
-            devops:{title:"Dev & Ops", tags:["Docker & Compose","Bash • Python","Git • CVS","Python • Powershell • Bash","PHP • C • SQL • HTML/CSS"]}
+            observability:{title:"Observabilité", tags:["Prometheus","Grafana","Loki","Alerting"]},
+            devops:{title:"Dev & Ops", tags:["Docker & Compose","Bash • Python","Git","Python • Powershell • Bash",]}
           }
         },
         projects:{
@@ -884,7 +890,7 @@ msf6 exploit(handler) > exploit
           title:"Expériences Professionelles",
           items:[
             {title:"2025 — Stage • Technicien Informatique", text:"Support technique N1/N2 (Fondation Père Favron, La Réunion). Gestion AD, GLPI, M365, audit cybersécurité, diagnostic réseau Cisco."},
-            {title:"2025 — Projets académiques", text:"Segmentation réseau, résolution de problématiques réelles (Parking La Réunion), durcissement Debian, déploiement Node.js."}
+            {title:"2026 — Stage • Admin système/infra & cybersécurité ", text:"Mise en place d'un cluster kubernetes monitoring Grafana et API Gateway Kong + SSO Keycloak et sécurisation."}
           ]
         },
         contact:{title:"Contact", form:{name:"Votre nom", email:"Email", subject:"Sujet", message:"Votre message"}, send:"Envoyer"},
@@ -898,7 +904,7 @@ msf6 exploit(handler) > exploit
           eyebrow:"Networking • Cybersecurity • FTTH • Devops",
           title:"Network & Cybersecurity Student",
           text:`I test network security through <strong>pentesting</strong>, I <strong>maintain and administer</strong> infrastructures, and I'm building expertise in <strong>network architecture</strong> and <strong>FTTH networks</strong>.`,
-          cta:{projects:"View my projects", cv:"Download CV"}
+          cta:{projects:"View my projects", cv:"My CV"}
         },
         dashboard:{title:"", subtitle:""},
         about:{
@@ -906,14 +912,58 @@ msf6 exploit(handler) > exploit
           text:`Student passionate about <strong>system offense & defense</strong> and <strong>network resilience</strong>, I have learned to <strong>configure network equipment</strong> (Cisco, firewalls, routers), design <strong>IP addressing</strong> and <strong>network architecture</strong>. In cybersecurity, I explore both <strong>attack</strong> and <strong>defense</strong>: <em>pentesting</em>, <em>CTF</em>, deploying <strong>firewalls</strong> and configuring routers with <strong>ACLs</strong>.`,
           chips:["IPv4/IPv6 Networking","Segmentation & ACLs","Pentest","Windows / Linux","OPNsense / Stormshield","Falco","Docker Compose","FTTH"]
         },
-        skills:{
-          title:"Skills",
-          cards:{
-            network:{title:"Networking", tags:["VLAN • 802.1Q","OSPF • BGP","QoS","IPSec/WireGuard VPN","FTTH"]},
-            security:{title:"Cybersecurity", tags:["Linux Hardening","Pentest","Falco","Zero Trust"]},
-            observability:{title:"Observability", tags:["Prometheus","Grafana","Wazuh","Alerting"]},
-            devops:{title:"Dev & Ops", tags:["Docker Compose","Bash • Python","Git","Ansible (basics)"]}
-          }
+        skills: {
+  title: "Skills",
+
+  cards: {
+    network: {
+      title: "Networking",
+      tags: [
+        "VLAN • 802.1Q",
+        "OSPF • BGP",
+        "QoS",
+        "Cisco",
+        "FTTH"
+      ]
+    },
+
+    security: {
+      title: "Cybersecurity",
+      tags: [
+        "Linux Hardening",
+        "Man-in-the-Middle",
+        "Pentest",
+        "Metasploit",
+        "Zero Trust"
+      ]
+    },
+
+    observability: {
+      title: "Observability",
+      tags: [
+        "Prometheus",
+        "Grafana",
+        "Loki",
+        "Alerting",
+        "Alerting",
+        "Alloy",
+        "Falco",
+        "Netdata",
+        "Blackbox"
+      ]
+    },
+
+    devops: {
+      title: "Dev & Ops",
+      tags: [
+        "Docker & Compose",
+        "Bash / Python",
+        "Git",
+        "Ansible (basics)"
+      ]
+    }
+  }
+}
         },
         projects:{
           title:"Projects",
@@ -941,13 +991,13 @@ msf6 exploit(handler) > exploit
           title:"Experience",
           items:[
             {title:"2025 — Internship • IT Technician", text:"N1/N2 technical support (Fondation Père Favron, Réunion). AD management, GLPI, M365, cybersecurity audit, Cisco network diagnosis."},
-            {title:"2025 — Academic projects", text:"Network segmentation, real-world challenges (Parking Réunion), Debian hardening, Node.js deployment."}
+            {title:"2026 — Internship • System/Infrastructure & Cybersecurity Administrator", text:"Implementation of a Kubernetes cluster with Grafana monitoring and Kong API Gateway, along with Keycloak SSO integration and overall system security hardening."}
           ]
         },
         contact:{title:"Contact", form:{name:"Your name", email:"Email", subject:"Subject", message:"Your message"}, send:"Send"},
         footer:{copy:"© 2025 — Network & Cybersecurity Student Kylian Honorine", pd:"PP", ml:"Legal"}
       }
-    };
+    ;
 
     function setText(el, html){ if(el) el.innerHTML = html; }
     function applyPlaceholders(lang){
