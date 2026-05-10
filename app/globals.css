@@ -1,0 +1,333 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keyframes déclarées globalement */
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@layer base {
+  :root {
+    --line: rgba(148, 163, 184, 0.10);
+    --line-strong: rgba(148, 163, 184, 0.20);
+    --depth-0: #04060a;
+    --depth-1: #070a11;
+    --depth-2: #0b0f18;
+    --depth-3: #101522;
+
+    --signal-primary: 125, 211, 252;
+    --signal-mint: 165, 243, 208;
+    --signal-coral: 251, 113, 133;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0.05, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--depth-0);
+    color-scheme: dark;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    background: var(--depth-0);
+    color: #e8edf7;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(125, 211, 252, 0.25);
+  }
+
+  /* Lenis smooth scroll requirement */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  .container-x {
+    width: min(1280px, 92vw);
+    margin: 0 auto;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Grain SVG noise overlay */
+  .noise-overlay {
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.55  0 0 0 0 0.65  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* Tech grid background */
+  .tech-grid {
+    background-image:
+      linear-gradient(to right, rgba(125, 211, 252, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(125, 211, 252, 0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  /* Decorative serif italic */
+  .serif-italic {
+    font-family: var(--font-fraunces), serif;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Micro mono label */
+  .mono-label {
+    font-family: var(--font-jetbrains), monospace;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  /* Gradient text for accents */
+  .grad-text {
+    background: linear-gradient(
+      120deg,
+      rgb(var(--signal-primary)) 0%,
+      rgb(var(--signal-mint)) 35%,
+      #e0f7ff 55%,
+      rgb(var(--signal-mint)) 70%,
+      rgb(var(--signal-primary)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer-sweep 5s linear infinite;
+  }
+
+  /* Scroll-driven reveal helper (for non-Framer fallbacks) */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  }
+  .reveal-up.visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Search highlight marker */
+mark.search-hl {
+  background: rgba(125, 211, 252, 0.22);
+  color: #a5f3d0;
+  padding: 0 3px;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.4);
+  text-shadow: 0 0 12px rgba(165, 243, 208, 0.4);
+}
+
+/* Form */
+input, textarea, button {
+  font-family: inherit;
+}
+input:focus, textarea:focus {
+  outline: none;
+}
+
+/* Hide default cursor on canvas overlay if used */
+canvas {
+  display: block;
+}
+
+/* ─── PERFORMANCE HINTS ─── */
+/* Sections isolées : un repaint dans une section ne propage pas aux autres */
+section {
+  contain: layout style;
+}
+
+/* Hint GPU-acceleration sur les éléments qui bougent en permanence */
+.will-animate {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Reduced motion: disable WebGL background work via JS too, but kill CSS anims */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── PREMIUM MOTION EFFECTS ─── */
+
+/* Shimmer vivant sur le texte gradient (titres en italique) */
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--signal-primary)) 0%,
+    rgb(var(--signal-mint)) 30%,
+    #ffffff 50%,
+    rgb(var(--signal-mint)) 70%,
+    rgb(var(--signal-primary)) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-sweep 4s linear infinite;
+}
+
+/* Scan line qui traverse le viewport de haut en bas */
+@keyframes scan-line {
+  0%   { transform: translateY(-100vh); opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 0.6; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+body::after {
+  content: '';
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(125, 211, 252, 0.025) 50%,
+    transparent 100%
+  );
+  background-size: 100% 8px;
+  animation: scan-line 8s linear infinite;
+}
+
+/* Glow pulsé sur les éléments avec .glow-pulse */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(125,211,252,0.2), 0 0 24px rgba(125,211,252,0.05); }
+  50%       { box-shadow: 0 0 20px rgba(125,211,252,0.4), 0 0 40px rgba(125,211,252,0.15); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Entrée de ligne — barre qui se déploie horizontalement */
+@keyframes line-expand {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.line-expand {
+  transform-origin: left;
+  animation: line-expand 0.8s var(--ease-out) forwards;
+}
+
+/* Flicker terminal — clignote légèrement comme un écran CRT */
+@keyframes flicker {
+  0%, 100%      { opacity: 1; }
+  92%           { opacity: 1; }
+  93%           { opacity: 0.85; }
+  94%           { opacity: 1; }
+  96%           { opacity: 0.9; }
+  97%           { opacity: 1; }
+}
+
+.flicker {
+  animation: flicker 6s ease-in-out infinite;
+}
+
+/* Border glow animé — tourne autour d'une card */
+@keyframes border-spin {
+  from { --angle: 0deg; }
+  to   { --angle: 360deg; }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.border-glow-spin {
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.border-glow-spin::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0%,
+    rgba(125,211,252,0.6) 15%,
+    transparent 30%
+  );
+  animation: border-spin 3s linear infinite;
+  z-index: -1;
+}
+
+/* Typing cursor clignotant */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '_';
+  animation: blink-cursor 1s step-end infinite;
+  color: rgb(var(--signal-primary));
+}
+
+/* ─── GLITCH EFFECT (Research cards) ─── */
+@keyframes glitch-base {
+  0%, 90%, 100% { transform: translate(0); }
+  92%           { transform: translate(-2px, 1px); }
+  94%           { transform: translate(2px, -1px); }
+  96%           { transform: translate(-1px, 0); }
+}
+
+@keyframes glitch-r {
+  0%, 85%, 100% { transform: translate(0); opacity: 0; }
+  87%           { transform: translate(3px, 0); opacity: 0.8; }
+  90%           { transform: translate(-2px, 0); opacity: 0.6; }
+  93%           { transform: translate(0); opacity: 0; }
+}
+
+@keyframes glitch-b {
+  0%, 88%, 100% { transform: translate(0); opacity: 0; }
+  90%           { transform: translate(-3px, 0); opacity: 0.7; }
+  93%           { transform: translate(2px, 0); opacity: 0.5; }
+  96%           { transform: translate(0); opacity: 0; }
+}
+
+.animate-glitch-base { animation: glitch-base 2.5s ease-in-out infinite; }
+.animate-glitch-r    { animation: glitch-r 2.5s ease-in-out infinite; }
+.animate-glitch-b    { animation: glitch-b 2.5s ease-in-out infinite; }
