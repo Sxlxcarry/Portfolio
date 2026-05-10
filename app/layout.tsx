@@ -29,7 +29,7 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'Kylian Honorine — Network & Security Engineer',
   description:
-    'Portfolio de Kylian Honorine — étudiant alternant en cybersécurité, infrastructure et administration réseau. Études de cas et recherche.',
+    'Portfolio de Kylian Honorine — étudiant en cybersécurité, infrastructure et administration réseau. Études de cas et recherche.',
   themeColor: '#04060a',
   openGraph: {
     title: 'Kylian Honorine — Network & Security Engineer',

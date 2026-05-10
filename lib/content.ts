@@ -46,7 +46,7 @@ export const HERO = {
     titleB: 'des systèmes',
     titleC: 'qui tiennent.',
     intro:
-      "Étudiant alternant en cybersécurité, infrastructure et administration réseau. " +
+      "Étudiant en cybersécurité, infrastructure et administration réseau. " +
       "J'architecture, je sécurise et je supervise des environnements résilients — " +
       "du câble physique aux dashboards d'observabilité.",
     cta1: 'Explorer les travaux',
@@ -518,7 +518,7 @@ export const TRAJECTORY = {
     label: 'Trajectoire',
     title: 'Du support',
     titleEm: 'à la production.',
-    desc: "Stages en alternance — montée en compétence depuis le terrain utilisateur jusqu'à la mise en production de plateformes.",
+    desc: "Stage — montée en compétence depuis le terrain utilisateur jusqu'à la mise en production de plateformes.",
     items: [
       {
         year: '2025',
