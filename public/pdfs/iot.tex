@@ -1,0 +1,332 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT IOT — Réseaux sans fil pour l'IoT
+%  Theme : IoT — palette teal / vert
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta,decorations.pathreplacing}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette IoT ---------------------------------------------------------
+\definecolor{primary}{HTML}{0F2A2E}
+\definecolor{accent}{HTML}{10B981}
+\definecolor{accentdark}{HTML}{047857}
+\definecolor{light}{HTML}{ECFDF5}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{1B2A2E}
+\definecolor{codefg}{HTML}{E6F4EA}
+\definecolor{codekw}{HTML}{5EE2A0}
+\definecolor{codestr}{HTML}{F5D67A}
+\definecolor{codecmt}{HTML}{7AA197}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faMicrochip~IoT — Réseaux sans fil}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}Grondin A. \textbullet{} Honorine K. \textbullet{} Grondin B.}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+\lstdefinestyle{pystyle}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codefg},
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecmt}\itshape,
+  showstringspaces=false, breaklines=true,
+  frame=none, framesep=8pt, framerule=0pt,
+  xleftmargin=12pt, xrightmargin=12pt,
+  columns=fullflexible, inputencoding=utf8, extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ô}{{\^o}}1 {î}{{\^\i}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1 {â}{{\^a}}1 {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {À}{{\`A}}1 {Ô}{{\^O}}1 {Ç}{{\c{C}}}1 {Ù}{{\`U}}1 {Â}{{\^A}}1
+}
+\lstset{style=pystyle,language=Python}
+
+\newtcblisting{codebox}[1][]{
+  listing only,
+  enhanced jigsaw, breakable,
+  colback=codebg, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  listing options={style=pystyle,language=Python}, #1
+}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=light, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{archbox}[1][]{
+  enhanced, colback=accent!10, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  \fill[accent] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : microchip + waves
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1.0]
+      % Microchip
+      \fill[white,rounded corners=3pt] (-1.1,-1.1) rectangle (1.1,1.1);
+      \fill[accent,rounded corners=2pt] (-0.85,-0.85) rectangle (0.85,0.85);
+      % Pins
+      \foreach \y in {-0.7,-0.35,0,0.35,0.7} {
+        \fill[white] (-1.4,\y-0.07) rectangle (-1.1,\y+0.07);
+        \fill[white] (1.1,\y-0.07) rectangle (1.4,\y+0.07);
+        \fill[white] (\y-0.07,-1.4) rectangle (\y+0.07,-1.1);
+        \fill[white] (\y-0.07,1.1) rectangle (\y+0.07,1.4);
+      }
+      % Centre : node
+      \fill[white] (0,0) circle (0.32);
+      \node[scale=0.9,accent] at (0,0) {\faIcon{wifi}};
+      % Ondes Wi-Fi
+      \foreach \r/\o in {2.0/0.6, 2.5/0.4, 3.0/0.25} {
+        \draw[white,line width=1.2pt,opacity=\o] (0,0) ++(45:\r) arc (45:135:\r);
+        \draw[white,line width=1.2pt,opacity=\o] (0,0) ++(225:\r) arc (225:315:\r);
+      }
+    \end{tikzpicture}};
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {Réseaux IoT};
+  \node[anchor=north, accent, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {FiPy \textbullet{} MQTT \textbullet{} Grafana};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {R4.IOM.09 — Acquisition à supervision};
+
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3.3cm]current page.south west) {\textbf{\textcolor{accent}{Équipe}}};
+  \node[anchor=south west, primary, font=\sffamily\footnotesize] at ([xshift=2.2cm,yshift=2.85cm]current page.south west) {GRONDIN Angélique};
+  \node[anchor=south west, primary, font=\sffamily\footnotesize] at ([xshift=2.2cm,yshift=2.55cm]current page.south west) {HONORINE Kylian};
+  \node[anchor=south west, primary, font=\sffamily\footnotesize] at ([xshift=2.2cm,yshift=2.25cm]current page.south west) {GRONDIN Benjamin};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Encadrant}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {MOURAD Nour};
+  \fill[accent] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT R\&T — BUT 3 — Université de La Réunion};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+\section{Objectifs}
+
+\begin{infobox}[title={\faBullseye~Mission}]
+Déployer une chaîne IoT complète \textemdash{} de la mesure physique à la visualisation \textemdash{} mobilisant un microcontrôleur Pycom FiPy, des capteurs embarqués PySense, le protocole MQTT, et un dashboard Grafana temps réel.
+\end{infobox}
+
+Quatre objectifs structurent ce TP :
+\begin{enumerate}
+  \item Configurer un réseau sans fil local FiPy $\rightarrow$ broker MQTT
+  \item Acquérir les mesures des capteurs et les sérialiser en JSON
+  \item Afficher les données en temps réel sur Grafana
+  \item Intégrer un retour visuel via la LED RGB embarquée
+\end{enumerate}
+
+\section{Architecture du système}
+
+\begin{archbox}[title={\faProjectDiagram~Chaîne de traitement}]
+\textbf{Capteurs PySense} $\rightarrow$ \textbf{FiPy (ESP32)} $\rightarrow$ \textbf{Wi-Fi (smartphone)} $\rightarrow$ \textbf{Mosquitto (PC)} $\rightarrow$ \textbf{Grafana}
+\end{archbox}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{2.8cm} X@{}}
+\toprule
+\rowcolor{light} Composant & Rôle \\ \midrule
+PySense       & Collecte des grandeurs physiques via I²C \\
+FiPy (ESP32)  & Microcontrôleur \textemdash{} logique embarquée, conversion, publication MQTT \\
+PC            & Environnement de développement + hébergement de Mosquitto \\
+Smartphone    & Passerelle Wi-Fi pour contourner les restrictions réseau pédagogique \\
+Mosquitto     & Broker MQTT : centralise les messages et les redirige par topics \\
+Grafana       & Visualisation dynamique des séries temporelles \\
+\bottomrule
+\end{tabularx}
+
+\medskip
+Cette architecture en couches respecte le principe IoT fondamental : \textbf{collecter, transmettre, traiter, visualiser, agir}.
+
+\section{Protocoles utilisés}
+
+\subsection{USB — alimentation et débogage}
+La liaison USB entre FiPy et PC remplit deux fonctions : alimentation 5 V et communication série pour les logs MicroPython via l'extension PyMakr de VS Code.
+
+\subsection{Wi-Fi — transport TCP/IP}
+Le FiPy est configuré en mode \textbf{station (STA)}. Il rejoint le point d'accès du smartphone, obtient une IP par DHCP, puis ouvre une connexion TCP vers le port \textbf{1883} (MQTT en clair) du broker. Un mécanisme de reconnexion automatique gère les pertes momentanées.
+
+\subsection{MQTT — publication/abonnement}
+MQTT est le standard de fait pour l'IoT : faible empreinte, architecture pub/sub, résilience aux pertes de connexion. Le FiPy publie sur des topics dédiés :
+
+\begin{codebox}
+/iot/groupe2gh/temperature
+/iot/groupe2gh/humidite
+/iot/groupe2gh/luminosite
+/iot/groupe2gh/altitude
+\end{codebox}
+
+Le broker Mosquitto centralise les messages puis les redirige vers les clients abonnés (ici Grafana).
+
+\section{Capteurs et actionneur}
+
+\subsection{Capteurs PySense}
+Tous interfacés via le bus I²C (SDA/SCL), 2 fils suffisent.
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l l c c c@{}}
+\toprule
+\rowcolor{light} Capteur & Mesure & Type & Précision & Fréq. \\ \midrule
+BME280       & T° / humidité / pression  & I²C    & $\pm 1$°C, $\pm 3$\%HR & 0,5 Hz \\
+LTR329ALS01  & Luminosité                & I²C    & $\pm 5$\%               & 0,5 Hz \\
+(calculée)   & Altitude (issue pression) & calc.  & $\pm 1$\,m              & 0,5 Hz \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Actionneur — LED RGB}
+La LED intégrée du FiPy joue le rôle d'indicateur d'état :
+\begin{itemize}
+  \item \textcolor{blue!70!black}{\faCircle} \textbf{Bleu} \textemdash{} température inférieure à 25\,°C
+  \item \textcolor{violet}{\faCircle} \textbf{Violet} \textemdash{} température supérieure à 25\,°C
+  \item \textcolor{red}{\faCircle} \textbf{Rouge} \textemdash{} perte de connexion Wi-Fi
+\end{itemize}
+
+\section{Format JSON et flux de publication}
+
+Chaque acquisition est sérialisée en JSON avant publication :
+
+\begin{codebox}[listing options={style=pystyle,language=Java}]
+{
+  "temperature": 30.03,
+  "humidite":    64.0,
+  "luminosite":  882,
+  "altitude":    10.2
+}
+\end{codebox}
+
+Cinq étapes structurent la boucle principale en MicroPython :
+
+\begin{enumerate}
+  \item \textbf{Initialisation} \textemdash{} modules \texttt{network}, \texttt{pysense}, \texttt{SI7006A20}, \texttt{LTR329ALS01}, \texttt{pycom}, \texttt{umqtt}
+  \item \textbf{Connexion Wi-Fi} \textemdash{} mode STA, attente DHCP
+  \item \textbf{Acquisition} \textemdash{} lecture cyclique des capteurs (toutes les 2\,s)
+  \item \textbf{Publication MQTT} \textemdash{} envoi sur les topics dédiés, gestion des reconnexions
+  \item \textbf{Indication LED} \textemdash{} mise à jour de la couleur selon les seuils
+\end{enumerate}
+
+\section{Stockage MySQL et Grafana}
+
+\subsection{Base de données \texttt{iot.mesures}}
+
+Une table relationnelle persiste les acquisitions au-delà du flux MQTT :
+
+\begin{tabularx}{\linewidth}{@{}>{\ttfamily\bfseries}l X@{}}
+\toprule
+\rowcolor{light} \normalfont\textbf{Colonne} & Description \\ \midrule
+ts\_epoch       & Timestamp UNIX de la mesure \\
+t\_c            & Température en degrés Celsius \\
+h\_pct          & Humidité en pourcentage \\
+lux\_ch0/ch1    & Luminosité sur deux canaux \\
+alt\_m          & Altitude calculée en mètres \\
+src\_device     & Identifiant émetteur (ex. \texttt{fipy1}) \\
+ts\_ingest      & Horodatage lisible de l'insertion \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Requête type Grafana}
+
+\begin{codebox}[listing options={style=pystyle,language=SQL}]
+SELECT
+  FROM_UNIXTIME(ts_epoch) AS time,
+  t_c                     AS value,
+  src_device              AS metric
+FROM mesures
+ORDER BY ts_epoch;
+\end{codebox}
+
+La fonction \texttt{FROM\_UNIXTIME} convertit le timestamp en format temporel utilisable par Grafana, qui interprète alors les données comme une série temporelle.
+
+\subsection{Dashboards}
+
+Quatre panels \texttt{Gauge} avec seuils colorés affichent la dernière valeur reçue :
+\begin{itemize}
+  \item \textcolor{green!60!black}{\textbf{Vert}} \textemdash{} valeur dans la plage normale
+  \item \textcolor{orange}{\textbf{Orange}} \textemdash{} valeur de vigilance
+  \item \textcolor{red}{\textbf{Rouge}} \textemdash{} valeur critique
+\end{itemize}
+
+Rafraîchissement à 5\,s : bon compromis entre réactivité et stabilité du rendu.
+
+\section{Performances et énergie}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4.5cm} X@{}}
+\toprule
+\rowcolor{light} Métrique & Valeur observée \\ \midrule
+Période d'échantillonnage  & 2 secondes \\
+Débit messages             & $\sim$30 / minute \\
+Taille payload JSON        & $\sim$80 octets \\
+Latence FiPy $\rightarrow$ Grafana & $\sim$400 ms \\
+Consommation FiPy seul     & 120 mA @ 3,3 V ($\sim$0,4 W) \\
+PySense + capteurs         & +30 mA \\
+LED RGB                    & +5 à 10 mA \\
+\textbf{Total système}     & \textbf{$\sim$0,5 W} en régime normal \\
+\bottomrule
+\end{tabularx}
+
+\medskip
+La faible empreinte mémoire de MicroPython et l'efficacité du header MQTT (contre HTTP) permettent une exécution stable sur plusieurs heures sans fuite ni blocage.
+
+\section{Difficultés rencontrées}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4cm} X@{}}
+\toprule
+\rowcolor{light} Problème & Solution \\ \midrule
+Bornes Eduroam/RT-WiFi bloquent les ports MQTT & Passerelle smartphone en mode point d'accès \\
+Incompatibilité de versions des libs Pycom & Mise à jour firmware FiPy et PySense avant déploiement \\
+Mapping JSON $\leftrightarrow$ topics Grafana & Format de message uniformisé pour tous les capteurs \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusion}
+
+Ce TP matérialise la boucle IoT canonique : capter, transmettre, traiter, visualiser, agir. La maîtrise simultanée du firmware embarqué (MicroPython), du transport (MQTT/Wi-Fi), du stockage (MySQL) et de la visualisation (Grafana) constitue un socle solide pour des projets plus ambitieux \textemdash{} LoRa, LTE-M, architectures cloud distribuées.
+
+L'intégration d'une commande MQTT inverse (bouton Grafana $\rightarrow$ LED FiPy) symbolise la boucle fermée : la donnée ne se contente plus d'être observée, elle devient un levier d'action.
+
+\vspace{0.5cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og Internet of Things : connecter le monde physique au monde numérique. \fg{}}
+\end{center}
+
+\end{document}

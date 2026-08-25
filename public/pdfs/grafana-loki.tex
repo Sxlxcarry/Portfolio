@@ -1,0 +1,355 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT GRAFANA — LOKI TAAF Integration
+%  Theme : Monitoring / observabilité — palette orange
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette Grafana -----------------------------------------------------
+\definecolor{primary}{HTML}{161719}
+\definecolor{accent}{HTML}{F46800}
+\definecolor{accentdark}{HTML}{B84F00}
+\definecolor{light}{HTML}{FFF7F0}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{1E1F22}
+\definecolor{codefg}{HTML}{E6E6E6}
+\definecolor{codekw}{HTML}{FF9F40}
+\definecolor{codestr}{HTML}{B5CEA8}
+\definecolor{codecmt}{HTML}{6A9955}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faChartLine~Loki / Grafana — Monitoring TAAF}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}Honorine Kylian}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+\lstdefinestyle{sqlstyle}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codefg},
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecmt}\itshape,
+  showstringspaces=false, breaklines=true,
+  frame=none, framesep=8pt, framerule=0pt,
+  xleftmargin=12pt, xrightmargin=12pt,
+  columns=fullflexible, inputencoding=utf8, extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ô}{{\^o}}1 {î}{{\^\i}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1 {â}{{\^a}}1 {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {À}{{\`A}}1 {Ô}{{\^O}}1 {Ç}{{\c{C}}}1 {Ù}{{\`U}}1 {Â}{{\^A}}1
+}
+\lstset{style=sqlstyle,language=SQL}
+
+\newtcblisting{sqlbox}[1][]{
+  listing only,
+  enhanced jigsaw, breakable,
+  colback=codebg, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  listing options={style=sqlstyle,language=SQL}, #1
+}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=light, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{resultbox}[1][]{
+  enhanced, colback=accent!10, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+% ---- PAGE DE TITRE ------------------------------------------------------
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  \fill[accent] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : dashboard / gauges
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1.0]
+      \fill[white,rounded corners=4pt] (-2.4,-1.7) rectangle (2.4,1.7);
+      \fill[primary,rounded corners=4pt] (-2.4,1.1) rectangle (2.4,1.7);
+      \fill[accent] (-2.15,1.4) circle (0.13);
+      % Barres de monitoring
+      \fill[accent] (-1.9,-1) rectangle (-1.4,-0.2);
+      \fill[accent] (-1.1,-1) rectangle (-0.6,0.2);
+      \fill[accent] (-0.3,-1) rectangle (0.2,0.6);
+      \fill[accent] (0.5,-1) rectangle (1.0,-0.4);
+      \fill[accent] (1.3,-1) rectangle (1.8,0.8);
+      % Ligne de tendance
+      \draw[white,line width=1.5pt] (-1.65,-0.2) -- (-0.85,0.2) -- (-0.05,0.6) -- (0.75,-0.4) -- (1.55,0.8);
+      % Points
+      \foreach \x/\y in {-1.65/-0.2,-0.85/0.2,-0.05/0.6,0.75/-0.4,1.55/0.8} \fill[white] (\x,\y) circle (0.06);
+      \node[font=\ttfamily\bfseries\small,white] at (-1.6,1.4) {dashboard};
+    \end{tikzpicture}};
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {Loki Integration};
+  \node[anchor=north, accent, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {Logs \& Métriques TAAF};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {Grafana \textbullet{} Prometheus \textbullet{} cAdvisor};
+
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3cm]current page.south west) {\textbf{\textcolor{accent}{Auteur}}};
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=2.5cm]current page.south west) {HONORINE Kylian};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Module}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {BUT3 R\&T — 2025/2026};
+  \fill[accent] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT Réseaux \& Télécommunications — Université de La Réunion};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+\section{Contexte}
+
+\begin{infobox}[title={\faSatelliteDish~Mission}]
+Concevoir un système d'observabilité pour une base scientifique des \textbf{Terres Australes et Antarctiques Françaises (TAAF)} : surveillance du personnel isolé, des communications satellites et des équipements critiques via dashboards Grafana alimentés par requêtes SQL.
+\end{infobox}
+
+L'environnement polaire impose des contraintes uniques : isolement géographique, communications intermittentes via satellite, équipements soumis à des conditions extrêmes. Le tableau de bord doit donc fournir une vue opérationnelle immédiate aux superviseurs.
+
+\medskip
+\noindent\textbf{Stack technique :}
+\begin{itemize}
+  \item \textbf{Grafana} \textemdash{} visualisation et alerting
+  \item \textbf{Prometheus} \textemdash{} stockage time-series
+  \item \textbf{cAdvisor} \textemdash{} métriques conteneurs Docker
+  \item \textbf{PostgreSQL} \textemdash{} données métier (personnel, communications, équipements)
+\end{itemize}
+
+% =========================================================================
+\section{Requêtes de validation}
+
+\subsection{Q1 — Volumétrie de la table de communications}
+
+\begin{sqlbox}
+SELECT COUNT(*) AS total_lignes
+FROM communications_satellite;
+\end{sqlbox}
+
+\textbf{Pourquoi :} \texttt{COUNT(*)} comptabilise toutes les lignes (y compris celles avec valeurs nulles), donnant le nombre total d'événements de communication enregistrés.
+
+\subsection{Q2 — Communications réussies sur 7 jours}
+
+\begin{sqlbox}
+SELECT COUNT(*) AS comms_reussies_7j
+FROM communications_satellite
+WHERE statut = 'Réussie'
+  AND timestamp_comm >= NOW() - INTERVAL '7 days';
+\end{sqlbox}
+
+\textbf{Pourquoi :} double filtre sur le statut et la fenêtre temporelle. Cette requête sert d'indicateur de fiabilité court-terme dans le dashboard.
+
+\subsection{Q3 — Personnel présent}
+
+\begin{sqlbox}
+SELECT COUNT(*) AS personnel_present
+FROM personnel_base
+WHERE statut = 'Présent';
+\end{sqlbox}
+
+\textbf{Pourquoi :} compte les effectifs réellement opérationnels sur site (exclut congés, missions extérieures, etc.).
+
+\subsection{Q4 — Qualité de signal moyenne (Toulouse, 30 jours)}
+
+\begin{sqlbox}
+SELECT ROUND(AVG(qualite_signal), 2) AS qualite_moyenne
+FROM communications_satellite
+WHERE station_receptrice = 'Toulouse'
+  AND timestamp_comm >= NOW() - INTERVAL '30 days';
+\end{sqlbox}
+
+\textbf{Affichage Grafana :} panel \texttt{Stat} avec seuils colorés \textemdash{} vert au-dessus de 70, orange entre 40 et 70, rouge en dessous de 40.
+
+\subsection{Q5 — Top 3 des types de communication par volume}
+
+\begin{sqlbox}
+SELECT type_communication, SUM(volume_donnees_mb) AS volume_total
+FROM communications_satellite
+GROUP BY type_communication
+ORDER BY volume_total DESC
+LIMIT 3;
+\end{sqlbox}
+
+\textbf{Affichage Grafana :} \texttt{Bar chart} horizontal pour comparaison visuelle directe.
+
+\subsection{Q6 — Heure de pic d'activité}
+
+\begin{sqlbox}
+SELECT EXTRACT(HOUR FROM timestamp_comm) AS heure,
+       COUNT(*) AS nb_transmissions
+FROM communications_satellite
+GROUP BY heure
+ORDER BY nb_transmissions DESC;
+\end{sqlbox}
+
+\begin{resultbox}[title={\faClock~Résultat}]
+\textbf{Pic à 7h} avec 16 transmissions, cohérent avec le début des opérations journalières dans la base.
+\end{resultbox}
+
+\subsection{Q7 — Personnel isolé — détection de risque}
+
+\textbf{Cible :} identifier une personne sans communication depuis plus de 7 jours \textbf{ET} en mission depuis plus de 4 mois.
+
+\begin{sqlbox}
+SELECT personnel_id, nom, prenom, fonction, statut,
+       date_arrivee, derniere_communication,
+       EXTRACT(DAY FROM (NOW() - date_arrivee))           AS duree_mission_jours,
+       EXTRACT(DAY FROM (NOW() - derniere_communication)) AS inactivite_jours
+FROM personnel_base
+WHERE derniere_communication < NOW() - INTERVAL '7 days'
+  AND date_arrivee <= NOW() - INTERVAL '4 months'
+ORDER BY inactivite_jours DESC, duree_mission_jours DESC
+LIMIT 1;
+\end{sqlbox}
+
+\begin{resultbox}[title={\faExclamationTriangle~Cas critique identifié}]
+\textbf{Julie MOREAU} — Biologiste marine
+\begin{itemize}
+  \item En mission depuis 345 jours (\(\sim\)11 mois)
+  \item Sans communication depuis 257 jours (\(\sim\)8 mois)
+  \item Statut : En congé
+\end{itemize}
+\end{resultbox}
+
+\textbf{Analyse des risques opérationnels :}
+\begin{itemize}
+  \item \textbf{Isolement critique} : impossibilité de confirmer l'état de santé ou la progression de la mission.
+  \item \textbf{Durée anormalement longue} : risques de fatigue extrême, psychologiques et physiques.
+  \item \textbf{Impact scientifique} : perte potentielle de données de recherche.
+  \item \textbf{Risque organisationnel} : planification de relève compromise.
+  \item \textbf{Contexte TAAF} : isolement géographique aggravé par les conditions climatiques.
+\end{itemize}
+
+\subsection{Q8 — Équipements critiques en panne (\textgreater{}48h)}
+
+Le diagnostic croise pannes \textbf{équipement} et taux d'\textbf{échec de communication} par station :
+
+\begin{sqlbox}
+WITH pannes AS (
+  SELECT equipement_id, nom_equipement, batiment AS station,
+         derniere_verification
+  FROM equipements_critiques
+  WHERE statut = 'En panne'
+    AND derniere_verification < NOW() - INTERVAL '48 hours'
+)
+SELECT p.nom_equipement, p.station,
+       COUNT(*) FILTER (WHERE c.statut_transmission <> 'Réussie') AS nb_echecs,
+       COUNT(*) AS total_comms,
+       ROUND(100.0 * COUNT(*) FILTER (WHERE c.statut_transmission <> 'Réussie')
+             / NULLIF(COUNT(*), 0), 1) AS pct_echec
+FROM pannes p
+LEFT JOIN communications_satellite c
+       ON c.station_receptrice = p.station
+      AND c.timestamp_comm >= p.derniere_verification
+GROUP BY p.nom_equipement, p.station
+ORDER BY pct_echec DESC;
+\end{sqlbox}
+
+\textbf{Affichage Grafana :} panel \texttt{Table} priorisé par \texttt{pct\_echec} décroissant pour focaliser l'intervention sur les équipements à fort impact.
+
+\subsection{Q9 — Dashboard d'alertes unifié}
+
+Trois flux d'alertes différents sont normalisés en une seule table pour affichage centralisé :
+
+\begin{sqlbox}
+WITH a_mission AS (
+  SELECT 'Mission > 90j'::text AS type_alerte,
+         personnel_id::text   AS identifiant,
+         nom || ' ' || prenom AS libelle,
+         date_arrivee         AS reference_time,
+         EXTRACT(DAY FROM (NOW() - date_arrivee))::int AS severite_score
+  FROM personnel_base
+  WHERE date_arrivee <= NOW() - INTERVAL '90 days'
+),
+a_comms AS (
+  SELECT 'Comms > 24h'::text,
+         personnel_id::text,
+         nom || ' ' || prenom,
+         derniere_communication,
+         EXTRACT(HOUR FROM (NOW() - derniere_communication))::int
+  FROM personnel_base
+  WHERE derniere_communication < NOW() - INTERVAL '24 hours'
+),
+a_eq AS (
+  SELECT 'Équip. en panne'::text,
+         equipement_id::text,
+         COALESCE(nom_equipement, station),
+         debut_panne,
+         EXTRACT(HOUR FROM (NOW() - debut_panne))::int
+  FROM equipements_critiques
+  WHERE etat = 'en panne'
+)
+SELECT * FROM a_mission
+UNION ALL SELECT * FROM a_comms
+UNION ALL SELECT * FROM a_eq
+ORDER BY type_alerte, severite_score DESC, reference_time ASC;
+\end{sqlbox}
+
+\begin{infobox}[title={\faIcon{tachometer-alt}~Panel \og Alertes critiques \fg{}}]
+Trois familles d'alertes regroupées sous une vue unique \textemdash{} le superviseur dispose en un coup d'\oe{}il du panorama opérationnel : personnel en mission longue, silences radio, équipements en panne.
+\end{infobox}
+
+\section{Synthèse technique}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{1.2cm} l X@{}}
+\toprule
+\rowcolor{light} Niveau & Type panel & Cas d'usage \\ \midrule
+Q1--Q3 & Stat       & Indicateurs simples comptés \\
+Q4     & Stat seuil & Qualité signal avec code couleur \\
+Q5     & Bar chart  & Comparaison volumes par catégorie \\
+Q6     & Time series& Distribution temporelle d'activité \\
+Q7     & Table      & Détection de cas critiques \\
+Q8     & Table tri  & Priorisation interventions \\
+Q9     & Alert list & Dashboard centralisé \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusion}
+
+Ce travail démontre l'usage de Grafana au-delà du simple monitoring système : croiser plusieurs sources métier pour produire de l'information actionnable. Les CTE et fonctions d'agrégation PostgreSQL permettent d'encoder dans une seule requête une logique d'alerte complexe \textemdash{} chaque panel Grafana devient alors un capteur de risque opérationnel.
+
+\vspace{0.5cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og En zone polaire, une donnée silencieuse est une alerte. \fg{}}
+\end{center}
+
+\end{document}

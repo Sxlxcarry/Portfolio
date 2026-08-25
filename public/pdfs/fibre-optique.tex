@@ -1,0 +1,264 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT FIBRE OPTIQUE — TP Faucon
+%  Theme : Télécoms — palette cyan / navy
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta,decorations.pathreplacing,fadings}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette télécoms ----------------------------------------------------
+\definecolor{primary}{HTML}{0A2540}
+\definecolor{accent}{HTML}{00ACC1}
+\definecolor{accentdark}{HTML}{006978}
+\definecolor{light}{HTML}{F0F9FB}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{lightblue}{HTML}{E0F7FA}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{primary}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faNetworkWired~Fibre optique — TP Faucon}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}Honorine \& Kylian}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=lightblue, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{calcbox}[1][]{
+  enhanced, colback=accent!10, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{defbox}[1][]{
+  enhanced, colback=primary!5, colframe=primary,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+% ---- PAGE DE TITRE ------------------------------------------------------
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  \fill[accent] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : faisceau lumineux dans une fibre
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1.0]
+      % Gaines extérieures
+      \fill[white,rounded corners=2pt] (-3,-0.8) rectangle (3,0.8);
+      % Coeur fibre (cyan)
+      \fill[accent!30] (-3,-0.4) rectangle (3,0.4);
+      \fill[accent!60] (-3,-0.18) rectangle (3,0.18);
+      % Faisceaux lumineux
+      \foreach \x in {-2.6,-1.8,-1.0,-0.2,0.6,1.4,2.2} {
+        \fill[white] (\x,0) circle (0.13);
+        \fill[accent!50] (\x,0) circle (0.07);
+      }
+      % Eclats de connecteur
+      \draw[white,line width=2pt] (-3.2,0) -- (-3,0);
+      \draw[white,line width=2pt] (3,0) -- (3.2,0);
+      % Anneau central avec icone
+      \fill[white] (0,0) circle (0.7);
+      \node[scale=1.6,accent] at (0,0) {\faBolt};
+    \end{tikzpicture}};
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {Fibre Optique};
+  \node[anchor=north, accent, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {TP Faucon — Réseaux Optiques};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {FTTx \textbullet{} GPON \textbullet{} Bilan de liaison};
+
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3cm]current page.south west) {\textbf{\textcolor{accent}{Auteurs}}};
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=2.5cm]current page.south west) {Honorine \textbullet{} Kylian};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Module}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {BUT3 R\&T};
+  \fill[accent] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT Réseaux \& Télécommunications — Université de La Réunion};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+\section{Introduction}
+
+\begin{infobox}[title={\faBullseye~Objectif}]
+Comprendre les architectures des réseaux d'accès en fibre optique (FTTx), maîtriser le vocabulaire opérateur (NRO, PMZ, NF) et savoir réaliser un \textbf{bilan de liaison GPON} conforme aux exigences de l'ARCEP.
+\end{infobox}
+
+Ce TP balaye l'écosystème de la fibre optique grand public et professionnel : terminologie standardisée, choix d'architecture (point-à-point vs PON), rôle des équipements de mutualisation, puis évaluation théorique des performances d'un réseau FTTH.
+
+% =========================================================================
+\section{Partie A — Généralités sur les réseaux optiques}
+
+\subsection{Les sigles FTTx}
+
+Le sigle générique \textbf{FTTx} (\emph{Fiber To The x}) décrit jusqu'où la fibre est tirée. Plus \texttt{x} est proche de l'utilisateur, meilleure est la qualité de service.
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l l X@{}}
+\toprule
+\rowcolor{light} Sigle & Signification & Description \\ \midrule
+FTTN    & Fiber To The Node     & Fibre jusqu'à un nœud, terminaison en cuivre/coaxial \\
+FTTC    & Fiber To The Curb     & Point de distribution proche de l'usager \\
+FTTS    & Fiber To The Street   & Variante FTTC pour réseaux denses \\
+FTTcab  & Fiber To The Cabinet  & Fibre s'arrête à une armoire de rue \\
+FTTB    & Fiber To The Building & Fibre jusqu'au pied d'immeuble, distribution interne cuivre \\
+FTTP    & Fiber To the Premises & Terme générique : englobe FTTH et FTTB \\
+FTTO    & Fiber To The Office   & Variante pro, fibre jusqu'au bureau \\
+\textcolor{accent}{FTTH}    & \textcolor{accent}{Fiber To The Home} & \textcolor{accent}{Fibre directement chez l'abonné — le standard cible} \\
+FTTLA   & Fiber To Last Amplifier & Réseau hybride fibre-coaxial \\
+\bottomrule
+\end{tabularx}
+
+\subsection{FTTN vs FTTH}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{2.5cm} X X@{}}
+\toprule
+\rowcolor{light} Critère & FTTN & FTTH \\ \midrule
+Coût initial      & Faible          & Élevé \\
+Débit             & Limité par le cuivre & Gbps stables \\
+Atténuation       & Forte sur la partie cuivre & Quasi nulle \\
+Stabilité         & Sensible aux interférences & Excellente \\
+Déploiement       & Rapide          & Complexe en zone dense \\
+\bottomrule
+\end{tabularx}
+
+\subsection{ARCEP — rôle régulateur}
+
+\begin{defbox}[title={\faGavel~ARCEP}]
+\textbf{Autorité de Régulation des Communications Électroniques, des Postes et de la distribution de la Presse.} Quatre missions principales :
+\begin{itemize}
+  \item Réguler les réseaux télécoms, infrastructures numériques et postales
+  \item Garantir la concurrence entre opérateurs
+  \item Protéger les utilisateurs (qualité, tarifs)
+  \item Encourager le déploiement des réseaux à très haut débit
+\end{itemize}
+\end{defbox}
+
+\subsection{Topologie : Point-à-Point vs Point-Multipoint (PON)}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.2cm} X X@{}}
+\toprule
+\rowcolor{light} & Point-à-Point & Point-Multipoint (PON) \\ \midrule
+Principe          & 1 fibre dédiée par client & 1 fibre partagée via splitter \\
+Avantages         & Isolation totale, perfs prévisibles & Coût réduit, infra simplifiée \\
+Inconvénients     & Coût élevé, beaucoup d'infra & Débit partagé, moins flexible \\
+Opérateurs FR     & Orange (entreprises), Colt & Free, SFR \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Vocabulaire opérateur : NRO, PMZ, NF}
+
+\begin{itemize}
+  \item \textbf{NRO — Nœud de Raccordement Optique} : point central collectant les fibres d'une zone.
+  \item \textbf{PMZ — Point de Mutualisation de Zone} : permet à plusieurs opérateurs de partager l'infrastructure.
+  \item \textbf{NF — Nœud de Flexibilité} : point intermédiaire permettant d'ajouter ou modifier des connexions, typiquement entre NRO et PMZ.
+\end{itemize}
+
+La chaîne complète d'un raccordement type est : \textbf{NRO $\rightarrow$ NF $\rightarrow$ PMZ $\rightarrow$ Abonné}.
+
+% =========================================================================
+\section{Partie B — Évaluation théorique d'un réseau FTTH GPON}
+
+\subsection{Rôle du splitter et capacité GPON}
+
+Le splitter optique répartit un signal unique vers plusieurs fibres clients sans amplification active. En GPON, le ratio courant est \textbf{1:64}.
+
+\begin{calcbox}[title={\faCalculator~Capacité maximale en GPON}]
+Avec un câble \textbf{288 FO} et un splitter 1:64 par fibre :
+\[
+288 \times 64 = \mathbf{18\,432 \text{ clients}}
+\]
+\end{calcbox}
+
+\subsection{Bilan de liaison pour le client le plus éloigné}
+
+Le bilan de liaison cumule toutes les pertes optiques entre l'OLT et l'ONT (chez le client). Trois grandes contributions :
+
+\begin{calcbox}[title={\faRuler~Bilan optique sur 20 km}]
+\begin{tabular}{@{}l r@{}}
+\textbf{Atténuation fibre}            & $0{,}35\text{ dB/km} \times 20\text{ km}$ \\
+                                       & \hfill $= 7{,}0$ dB \\[2pt]
+\textbf{Pertes connecteurs} ($5 \times 0{,}5$ dB) & $\hfill = 2{,}5$ dB \\[2pt]
+\textbf{Splitter 1:64}                & $\hfill = 18{,}0$ dB \\[4pt]
+\midrule
+\textbf{Total}                        & \hfill $\mathbf{27{,}5}$ \textbf{dB} \\
+\end{tabular}
+\end{calcbox}
+
+\subsection{Conformité ARCEP et marge de vieillissement}
+
+\begin{infobox}[title={\faCheckCircle~Conformité ARCEP}]
+Budget optique maximum autorisé en GPON : \textbf{28 dB}. \\
+Total calculé : \textbf{27,5 dB} \(\Rightarrow\) \textcolor{accent}{\textbf{Conforme}}.
+\end{infobox}
+
+Une marge supplémentaire de \textbf{3 à 5 dB} doit être ajoutée pour anticiper la dégradation des composants dans le temps (oxydation des connecteurs, micro-courbures, vieillissement de la fibre) :
+\[
+27{,}5 + 3 = \mathbf{30{,}5 \text{ dB}}
+\]
+
+Ce résultat dépasse la marge ARCEP : en pratique, un opérateur ne déploierait pas de splitter 1:64 sur 20 km, ou utiliserait un OLT plus puissant.
+
+\subsection{Bande passante GPON}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4cm} X@{}}
+\toprule
+\rowcolor{light} Caractéristique & Valeur \\ \midrule
+Downlink (descendant)  & 2,488 Gbps \\
+Uplink (montant)       & 1,244 Gbps \\
+Bande passante totale  & \textbf{3,732 Gbps théoriques} \\
+Modulation RZ          & Bande passante divisée par 2 \(\rightarrow\) 1,244 Gbps utiles \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusion}
+
+Ce TP donne les clefs de lecture d'un dossier d'ingénierie fibre : choix d'architecture, conformité ARCEP, dimensionnement par calcul de budget optique. Les concepts mobilisés (atténuation, splitter, GPON, marge de vieillissement) constituent le socle théorique des métiers de déploiement FTTH.
+
+\vspace{0.5cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og La fibre, c'est de la lumière qui parle. \fg{}}
+\end{center}
+
+\end{document}

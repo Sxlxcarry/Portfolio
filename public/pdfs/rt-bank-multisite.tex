@@ -1,0 +1,516 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT INFRASTRUCTURE MULTI-SITES — RT Bank
+%  Theme : Banque / infra entreprise — palette deep blue
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette banque / enterprise ----------------------------------------
+\definecolor{primary}{HTML}{0F1F44}
+\definecolor{accent}{HTML}{1E40AF}
+\definecolor{accent2}{HTML}{D4A537}
+\definecolor{accentdark}{HTML}{1E3A8A}
+\definecolor{light}{HTML}{EFF6FF}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{0F1A33}
+\definecolor{codefg}{HTML}{E8EEF7}
+\definecolor{codekw}{HTML}{93C5FD}
+\definecolor{codestr}{HTML}{FBD38D}
+\definecolor{codecmt}{HTML}{8FA3C7}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{primary}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faServer~RT Bank — Infra multi-sites sécurisée}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}HONORINE Kylian}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+\lstdefinestyle{cfg}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codefg},
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecmt}\itshape,
+  showstringspaces=false, breaklines=true,
+  frame=none, framesep=8pt, framerule=0pt,
+  xleftmargin=12pt, xrightmargin=12pt,
+  columns=fullflexible, inputencoding=utf8, extendedchars=true,
+  morekeywords={zone,type,master,slave,allow-transfer,also-notify,file,directory,recursion,listen-on,allow-query,forwarders,frontend,backend,bind,server,acl,http-request,redirect,scheme,mode,balance,option,ssl,crt,verify,timeout,maxconn,daemon,global,defaults,log,VirtualHost,ServerName,DocumentRoot,SSLEngine,SSLCertificateFile,SSLCertificateKeyFile,Redirect,Order,allow,deny,Require,from,all,Listen,RewriteEngine,RewriteRule},
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ô}{{\^o}}1 {î}{{\^\i}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1 {â}{{\^a}}1 {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {À}{{\`A}}1 {Ô}{{\^O}}1 {Ç}{{\c{C}}}1 {Ù}{{\`U}}1 {Â}{{\^A}}1
+}
+\lstset{style=cfg}
+
+\newtcblisting{cfgbox}[1][]{
+  listing only,
+  enhanced jigsaw, breakable,
+  colback=codebg, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  listing options={style=cfg}, #1
+}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=light, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{secbox}[1][]{
+  enhanced, colback=accent!8, colframe=accent2,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{alertbox}[1][]{
+  enhanced, colback=red!5, colframe=red!70!black,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  \fill[accent2] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : building / bank avec cadenas
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1.0]
+      % toit en triangle
+      \fill[white] (-2.4,0.6) -- (0,1.7) -- (2.4,0.6) -- cycle;
+      % base
+      \fill[white] (-2.2,-1.4) rectangle (2.2,0.6);
+      % colonnes
+      \foreach \x in {-1.6,-0.8,0,0.8,1.6} {
+        \fill[accent2] (\x-0.18,-1.2) rectangle (\x+0.18,0.55);
+      }
+      % escalier
+      \fill[white] (-2.5,-1.6) rectangle (2.5,-1.4);
+      \fill[white] (-2.7,-1.85) rectangle (2.7,-1.6);
+      % colonne centrale : icone serveur stack
+      \fill[accent] (-0.2,-0.6) rectangle (0.2,0.4);
+      % toit details
+      \fill[accent2] (-0.15,1.0) rectangle (0.15,1.55);
+      % petits cadenas qui flottent autour
+      \node[scale=0.9,accent2] at (-2.8,1.4) {\faLock};
+      \node[scale=0.7,accent2!70] at (2.7,1.6) {\faLock};
+      \node[scale=0.6,white!70!primary] at (-3.0,-0.6) {\faShieldVirus};
+      \node[scale=0.6,white!70!primary] at (3.0,-0.4) {\faShieldVirus};
+    \end{tikzpicture}};
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {RT Bank};
+  \node[anchor=north, accent2, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {Infrastructure multi-sites sécurisée};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {Stormshield \textbullet{} Apache HA \textbullet{} BIND9 \textbullet{} AD \textbullet{} Zabbix};
+
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3cm]current page.south west) {\textbf{\textcolor{accent}{Auteur}}};
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=2.5cm]current page.south west) {HONORINE Kylian};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Cadre}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {SAE 4.Cyber.04};
+  \fill[accent2] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT Réseaux \& Télécommunications — Filière Cybersécurité};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+\section{Contexte et objectifs}
+
+\begin{infobox}[title={\faBullseye~Mission}]
+RT Bank \textemdash{} agence bancaire fictive \textemdash{} déploie une infrastructure multi-sites entre Saint-Denis et Saint-Pierre. Objectifs : sécurité par défaut, haute disponibilité, exploitation supervisée, et conformité aux recommandations \textbf{ANSSI}.
+\end{infobox}
+
+\textbf{Périmètre couvert :}
+\begin{itemize}
+  \item Pare-feu \textbf{Stormshield EVA} segmentant DMZ / LAN-Clients / LAN-Serveurs / WAN
+  \item Cluster Apache + HAProxy avec terminaison TLS en DMZ
+  \item DNS \textbf{BIND9} maître/esclave pour le domaine \texttt{rt-bank.re}
+  \item \textbf{Active Directory} \texttt{rtbank.re} avec DC primaire à Saint-Denis et RODC à Saint-Pierre
+  \item Supervision \textbf{Zabbix} et durcissement système
+  \item Pentest et plan de contre-mesures
+\end{itemize}
+
+% =========================================================================
+\section{Architecture réseau}
+
+\subsection{Plan d'adressage}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l l l X@{}}
+\toprule
+\rowcolor{light} Zone & VLAN & Réseau & Rôle \\ \midrule
+WAN           & --  & 192.168.41.0/23 & Sortie Internet \\
+DMZ           & 100 & 10.10.10.0/24   & Services exposés (web, mail relay) \\
+LAN-Serveurs  & 200 & 10.10.20.0/24   & DC, DNS, fichiers, Zabbix \\
+LAN-Clients   & 300 & 10.10.30.0/24   & Postes utilisateurs \\
+MGMT          & 999 & 10.10.99.0/24   & Administration équipements \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Stormshield EVA — interfaces}
+
+\begin{tabularx}{\linewidth}{@{}c >{\bfseries}l l X@{}}
+\toprule
+\rowcolor{light} Iface & Zone & IP & Description \\ \midrule
+1 & WAN          & 192.168.41.65/23 & Lien opérateur \\
+2 & DMZ          & 10.10.10.1/24    & Frontaux web \\
+3 & LAN-Clients  & 10.10.30.1/24    & Postes \\
+4 & LAN-Serveurs & 10.10.20.1/24    & Backoffice \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Matrice de flux}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{@{}l l l c X@{}}
+\toprule
+\rowcolor{light} Source & Destination & Service & Action & Justification \\ \midrule
+LAN-Clients & DMZ (HAProxy)  & TCP/443         & \textcolor{accent}{\faCheck}~OK  & Accès web interne \\
+WAN         & DMZ (HAProxy)  & TCP/443         & \textcolor{accent}{\faCheck}~OK  & Web public \\
+LAN-Clients & LAN-Serveurs (DC) & TCP/389+88 + UDP/53 & \textcolor{accent}{\faCheck}~OK & Auth + DNS \\
+DMZ         & LAN-Serveurs   & TCP/3306        & \textcolor{accent}{\faCheck}~OK  & SQL applicative \\
+DMZ         & LAN-Clients    & Any             & \textcolor{red}{\faTimes}~Refus  & Isolation stricte \\
+WAN         & LAN-*          & Any             & \textcolor{red}{\faTimes}~Refus  & Aucun accès direct \\
+\bottomrule
+\end{tabularx}
+
+% =========================================================================
+\section{Frontaux web — HAProxy + Apache + TLS}
+
+\subsection{Schéma fonctionnel}
+
+\begin{secbox}[title={\faProjectDiagram~Chaîne de traitement}]
+\textbf{Internet} $\rightarrow$ \textbf{Stormshield (NAT 443)} $\rightarrow$ \textbf{HAProxy (terminaison TLS, équilibrage)} $\rightarrow$ \textbf{2 Apache backends} (\texttt{web1}, \texttt{web2})
+\end{secbox}
+
+HAProxy joue trois rôles : terminer le TLS (1 seul certificat à gérer), répartir la charge (round-robin avec health checks), et masquer le nombre réel de frontaux.
+
+\subsection{Configuration HAProxy}
+
+\begin{cfgbox}
+global
+    daemon
+    maxconn 4096
+    log /dev/log local0
+
+defaults
+    mode http
+    timeout connect 5s
+    timeout client  30s
+    timeout server  30s
+    option httplog
+    option forwardfor
+
+frontend https_in
+    bind *:443 ssl crt /etc/haproxy/certs/rtbank.pem
+    http-request redirect scheme https unless { ssl_fc }
+    default_backend web_pool
+
+backend web_pool
+    balance roundrobin
+    option httpchk GET /health
+    server web1 10.10.10.11:80 check
+    server web2 10.10.10.12:80 check
+\end{cfgbox}
+
+\subsection{Apache backend (web1 \& web2)}
+
+Apache écoute sur le port 80 en interne uniquement. La redirection \texttt{X-Forwarded-Proto} est lue depuis HAProxy pour générer correctement les liens absolus.
+
+\begin{cfgbox}
+<VirtualHost *:80>
+    ServerName www.rt-bank.re
+    DocumentRoot /var/www/rtbank
+
+    # Endpoint sante pour HAProxy
+    Alias /health /var/www/health
+    <Directory /var/www/health>
+        Require all granted
+    </Directory>
+
+    <Directory /var/www/rtbank>
+        Options -Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    ErrorLog  ${APACHE_LOG_DIR}/rtbank-error.log
+    CustomLog ${APACHE_LOG_DIR}/rtbank-access.log combined
+</VirtualHost>
+\end{cfgbox}
+
+% =========================================================================
+\section{DNS — BIND9 maître / esclave}
+
+\subsection{Rôles}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l l X@{}}
+\toprule
+\rowcolor{light} Serveur & Adresse & Rôle \\ \midrule
+\texttt{ns1.rt-bank.re} & 10.10.20.5 & Master \texttt{rt-bank.re} (Saint-Denis) \\
+\texttt{ns2.rt-bank.re} & 10.10.20.6 & Slave  \texttt{rt-bank.re} (Saint-Pierre) \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Configuration du serveur maître}
+
+\begin{cfgbox}
+options {
+    directory "/var/cache/bind";
+    listen-on { 127.0.0.1; 10.10.20.5; };
+    allow-query { 10.10.0.0/16; };
+    forwarders { 1.1.1.1; 9.9.9.9; };
+    recursion yes;
+    dnssec-validation auto;
+};
+
+zone "rt-bank.re" {
+    type master;
+    file "/etc/bind/db.rt-bank.re";
+    allow-transfer { 10.10.20.6; };
+    also-notify    { 10.10.20.6; };
+};
+\end{cfgbox}
+
+\subsection{Zone \texttt{rt-bank.re}}
+
+\begin{cfgbox}
+$TTL 3600
+@   IN SOA ns1.rt-bank.re. admin.rt-bank.re. (
+        2026053001  ; serial
+        3600        ; refresh
+        900         ; retry
+        604800      ; expire
+        3600 )      ; minimum
+
+    IN NS    ns1.rt-bank.re.
+    IN NS    ns2.rt-bank.re.
+
+ns1 IN A     10.10.20.5
+ns2 IN A     10.10.20.6
+www IN A     192.168.41.66      ; IP publique HAProxy
+mail IN A    192.168.41.67
+@   IN MX 10 mail.rt-bank.re.
+\end{cfgbox}
+
+\subsection{Configuration du serveur esclave}
+
+\begin{cfgbox}
+zone "rt-bank.re" {
+    type slave;
+    masters { 10.10.20.5; };
+    file "/var/cache/bind/db.rt-bank.re.slave";
+};
+\end{cfgbox}
+
+% =========================================================================
+\section{Annuaire — Active Directory \texttt{rtbank.re}}
+
+\subsection{Topologie}
+
+\begin{secbox}[title={\faNetworkWired~Réplication AD}]
+\begin{itemize}
+  \item \textbf{DC1 — Saint-Denis} (10.10.20.10) : DC principal, FSMO roles, schema master
+  \item \textbf{RODC — Saint-Pierre} (10.10.20.11) : Read-Only Domain Controller pour le site distant
+\end{itemize}
+\end{secbox}
+
+Un \textbf{RODC} (Read-Only DC) authentifie localement les utilisateurs autorisés sans pouvoir être source de propagation en cas de compromission \textemdash{} idéal pour un site distant moins protégé physiquement.
+
+\subsection{Stratégies appliquées}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
+\toprule
+\rowcolor{light} GPO & Effet \\ \midrule
+Password policy   & 14 caractères, complexité, expiration 90j, historique 24 \\
+Lockout policy    & 5 tentatives, 30 min de verrouillage \\
+Audit policy      & Logon/Logoff, Account Mgmt, Policy Change \textemdash{} tous succès/échecs \\
+UAC               & Niveau maximum sur les postes utilisateurs \\
+LAPS              & Mot de passe admin local unique par poste, rotation 30j \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Structuration des OUs}
+
+\begin{cfgbox}[listing options={style=cfg,language=bash}]
+DC=rtbank,DC=re
+|-- OU=Sites
+|   |-- OU=StDenis
+|   |   |-- OU=Users      (collaborateurs)
+|   |   |-- OU=Computers  (postes)
+|   |   `-- OU=Servers    (serveurs)
+|   `-- OU=StPierre
+|       |-- OU=Users
+|       `-- OU=Computers
+|-- OU=Groups
+|   |-- OU=Roles       (RH, Compta, Direction, IT)
+|   `-- OU=Resources   (acces partages, applis)
+`-- OU=ServiceAccounts (comptes applicatifs)
+\end{cfgbox}
+
+% =========================================================================
+\section{Supervision — Zabbix}
+
+\subsection{Architecture}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
+\toprule
+\rowcolor{light} Composant & Description \\ \midrule
+Zabbix server    & 10.10.20.20 — collecte centralisée \\
+MySQL backend    & sur le même serveur, base \texttt{zabbix} dédiée \\
+Frontend         & Apache + PHP, accès via HAProxy interne \\
+Agents Zabbix    & sur DC, DNS, frontaux web, pare-feu (via SNMPv3) \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Templates et alertes clés}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4cm} X@{}}
+\toprule
+\rowcolor{light} Métrique & Seuil d'alerte \\ \midrule
+CPU utilisation  & \textgreater{}~85\% pendant 5 min \\
+RAM disponible   & \textless{}~10\% pendant 5 min \\
+Disque \texttt{/}, \texttt{/var}, \texttt{/srv} & \textgreater{}~90\% \\
+Process critiques (apache2, named, haproxy) & Indisponible \textgreater{}~60\,s \\
+Réplication AD   & SYSVOL/NETLOGON non répliqué \textgreater{}~15 min \\
+Certificat TLS   & Expiration \textless{}~30 jours \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Notifications}
+
+Trois canaux : mail SMTP via le relais DMZ pour les alertes \og Information \fg{} et \og Avertissement \fg{}, webhook Mattermost pour les alertes \og Haute \fg{}, et SMS via passerelle dédiée pour les alertes \og Critique \fg{}.
+
+% =========================================================================
+\section{Durcissement — recommandations ANSSI}
+
+\subsection{Systèmes Linux (Debian 12)}
+
+\begin{cfgbox}[listing options={style=cfg,language=bash}]
+# Service indispensable au strict minimum
+systemctl disable --now bluetooth cups avahi-daemon
+
+# Pare-feu hote (UFW) ferme par defaut
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow from 10.10.99.0/24 to any port 22 proto tcp
+ufw enable
+
+# Mises a jour automatiques securite
+apt install -y unattended-upgrades
+dpkg-reconfigure --priority=low unattended-upgrades
+
+# SSH durci
+sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sed -i 's/^#\?X11Forwarding.*/X11Forwarding no/' /etc/ssh/sshd_config
+systemctl restart sshd
+
+# Auditd active
+apt install -y auditd
+systemctl enable --now auditd
+\end{cfgbox}
+
+\subsection{Windows Server (DC1)}
+
+\begin{itemize}
+  \item Désactivation de SMBv1 (\texttt{Set-SmbServerConfiguration -EnableSMB1Protocol \$false})
+  \item Activation du \textbf{Credential Guard} et \textbf{LSA Protection}
+  \item Blocage NTLMv1 / NTLMv2 fallback via GPO
+  \item Activation Windows Defender ASR (Attack Surface Reduction)
+  \item Journaux exportés vers le serveur Zabbix + retention 1 an
+\end{itemize}
+
+% =========================================================================
+\section{Tests d'intrusion et contre-mesures}
+
+\subsection{Méthodologie}
+
+Trois phases : reconnaissance, exploitation, post-exploitation. Outils : nmap, gobuster, hydra, BloodHound, sqlmap. Périmètre : DMZ et services exposés.
+
+\subsection{Findings principaux et remédiations}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4cm} X@{}}
+\toprule
+\rowcolor{light} Vulnérabilité & Contre-mesure \\ \midrule
+Énumération via NSE (\texttt{nmap -sV})       & Filtrage applicatif sur le pare-feu, masquage de version Apache (\texttt{ServerTokens Prod}) \\
+Bruteforce HTTP form               & Rate-limiting HAProxy + fail2ban sur les logs Apache \\
+Injection SQL (sqlmap)             & Paramétrage des requêtes en backend, WAF ModSecurity activé en mode bloquant \\
+Reconnaissance AD (BloodHound)     & Tiering AD (Tier 0/1/2), suppression des chemins d'attaque vers DA \\
+Kerberoasting / AS-REP roasting    & Mots de passe service \textgreater{}~25 caractères, gMSA quand possible, \texttt{Do not require pre-authentication} désactivé \\
+Mouvement latéral SMB              & Désactivation SMBv1, signature SMB obligatoire, segmentation par VLAN \\
+\bottomrule
+\end{tabularx}
+
+\begin{alertbox}[title={\faExclamationTriangle~Constat majeur}]
+Le risque résiduel le plus élevé porte sur \textbf{le facteur humain} \textemdash{} phishing ciblé, partage de mots de passe, branchement de matériel non maîtrisé. Une démarche de sensibilisation continue et des exercices red team réguliers sont indispensables.
+\end{alertbox}
+
+% =========================================================================
+\section{Synthèse}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.5cm} X@{}}
+\toprule
+\rowcolor{light} Volet & Livrables \\ \midrule
+Réseau      & Plan d'adressage, segmentation VLAN, matrice de flux \\
+Sécurité    & Stormshield (filtrage + NAT), durcissement ANSSI \\
+Services    & HAProxy/Apache HA + TLS, BIND9 master/slave, AD multi-sites \\
+Supervision & Templates Zabbix, escalade multi-canaux \\
+Pentest     & Rapport \textit{findings} + plan de remédiation \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusion}
+
+Cette SAE met en \oe{}uvre une infrastructure d'entreprise complète, depuis le filtrage en bordure jusqu'à la supervision applicative. La logique est invariante : \textbf{minimum de privilèges}, \textbf{défense en profondeur}, \textbf{traçabilité}. Aucun composant n'est seul : chaque service critique (DNS, AD, web) est redondé, chaque flux passe par un point de contrôle, et chaque incident est instrumenté pour être détecté en moins d'une minute.
+
+\medskip
+L'expérience la plus instructive a été le pentest : voir le réseau du point de vue de l'attaquant, mesurer l'écart entre la documentation et la réalité, et constater que le maillon faible est presque toujours organisationnel avant d'être technique.
+
+\vspace{0.5cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og La sécurité, c'est un processus \textemdash{} pas un produit. \fg{} \\ \small{— Bruce Schneier}}
+\end{center}
+
+\end{document}

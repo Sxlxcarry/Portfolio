@@ -1,0 +1,340 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT STORMSHIELD — NAT & Réseau segmenté WAN/LAN/DMZ
+%  Theme : Sécurité réseau — palette navy / amber
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette sécurité réseau ---------------------------------------------
+\definecolor{primary}{HTML}{0F2540}
+\definecolor{accent}{HTML}{F59E0B}
+\definecolor{accentdark}{HTML}{B45309}
+\definecolor{light}{HTML}{FFF8EB}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{wancol}{HTML}{2563EB}
+\definecolor{lancol}{HTML}{059669}
+\definecolor{dmzcol}{HTML}{D97706}
+\definecolor{codebg}{HTML}{0F1B2D}
+\definecolor{codefg}{HTML}{F5F5F0}
+\definecolor{codekw}{HTML}{F59E0B}
+\definecolor{codestr}{HTML}{A3D977}
+\definecolor{codecmt}{HTML}{7891AB}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{primary}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faIcon{shield-alt}~Stormshield — Réseau segmenté}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}Équipe 6 — R401}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+\lstdefinestyle{cfg}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codefg},
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecmt}\itshape,
+  showstringspaces=false, breaklines=true,
+  frame=none, framesep=8pt, framerule=0pt,
+  xleftmargin=12pt, xrightmargin=12pt,
+  columns=fullflexible, inputencoding=utf8, extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ô}{{\^o}}1 {î}{{\^\i}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1 {â}{{\^a}}1 {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {À}{{\`A}}1 {Ô}{{\^O}}1 {Ç}{{\c{C}}}1 {Ù}{{\`U}}1 {Â}{{\^A}}1
+}
+\lstset{style=cfg,language=bash}
+
+\newtcblisting{shellbox}[1][]{
+  listing only,
+  enhanced jigsaw, breakable,
+  colback=codebg, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  listing options={style=cfg,language=bash}, #1
+}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=light, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{rulebox}[1][]{
+  enhanced, colback=accent!10, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  \fill[accent] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : shield avec zones segmentees
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1.0]
+      % Shield outline
+      \fill[white] (0,1.8) -- (1.6,1.2) -- (1.6,-0.5) .. controls (1.6,-1.4) and (0.8,-1.8) .. (0,-2) .. controls (-0.8,-1.8) and (-1.6,-1.4) .. (-1.6,-0.5) -- (-1.6,1.2) -- cycle;
+      \fill[accent] (0,1.55) -- (1.4,1.05) -- (1.4,-0.45) .. controls (1.4,-1.25) and (0.7,-1.6) .. (0,-1.8) .. controls (-0.7,-1.6) and (-1.4,-1.25) .. (-1.4,-0.45) -- (-1.4,1.05) -- cycle;
+      % Trois zones
+      \node[font=\sffamily\tiny\bfseries,white] at (-0.85,0.6) {WAN};
+      \node[font=\sffamily\tiny\bfseries,white] at (0.85,0.6) {DMZ};
+      \node[font=\sffamily\tiny\bfseries,white] at (0,-0.5) {LAN};
+      \draw[white,line width=1pt] (-1.4,0) -- (1.4,0);
+      \draw[white,line width=1pt] (0,1.55) -- (0,0);
+      % Cadenas central
+      \node[scale=1.4,white] at (0,-1.1) {\faLock};
+    \end{tikzpicture}};
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {Stormshield};
+  \node[anchor=north, accent, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {Réseau Segmenté WAN/LAN/DMZ};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {R401 — Filtrage \textbullet{} NAT \textbullet{} Routage};
+
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3.3cm]current page.south west) {\textbf{\textcolor{accent}{Équipe 6}}};
+  \node[anchor=south west, primary, font=\sffamily\footnotesize] at ([xshift=2.2cm,yshift=2.85cm]current page.south west) {GRONDIN Angélique};
+  \node[anchor=south west, primary, font=\sffamily\footnotesize] at ([xshift=2.2cm,yshift=2.55cm]current page.south west) {HONORINE Kylian};
+  \node[anchor=south west, primary, font=\sffamily\footnotesize] at ([xshift=2.2cm,yshift=2.25cm]current page.south west) {GRONDIN Benjamin};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Module}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {R401 — 2025};
+  \fill[accent] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT Réseaux \& Télécommunications — Université de La Réunion};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+\section{Contexte}
+
+\begin{infobox}[title={\faBullseye~Objectif}]
+Mettre en \oe{}uvre un réseau segmenté en trois zones (WAN, LAN, DMZ) sous pare-feu Stormshield, configurer le filtrage et le NAT, et valider la connectivité inter-zones avec routage adapté.
+\end{infobox}
+
+La segmentation réseau est un fondement de la défense en profondeur : elle limite la propagation d'une compromission et permet d'appliquer des politiques de sécurité différenciées par zone fonctionnelle.
+
+\subsection{Les trois zones}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l c X@{}}
+\toprule
+\rowcolor{light} Zone & Couleur & Rôle \\ \midrule
+WAN & \textcolor{wancol}{\faCircle} & Accès Internet \textemdash{} entrée/sortie du trafic externe \\
+LAN & \textcolor{lancol}{\faCircle} & Réseau interne sécurisé \textemdash{} postes utilisateurs, ressources internes \\
+DMZ & \textcolor{dmzcol}{\faCircle} & Zone intermédiaire \textemdash{} services exposés à l'extérieur, isolés du LAN \\
+\bottomrule
+\end{tabularx}
+
+\section{Architecture}
+
+\subsection{Topologie physique}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l l l X@{}}
+\toprule
+\rowcolor{light} Équipement & Port source & Port destination & Justification \\ \midrule
+Pare-feu & 1 (WAN)  & Internet (RT)   & Accès Internet externe \\
+Pare-feu & 2 (LAN)  & Switch Gi0/1    & Liaison vers le réseau interne \\
+Pare-feu & 3 (DMZ)  & Switch Gi0/6    & Liaison vers les services publics \\
+PC LAN   & NIC      & Switch Gi0/2    & Poste utilisateur en zone restreinte \\
+PC DMZ   & NIC      & Switch Gi0/7    & Serveur web accessible depuis l'externe \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Plan d'adressage}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l c c X@{}}
+\toprule
+\rowcolor{light} Zone & VLAN & Réseau & Explication \\ \midrule
+WAN & --  & 192.168.41.0/23 & Connexion Internet et routage sortant \\
+LAN & 206 & 10.0.96.0/24    & Zone interne sécurisée \\
+DMZ & 406 & 10.1.96.0/24    & Hébergement des services exposés \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Interfaces du Stormshield}
+
+\begin{tabularx}{\linewidth}{@{}c >{\bfseries}l l X@{}}
+\toprule
+\rowcolor{light} Iface & Nom & Adresse & Rôle \\ \midrule
+1 & WAN & 192.168.41.56/23 & Communication avec Internet \\
+2 & LAN & 10.0.96.1/24     & Interface réseau interne \\
+3 & DMZ & 10.1.96.1/24     & Interface services publics \\
+\bottomrule
+\end{tabularx}
+
+\section{Matrice de flux du pare-feu}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}l l l c X@{}}
+\toprule
+\rowcolor{light} Source & Destination & Protocole & Action & Justification \\ \midrule
+LAN (10.0.96.0/24) & PC DMZ (10.1.96.50) & ICMP        & \textcolor{lancol}{\faCheck}~Autoriser & Tests de connectivité \\
+LAN (10.0.96.0/24) & Internet            & HTTP/HTTPS  & \textcolor{lancol}{\faCheck}~Autoriser & Navigation contrôlée \\
+LAN (10.0.96.0/24) & DNS (192.168.20.35) & UDP/53      & \textcolor{lancol}{\faCheck}~Autoriser & Résolution de noms \\
+WAN $\rightarrow$ DMZ & Serveur Web (10.1.96.51) & TCP/80 & \textcolor{lancol}{\faCheck}~Autoriser & Publication du service web \\
+DMZ $\rightarrow$ LAN & Any                  & Any         & \textcolor{accent}{\faTimes}~Refuser & Isolation des zones \\
+\bottomrule
+\end{tabularx}
+
+\section{TP2 — Accès au serveur Web via le LAN}
+
+\subsection{Installation du serveur Apache}
+Le serveur Apache est déployé en DMZ sur \texttt{10.1.96.51}, avec désactivation de tout autre lien réseau pour forcer le passage par le pare-feu.
+
+\begin{shellbox}
+sudo apt update && sudo apt install apache2
+ip addr add 10.1.96.51/24 dev eth0
+systemctl enable --now apache2
+\end{shellbox}
+
+\subsection{Règle d'ouverture LAN $\rightarrow$ DMZ}
+Sur le Stormshield, dans \texttt{Security Policy} :
+\begin{rulebox}[title={\faIcon{shield-alt}~Règle de filtrage}]
+\begin{itemize}
+  \item \textbf{Source :} \texttt{LAN Networks}
+  \item \textbf{Destination :} \texttt{H\_SRV\_Web} (\texttt{10.1.96.51})
+  \item \textbf{Port :} TCP/80 (HTTP)
+  \item \textbf{Action :} Autoriser
+\end{itemize}
+\end{rulebox}
+
+\subsection{NAT de masquage}
+Lorsque le serveur est accessible via son IP publique, les adresses privées des clients LAN ne doivent pas transiter en clair. Le NAT de masquage substitue l'IP privée par l'IP publique du pare-feu :
+
+\begin{rulebox}[title={\faRandom~Règle NAT de masquage}]
+\begin{itemize}
+  \item \textbf{Source d'origine :} LAN (10.0.96.0/24)
+  \item \textbf{Destination d'origine :} IP publique serveur web (192.168.41.5X)
+  \item \textbf{Port :} TCP/80
+  \item \textbf{Source transformée :} IP publique du pare-feu
+\end{itemize}
+\end{rulebox}
+
+\section{TP3 — Publication via routage et NAT statique}
+
+\subsection{Routage inter-équipes}
+Pour que les LANs d'autres équipes puissent atteindre notre serveur web, deux options :
+\begin{enumerate}
+  \item \textbf{Routage statique} \textemdash{} sur le Stormshield :
+  \begin{rulebox}
+  \textbf{NETWORK > Routing} \\
+  Destination : \texttt{10.1.9Y.0/24} (DMZ équipe distante) \\
+  Passerelle : \texttt{192.168.41.5Y} \\
+  Interface : WAN
+  \end{rulebox}
+  \item \textbf{NAT statique} \textemdash{} publication via une IP publique :
+  \begin{rulebox}
+  \textbf{Security Policy > Filter -- NAT} \\
+  Destination originale : \texttt{192.168.41.5X} (IP publique) \\
+  Destination translatée : \texttt{10.1.96.51} (IP privée serveur) \\
+  Port : TCP/80
+  \end{rulebox}
+\end{enumerate}
+
+\subsection{Configuration DNS}
+Le service DNS (port 53 UDP) est externalisé sur \texttt{192.168.20.35} (serveur RT). Deux règles sont nécessaires :
+
+\begin{enumerate}
+  \item \textbf{Filtrage} : autoriser LAN $\rightarrow$ DNS sur UDP/53
+  \item \textbf{NAT de masquage} : remplacer les IPs sources LAN par l'IP publique du pare-feu
+\end{enumerate}
+
+\textbf{Test :}
+\begin{shellbox}
+nslookup www.google.com 192.168.20.35
+\end{shellbox}
+
+\subsection{Accès Internet du LAN}
+Pour la navigation web depuis les postes LAN, mêmes deux règles (filtrage + NAT) appliquées sur HTTP (TCP/80) et HTTPS (TCP/443).
+
+\textbf{Validation :}
+\begin{shellbox}
+ping 8.8.8.8
+curl -I https://www.google.com
+\end{shellbox}
+
+\section{Configuration DHCP et VLANs}
+
+\subsection{Pool DHCP LAN}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
+\toprule
+\rowcolor{light} Paramètre & Valeur \\ \midrule
+Plage d'attribution     & 10.0.96.10 -- 10.0.96.20 \\
+Adresses statiques      & Serveur Web : 10.1.96.51 \\
+                        & Pare-feu : 10.0.96.1 / 10.0.0.254 \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Affectation des ports VLAN sur le switch}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X@{}}
+\toprule
+\rowcolor{light} VLAN & Ports affectés \\ \midrule
+LAN (206) & fa0/1 -- fa0/5 \\
+DMZ (406) & fa0/6 -- fa0/10 \\
+\bottomrule
+\end{tabularx}
+
+\section{Tests et validation}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4.2cm} X@{}}
+\toprule
+\rowcolor{light} Test & Résultat attendu \\ \midrule
+Ping LAN $\rightarrow$ DMZ (PC web)        & Réponse, ICMP autorisé \\
+Accès web LAN $\rightarrow$ \texttt{http://10.1.96.51} & Page Apache servie \\
+Accès web externe $\rightarrow$ IP publique  & Page servie, IP privée masquée dans logs \\
+\texttt{nslookup} domaine externe          & Résolution effectuée par 192.168.20.35 \\
+\texttt{ping 8.8.8.8} depuis LAN           & ICMP relayé via NAT pare-feu \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusion}
+
+Ces TPs couvrent les fondamentaux d'une infrastructure réseau sécurisée : segmentation par VLAN, contrôle de flux par pare-feu Stormshield, traduction d'adresses (NAT statique et de masquage), routage inter-réseaux.
+
+\medskip
+Au-delà de la mécanique des règles, c'est la \textbf{logique d'isolation} qui structure la sécurité : chaque zone n'accède qu'aux ressources strictement nécessaires, chaque flux passe par un point de contrôle traçable. La maintenance et la sauvegarde régulière des configurations ferment la boucle pour une exploitation pérenne.
+
+\vspace{0.5cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og Un bon pare-feu, c'est d'abord une matrice de flux bien pensée. \fg{}}
+\end{center}
+
+\end{document}

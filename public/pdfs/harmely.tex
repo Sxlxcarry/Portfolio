@@ -1,0 +1,336 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+%  RAPPORT HARMELY — Application mobile musicale
+%  Theme : Dev mobile UX — palette violet / rose
+% =========================================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm,top=2.6cm,bottom=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,positioning,calc,arrows.meta}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[bookmarks=true,colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent]{hyperref}
+
+% --- Palette mobile dev UX -----------------------------------------------
+\definecolor{primary}{HTML}{1F1147}
+\definecolor{accent}{HTML}{7C3AED}
+\definecolor{accent2}{HTML}{EC4899}
+\definecolor{accentdark}{HTML}{4C1D95}
+\definecolor{light}{HTML}{F5F3FF}
+\definecolor{midgray}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{1A1130}
+\definecolor{codefg}{HTML}{E9E6F4}
+\definecolor{codekw}{HTML}{D8B4FE}
+\definecolor{codestr}{HTML}{FBCFE8}
+\definecolor{codecmt}{HTML}{7C7390}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{primary}}{\thesection}{0.8em}{}[\vspace{-0.4ex}{\color{accent}\rule{\linewidth}{1.2pt}}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{accent}}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.6em}{0.8em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\sffamily\color{midgray}\faIcon{mobile-alt}~Harmely — App musicale}
+\fancyhead[R]{\footnotesize\sffamily\color{midgray}Honorine \& Grondin}
+\fancyfoot[C]{\footnotesize\sffamily\color{midgray}\thepage}
+
+\lstdefinestyle{jsstyle}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize\color{codefg},
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codecmt}\itshape,
+  showstringspaces=false, breaklines=true,
+  frame=none, framesep=8pt, framerule=0pt,
+  xleftmargin=12pt, xrightmargin=12pt,
+  columns=fullflexible, inputencoding=utf8, extendedchars=true,
+  literate={é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {à}{{\`a}}1 {ô}{{\^o}}1 {î}{{\^\i}}1 {ç}{{\c{c}}}1 {ù}{{\`u}}1 {â}{{\^a}}1 {É}{{\'E}}1 {È}{{\`E}}1 {Ê}{{\^E}}1 {À}{{\`A}}1 {Ô}{{\^O}}1 {Ç}{{\c{C}}}1 {Ù}{{\`U}}1 {Â}{{\^A}}1
+}
+\lstset{style=jsstyle,language=Java}
+
+\newtcblisting{codebox}[1][]{
+  listing only,
+  enhanced jigsaw, breakable,
+  colback=codebg, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  listing options={style=jsstyle,language=Java}, #1
+}
+
+\newtcolorbox{infobox}[1][]{
+  enhanced, colback=light, colframe=accent,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+\newtcolorbox{stepbox}[1][]{
+  enhanced, colback=accent!8, colframe=accent2,
+  arc=2pt, boxrule=0pt, leftrule=3pt,
+  left=10pt, right=10pt, top=6pt, bottom=6pt,
+  fontupper=\small, #1
+}
+
+\setlist[itemize]{leftmargin=*,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=*,itemsep=2pt,topsep=4pt}
+
+\begin{document}
+\pagenumbering{gobble}
+
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-9cm]current page.north east);
+  \fill[accent] ([yshift=-9cm]current page.north west) rectangle ([yshift=-9.25cm]current page.north east);
+  % Logo : smartphone avec notes de musique
+  \node[anchor=center] at ([yshift=-4.6cm]current page.north) {%
+    \begin{tikzpicture}[scale=1.0]
+      % phone outline
+      \fill[white,rounded corners=8pt] (-1.1,-1.7) rectangle (1.1,1.7);
+      \fill[primary,rounded corners=6pt] (-0.95,-1.3) rectangle (0.95,1.5);
+      % speaker
+      \fill[white] (-0.18,1.32) rectangle (0.18,1.4);
+      % home button
+      \fill[white] (0,-1.5) circle (0.1);
+      % album art / gradient screen
+      \fill[accent2,rounded corners=4pt] (-0.85,0.3) rectangle (0.85,1.3);
+      \node[scale=1.4,white] at (0,0.8) {\faMusic};
+      % progress bar
+      \fill[accent!40] (-0.85,0.1) rectangle (0.85,0.18);
+      \fill[accent] (-0.85,0.1) rectangle (0.2,0.18);
+      % controls
+      \node[scale=0.6,white] at (-0.5,-0.3) {\faStepBackward};
+      \node[scale=0.9,white] at (0,-0.3) {\faPlay};
+      \node[scale=0.6,white] at (0.5,-0.3) {\faStepForward};
+      % swipe right/left hint
+      \node[scale=0.9,accent!70] at (-0.55,-0.85) {\faHeart};
+      \node[scale=0.9,white!60!accent2] at (0.55,-0.85) {\faTimes};
+      % floating notes
+      \node[scale=1.0,accent2!80] at (-1.8,1.2) {\faMusic};
+      \node[scale=0.8,accent2!60] at (1.7,0.6) {\faMusic};
+      \node[scale=0.7,accent!60] at (-1.6,-0.4) {\faMusic};
+    \end{tikzpicture}};
+  \node[anchor=north, white, font=\sffamily\Huge\bfseries] at ([yshift=-6.7cm]current page.north) {Harmely};
+  \node[anchor=north, accent2, font=\sffamily\Large] at ([yshift=-7.65cm]current page.north) {App de découverte musicale};
+  \node[anchor=north, white!75!primary, font=\sffamily\small] at ([yshift=-8.4cm]current page.north) {React Native \textbullet{} Firebase \textbullet{} API Spotify};
+
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=3cm]current page.south west) {\textbf{\textcolor{accent}{Auteurs}}};
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=2.55cm]current page.south west) {HONORINE Kylian};
+  \node[anchor=south west, primary, font=\sffamily\small] at ([xshift=2.2cm,yshift=2.25cm]current page.south west) {GRONDIN Angélique};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=3cm]current page.south east) {\textbf{\textcolor{accent}{Cadre}}};
+  \node[anchor=south east, primary, font=\sffamily\small] at ([xshift=-2.2cm,yshift=2.5cm]current page.south east) {SAE — RT2 TP1};
+  \fill[accent2] ([yshift=1.3cm]current page.south west) rectangle ([yshift=1.4cm]current page.south east);
+  \node[anchor=south, midgray, font=\sffamily\footnotesize] at ([yshift=0.6cm]current page.south) {IUT Réseaux \& Télécommunications — Université de La Réunion};
+\end{tikzpicture}
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+{\sffamily
+\hypersetup{linkcolor=primary}
+\renewcommand{\contentsname}{\textcolor{accent}{\faList~} Sommaire}
+\tableofcontents
+}
+\vspace{0.4cm}
+
+\section{Présentation}
+
+\begin{infobox}[title={\faRocket~Pitch produit}]
+\textbf{Harmely} est une application mobile de découverte musicale. Inspirée du modèle \textbf{Tinder pour la musique}, elle propose à l'utilisateur des extraits Spotify via un système de swipe \textemdash{} droite pour aimer, gauche pour passer \textemdash{} et conserve l'historique des préférences. Un chat en temps réel permet de partager ses découvertes.
+\end{infobox}
+
+\subsection{Stack technique}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{3.5cm} X@{}}
+\toprule
+\rowcolor{light} Couche & Technologie \\ \midrule
+Front mobile      & React Native (via Expo) \\
+Backend           & Firebase Authentication + Firestore \\
+Persistance       & AsyncStorage (local) + Firestore (cloud) \\
+API tierce        & Spotify Web API (extraits 30\,s) \\
+Navigation        & React Navigation (stack) \\
+Temps réel        & Firestore \texttt{onSnapshot} \\
+\bottomrule
+\end{tabularx}
+
+\section{Mise en place de l'environnement}
+
+\begin{enumerate}
+  \item Installation de \textbf{Node.js} et \texttt{npm} (gestion des paquets).
+  \item Initialisation du projet : \texttt{npm init} génère un \texttt{package.json}.
+  \item Installation d'Expo + CLI :
+\end{enumerate}
+
+\begin{codebox}[listing options={style=jsstyle,language=bash}]
+npm install -g expo-cli
+expo init harmely
+cd harmely
+npm install firebase react-native expo-av expo-font expo-splash-screen
+\end{codebox}
+
+\section{Authentification (\texttt{AuthScreen.js})}
+
+Firebase Authentication gère la connexion et l'inscription. Les messages d'erreur sont traduits en français pour améliorer l'UX. Persistance via \texttt{AsyncStorage}.
+
+\begin{codebox}[listing options={style=jsstyle,language=bash}]
+npm install @react-native-async-storage/async-storage
+npm install @expo/vector-icons expo-linear-gradient
+\end{codebox}
+
+\begin{stepbox}[title={\faLock~Fonctions clés}]
+\begin{itemize}
+  \item \texttt{handleLogin} \textemdash{} connexion via email/mot de passe
+  \item \texttt{handleSignUp} \textemdash{} création de compte et redirection
+  \item \texttt{translateError} \textemdash{} mapping Firebase $\rightarrow$ français
+  \item \texttt{loadFonts} + \texttt{prepare} \textemdash{} splash screen et polices personnalisées
+\end{itemize}
+\end{stepbox}
+
+\section{Navigation principale (\texttt{Navigation.js})}
+
+Une navigation \textbf{stack} empile les écrans (\texttt{AuthScreen}, \texttt{SwipeScreen}, \texttt{ChatScreen}, etc.). \texttt{react-native-screens} optimise les transitions natives.
+
+\begin{codebox}[listing options={style=jsstyle,language=bash}]
+npm install @react-navigation/native @react-navigation/stack \
+  react-native-screens react-native-safe-area-context \
+  react-native-gesture-handler react-native-reanimated react-native-svg
+\end{codebox}
+
+\section{Système de swipe (\texttt{SwipeScreen.js})}
+
+Cœur de l'app : \texttt{PanResponder} détecte les gestes de glissement et déclenche des animations selon la direction. \texttt{expo-av} joue les extraits Spotify.
+
+\begin{stepbox}[title={\faHandPointer~Logique de geste}]
+\begin{itemize}
+  \item Swipe droite ($\geq$ seuil) $\rightarrow$ ajout aux \texttt{likedTracks}
+  \item Swipe gauche ($\leq$ -seuil) $\rightarrow$ ajout aux \texttt{dislikedTracks}
+  \item Geste insuffisant $\rightarrow$ animation de retour à la position initiale
+\end{itemize}
+\end{stepbox}
+
+\textbf{Dépendances :}
+\begin{itemize}
+  \item \texttt{react-native-gesture-handler} \textemdash{} gestion des swipes
+  \item \texttt{react-native-deck-swiper} \textemdash{} composant deck-like
+  \item \texttt{expo-av} \textemdash{} lecture audio des extraits
+\end{itemize}
+
+\section{Chat temps réel (\texttt{ChatScreen.js})}
+
+Firestore synchronise les messages en temps réel via \texttt{onSnapshot}. Chaque conversation est identifiée par un \texttt{chatId}, et chaque message inclut l'identité de l'expéditeur et un timestamp.
+
+\begin{codebox}
+import { onSnapshot, collection, addDoc, query, orderBy } from "firebase/firestore";
+
+const q = query(
+  collection(db, "chats", chatId, "messages"),
+  orderBy("timestamp", "asc")
+);
+const unsubscribe = onSnapshot(q, (snapshot) => {
+  setMessages(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+});
+\end{codebox}
+
+\section{Recherche musicale (\texttt{SearchScreen.js})}
+
+Une fonction de normalisation des chaînes (\texttt{normalizeString}) standardise la requête utilisateur (accents, casse). Les résultats sont triés par pertinence et popularité, limités aux 20 premiers, filtrés pour n'inclure que les morceaux avec extrait audio disponible.
+
+\textbf{Dépendances :} \texttt{expo-network} (vérifie la connexion avant requête) et \texttt{buffer} (encodage des données API).
+
+\section{Historique : Liked / Disliked}
+
+Deux écrans miroirs (\texttt{LikedTracksScreen.js}, \texttt{DislikedTracksScreen.js}) affichent les morceaux via \texttt{FlatList}. Chaque ligne montre titre, artiste, album \textemdash{} avec \texttt{"inconnu"} en cas de données manquantes.
+
+\section{Intégration Spotify (\texttt{SpotifyService.js})}
+
+Service centralisé pour toutes les requêtes Spotify. L'authentification se fait via \textbf{client credentials} : \texttt{clientId} + \texttt{clientSecret} configurés dans la console Spotify Developer.
+
+\begin{codebox}
+async function getAccessToken() {
+  const credentials = base64.encode(`${clientId}:${clientSecret}`);
+  const res = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Authorization": `Basic ${credentials}`,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: "grant_type=client_credentials"
+  });
+  const data = await res.json();
+  return data.access_token;
+}
+\end{codebox}
+
+Deux fonctions principales :
+\begin{itemize}
+  \item \texttt{getRandomTracksByGenre(genre)} \textemdash{} alimente le swipe (défaut : \og hip-hop \fg{} + \og french \fg{})
+  \item \texttt{searchTracks(query)} \textemdash{} alimente la recherche utilisateur
+\end{itemize}
+
+Les deux filtrent pour ne retenir que les morceaux disposant d'\texttt{preview\_url} non null.
+
+\section{Configuration Firebase (\texttt{firebaseConfig.js})}
+
+\texttt{initializeAuth} avec persistance \texttt{AsyncStorage} garantit que la session survit aux redémarrages de l'app. \texttt{getCurrentUser} fournit aux écrans l'identité de l'utilisateur connecté pour personnaliser l'expérience.
+
+\section{Récapitulatif des dépendances}
+
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\ttfamily}l X@{}}
+\toprule
+\rowcolor{light} \normalfont\textbf{Package} & Rôle \\ \midrule
+expo                      & SDK React Native \\
+firebase                  & Auth + Firestore \\
+@react-navigation/*       & Navigation entre écrans \\
+react-native-gesture-handler & Gestion des swipes \\
+react-native-deck-swiper  & Composant deck \\
+expo-av                   & Lecture audio des previews \\
+expo-linear-gradient      & Dégradés UI \\
+expo-font, expo-splash-screen & Polices, splash screen \\
+@react-native-async-storage/async-storage & Persistance locale \\
+spotify-web-api-node      & Client Spotify \\
+axios                     & Requêtes HTTP \\
+react-native-base64       & Encodage clés API \\
+\bottomrule
+\end{tabularx}
+
+\section{Difficultés rencontrées}
+
+\begin{tabularx}{\linewidth}{@{}>{\bfseries}p{4cm} X@{}}
+\toprule
+\rowcolor{light} Problème & Solution apportée \\ \midrule
+\texttt{react-native-reanimated} exige une config native supplémentaire & Suivi de la doc officielle, configuration Babel \\
+Hétérogénéité des machines de l'équipe & Synchronisation via GitHub, sessions partagées \\
+Gestion des tokens Spotify (expiration, scopes) & Itérations dans Spotify Developer Console, refresh à la demande \\
+\bottomrule
+\end{tabularx}
+
+\section{Conclusion}
+
+Harmely combine des briques modernes du développement mobile : framework cross-platform, backend serverless, API tierce, gestures naturels. La SAE a permis de couvrir le cycle complet d'une app : conception UX, intégration API, persistance, temps réel, et déploiement.
+
+\medskip
+Au-delà du livrable, l'expérience confirme une réalité du métier : l'essentiel du travail consiste à \textbf{intégrer} des services existants et à soigner l'expérience utilisateur \textemdash{} pas à réécrire l'OAuth ou la lecture audio.
+
+\vspace{0.5cm}
+\begin{center}
+{\sffamily\itshape\color{midgray}\large
+\og La meilleure interface est celle qu'on ne voit pas. \fg{}}
+\end{center}
+
+\end{document}
